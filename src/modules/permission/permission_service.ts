@@ -98,7 +98,6 @@ const getGroups = async (query: {
 const updateGroup = async (
   id: string,
   payload: {
-    name?: string;
     description?: string;
     addActions?: string[];
     removePermissionIds?: string[];
@@ -113,14 +112,9 @@ const updateGroup = async (
       throw new AppError(404, 'Group not found');
     }
 
-    const groupName = payload.name
-      ? payload.name.trim().toLowerCase().replace(/\s+/g, '-')
-      : group.name;
-
-    const updatedGroup = await tx.group.update({
+    await tx.group.update({
       where: { id },
       data: {
-        name: groupName,
         description: payload.description,
       },
     });
@@ -132,8 +126,8 @@ const updateGroup = async (
 
       await tx.permission.createMany({
         data: actions.map((action) => ({
-          name: `${groupName}:${action}`,
-          description: `${action} ${groupName}`,
+          name: `${group.name}:${action}`,
+          description: `${action} ${group.name}`,
           groupId: id,
         })),
       });
@@ -142,10 +136,10 @@ const updateGroup = async (
     if (payload.removePermissionIds?.length) {
       await tx.permission.deleteMany({
         where: {
+          groupId: id,
           id: {
             in: payload.removePermissionIds,
           },
-          groupId: id,
         },
       });
     }

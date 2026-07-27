@@ -13,7 +13,6 @@ export const updateGroupValidationSchema = z.object({
     id: z.string().min(1, 'ID is required'),
   }),
   body: z.object({
-    name: z.string().min(1).optional(),
     description: z.string().optional(),
     addActions: z.array(z.string()).optional(),
     removePermissionIds: z.array(z.string().min(1)).optional(),
