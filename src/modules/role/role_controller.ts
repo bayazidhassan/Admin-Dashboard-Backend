@@ -56,9 +56,24 @@ const updateRole = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const grantAllPermissions = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await RoleService.grantAllPermissions(id as string);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'All permissions granted successfully',
+    data: result,
+  });
+});
+
 export const RoleController = {
   createRole,
   getRoleById,
   getRoles,
   updateRole,
+  grantAllPermissions,
 };
