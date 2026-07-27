@@ -30,7 +30,20 @@ const getRoleById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getRoles = catchAsync(async (req: Request, res: Response) => {
+  const result = await RoleService.getRoles(req.query);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Roles retrieved successfully',
+    data: result,
+  });
+});
+
 export const RoleController = {
   createRole,
   getRoleById,
+  getRoles,
 };
