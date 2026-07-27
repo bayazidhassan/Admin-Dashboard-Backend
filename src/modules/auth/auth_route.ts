@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import authenticate from '../../middlewares/authenticate';
 import validateRequest from '../../middlewares/validateRequest';
 import { AuthController } from './auth_controller';
 import { loginValidationSchema } from './auth_validation';
@@ -11,5 +12,5 @@ router.post(
   validateRequest(loginValidationSchema),
   AuthController.login,
 );
-
+router.get('/session', authenticate, AuthController.session);
 export const AuthRoutes = router;
