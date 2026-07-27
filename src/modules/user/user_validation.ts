@@ -44,3 +44,14 @@ export const updateUserValidationSchema = z.object({
     roleId: z.string().min(1).optional(),
   }),
 });
+
+export const updateUserStatusValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'User ID is required'),
+  }),
+  body: z.object({
+    active: z.boolean({
+      error: 'Active status must be a boolean',
+    }),
+  }),
+});
