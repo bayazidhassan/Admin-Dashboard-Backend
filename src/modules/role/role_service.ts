@@ -186,17 +186,33 @@ const grantAllPermissions = async (id: string) => {
 
 const deleteRole = async (id: string) => {
   const role = await prisma.role.findUnique({
-    where: { id },
+    where: {
+      id,
+    },
+    include: {
+      _count: {
+        select: {
+          users: true,
+        },
+      },
+    },
   });
 
   if (!role) {
     throw new AppError(404, 'Role not found');
   }
 
-  // TODO: Refuse delete if one or more users are assigned to this role
+  if (role._count.users > 0) {
+    throw new AppError(
+      409,
+      'Cannot delete role because it is assigned to one or more users',
+    );
+  }
 
   await prisma.role.delete({
-    where: { id },
+    where: {
+      id,
+    },
   });
 
   return null;
