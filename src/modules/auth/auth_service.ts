@@ -91,8 +91,28 @@ const refreshToken = async (token: string) => {
   };
 };
 
+const logoutUser = async (token: string) => {
+  const decoded = verifyRefreshToken(token);
+
+  const user = await prisma.user.findUnique({
+    where: { id: decoded.userId },
+  });
+
+  if (!user || user.refreshToken !== token) {
+    throw new AppError(401, 'Unauthorized');
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      refreshToken: null,
+    },
+  });
+};
+
 export const AuthService = {
   loginUser,
   getSession,
   refreshToken,
+  logoutUser,
 };
