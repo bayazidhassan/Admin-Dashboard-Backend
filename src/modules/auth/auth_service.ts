@@ -1,7 +1,11 @@
 import AppError from '../../errors/AppError';
 import prisma from '../../lib/prisma';
 import { comparePassword } from '../../utils/hash';
-import { generateAccessToken, generateRefreshToken } from '../../utils/jwt';
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken,
+} from '../../utils/jwt';
 
 const loginUser = async (email: string, password: string) => {
   const user = await prisma.user.findUnique({
@@ -55,7 +59,40 @@ const getSession = async (userId: string) => {
   };
 };
 
+const refreshToken = async (token: string) => {
+  const decoded = verifyRefreshToken(token);
+
+  const user = await prisma.user.findUnique({
+    where: { id: decoded.userId },
+  });
+
+  if (!user || user.refreshToken !== token) {
+    throw new AppError(401, 'Unauthorized');
+  }
+
+  const payload = {
+    userId: user.id,
+    email: user.email,
+  };
+
+  const newAccessToken = generateAccessToken(payload);
+  const newRefreshToken = generateRefreshToken(payload);
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      refreshToken: newRefreshToken,
+    },
+  });
+
+  return {
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
+  };
+};
+
 export const AuthService = {
   loginUser,
   getSession,
+  refreshToken,
 };
