@@ -70,10 +70,25 @@ const grantAllPermissions = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteRole = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  await RoleService.deleteRole(id as string);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Role deleted successfully',
+    data: null,
+  });
+});
+
 export const RoleController = {
   createRole,
   getRoleById,
   getRoles,
   updateRole,
   grantAllPermissions,
+  deleteRole,
 };
