@@ -1,3 +1,4 @@
+import AppError from '../../errors/AppError';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { UserService } from './user_service';
@@ -39,6 +40,10 @@ const getUserById = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
+  if (req.user.id === req.params.id && req.body.roleId) {
+    throw new AppError(403, 'You cannot change your own role');
+  }
+
   const result = await UserService.updateUser(
     req.params.id as string,
     req.body,
