@@ -24,12 +24,18 @@ router.get(
   RoleController.getRoleById,
 );
 
+router.patch('/:id/grant-all', RoleController.grantAllPermissions);
+
 router.patch(
   '/:id',
   validateRequest(updateRoleValidationSchema),
   RoleController.updateRole,
 );
 
-router.patch('/:id/grant-all', RoleController.grantAllPermissions);
+router.delete(
+  '/:id',
+  validateRequest(getRoleByIdValidationSchema),
+  RoleController.deleteRole,
+);
 
 export const RoleRoutes = router;
