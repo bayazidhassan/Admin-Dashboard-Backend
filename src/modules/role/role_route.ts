@@ -15,6 +15,8 @@ router.post(
   RoleController.createRole,
 );
 
+router.get('/', RoleController.getRoles);
+
 router.get(
   '/:id',
   validateRequest(getRoleByIdValidationSchema),
