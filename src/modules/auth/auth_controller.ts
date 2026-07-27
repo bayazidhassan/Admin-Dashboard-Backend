@@ -67,8 +67,32 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const logout = catchAsync(async (req: Request, res: Response) => {
+  const token = req.cookies.refreshToken;
+
+  if (!token) {
+    throw new AppError(401, 'Unauthorized');
+  }
+
+  await AuthService.logoutUser(token);
+
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  });
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Logout successful',
+  });
+});
+
 export const AuthController = {
   login,
   session,
   refreshToken,
+  logout,
 };
