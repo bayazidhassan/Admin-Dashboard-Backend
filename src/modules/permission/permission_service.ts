@@ -153,8 +153,27 @@ const updateGroup = async (
   });
 };
 
+const deletePermission = async (id: string) => {
+  const permission = await prisma.permission.findUnique({
+    where: { id },
+  });
+
+  if (!permission) {
+    throw new AppError(404, 'Permission not found');
+  }
+
+  // TODO: Refuse delete if permission is assigned to one or more roles
+
+  await prisma.permission.delete({
+    where: { id },
+  });
+
+  return null;
+};
+
 export const PermissionService = {
   createGroup,
   getGroups,
   updateGroup,
+  deletePermission,
 };
