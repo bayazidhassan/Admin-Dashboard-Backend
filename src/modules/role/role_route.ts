@@ -30,4 +30,6 @@ router.patch(
   RoleController.updateRole,
 );
 
+router.patch('/:id/grant-all', RoleController.grantAllPermissions);
+
 export const RoleRoutes = router;
