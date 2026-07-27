@@ -70,6 +70,10 @@ const refreshToken = async (token: string) => {
     throw new AppError(401, 'Unauthorized');
   }
 
+  if (!user.active) {
+    throw new AppError(403, 'User is deactivated');
+  }
+
   const payload = {
     userId: user.id,
     email: user.email,
