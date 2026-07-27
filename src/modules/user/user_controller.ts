@@ -53,9 +53,25 @@ const updateUser = catchAsync(async (req, res) => {
   });
 });
 
+const updateUserStatus = catchAsync(async (req, res) => {
+  const result = await UserService.updateUserStatus(
+    req.params.id as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: `User ${req.body.active ? 'activated' : 'deactivated'} successfully`,
+    data: result,
+  });
+});
+
 export const UserController = {
   createUser,
   getUsers,
   getUserById,
   updateUser,
+  updateUserStatus,
 };
