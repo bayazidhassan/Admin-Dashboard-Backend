@@ -16,6 +16,21 @@ const createRole = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getRoleById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await RoleService.getRoleById(id as string);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Role retrieved successfully',
+    data: result,
+  });
+});
+
 export const RoleController = {
   createRole,
+  getRoleById,
 };
