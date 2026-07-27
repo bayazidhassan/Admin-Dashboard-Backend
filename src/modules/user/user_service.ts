@@ -154,8 +154,89 @@ const getUserById = async (id: string) => {
   return result;
 };
 
+const updateUser = async (
+  id: string,
+  payload: {
+    name?: string;
+    email?: string;
+    phone?: string;
+    gender?: string;
+    avatar?: string;
+    active?: boolean;
+    roleId?: string;
+  },
+) => {
+  // Check if user exists
+  const existingUser = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!existingUser) {
+    throw new AppError(404, 'User not found');
+  }
+
+  // Check if email is already used by another user
+  if (payload.email) {
+    const emailExists = await prisma.user.findFirst({
+      where: {
+        email: payload.email,
+        NOT: {
+          id,
+        },
+      },
+    });
+
+    if (emailExists) {
+      throw new AppError(409, 'Email already exists');
+    }
+  }
+
+  // Validate role if roleId is provided
+  if (payload.roleId) {
+    const role = await prisma.role.findUnique({
+      where: {
+        id: payload.roleId,
+      },
+    });
+
+    if (!role) {
+      throw new AppError(404, 'Role not found');
+    }
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone,
+      gender: payload.gender,
+      avatar: payload.avatar,
+      active: payload.active,
+      roleId: payload.roleId,
+    },
+    include: {
+      role: {
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          status: true,
+        },
+      },
+    },
+  });
+
+  const { password, ...result } = updatedUser;
+
+  return result;
+};
+
 export const UserService = {
   createUser,
   getUsers,
   getUserById,
+  updateUser,
 };
