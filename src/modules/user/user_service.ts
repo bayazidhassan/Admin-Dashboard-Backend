@@ -58,6 +58,77 @@ const createUser = async (payload: {
   return result;
 };
 
+const getUsers = async (query: Record<string, unknown>) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const search = query.search as string | undefined;
+  const roleId = query.roleId as string | undefined;
+  const active =
+    query.active !== undefined ? query.active === 'true' : undefined;
+
+  const where: any = {};
+
+  if (search) {
+    where.OR = [
+      {
+        name: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+      {
+        email: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+    ];
+  }
+
+  if (roleId) {
+    where.roleId = roleId;
+  }
+
+  if (active !== undefined) {
+    where.active = active;
+  }
+
+  const [items, total] = await prisma.$transaction([
+    prisma.user.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        role: {
+          select: {
+            id: true,
+            name: true,
+            status: true,
+          },
+        },
+      },
+    }),
+    prisma.user.count({
+      where,
+    }),
+  ]);
+
+  const users = items.map(({ password, ...user }) => user);
+
+  return {
+    items: users,
+    total,
+    page,
+    limit,
+  };
+};
+
 export const UserService = {
   createUser,
+  getUsers,
 };
