@@ -5,6 +5,7 @@ import { UserController } from './user_controller';
 import {
   createUserValidationSchema,
   getUserByIdValidationSchema,
+  updateUserStatusValidationSchema,
   updateUserValidationSchema,
 } from './user_validation';
 
@@ -17,6 +18,12 @@ router.post(
 );
 
 router.get('/', UserController.getUsers);
+
+router.patch(
+  '/:id/status',
+  validateRequest(updateUserStatusValidationSchema),
+  UserController.updateUserStatus,
+);
 
 router.get(
   '/:id',
