@@ -1,3 +1,4 @@
+import AppError from '../../errors/AppError';
 import prisma from '../../lib/prisma';
 
 const createRole = async (payload: {
@@ -25,6 +26,22 @@ const createRole = async (payload: {
   return role;
 };
 
+const getRoleById = async (id: string) => {
+  const role = await prisma.role.findUnique({
+    where: { id },
+    include: {
+      permissions: true,
+    },
+  });
+
+  if (!role) {
+    throw new AppError(404, 'Role not found');
+  }
+
+  return role;
+};
+
 export const RoleService = {
   createRole,
+  getRoleById,
 };
