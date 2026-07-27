@@ -14,3 +14,15 @@ export const getRoleByIdValidationSchema = z.object({
     id: z.string().min(1, 'Role ID is required'),
   }),
 });
+
+export const updateRoleValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'Role ID is required'),
+  }),
+  body: z.object({
+    description: z.string().optional(),
+    status: z.boolean().optional(),
+    addPermissionIds: z.array(z.string().min(1)).optional(),
+    removePermissionIds: z.array(z.string().min(1)).optional(),
+  }),
+});
