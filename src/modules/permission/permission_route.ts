@@ -4,6 +4,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { PermissionController } from './permission_controller';
 import {
   createGroupValidationSchema,
+  deletePermissionValidationSchema,
   updateGroupValidationSchema,
 } from './permission_validation';
 
@@ -20,6 +21,11 @@ router.patch(
   '/groups/:id',
   validateRequest(updateGroupValidationSchema),
   PermissionController.updateGroup,
+);
+router.delete(
+  '/:id',
+  validateRequest(deletePermissionValidationSchema),
+  PermissionController.deletePermission,
 );
 
 export const PermissionRoutes = router;
