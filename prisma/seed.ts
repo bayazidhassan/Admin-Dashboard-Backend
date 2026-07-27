@@ -11,28 +11,64 @@ async function main() {
     throw new Error('ADMIN_EMAIL and ADMIN_PASSWORD must be defined in .env');
   }
 
-  const existingUser = await prisma.user.findUnique({
-    where: { email },
+  // Get all existing permissions
+  const allPermissions = await prisma.permission.findMany({
+    select: {
+      id: true,
+    },
   });
 
-  if (existingUser) {
-    console.log('User already exists.');
-    return;
-  }
+  // Create or update Admin role
+  const adminRole = await prisma.role.upsert({
+    where: {
+      name: 'admin',
+    },
+    update: {
+      description: 'System Administrator',
+      status: true,
+      permissions: {
+        set: allPermissions.map((permission) => ({
+          id: permission.id,
+        })),
+      },
+    },
+    create: {
+      name: 'admin',
+      description: 'System Administrator',
+      status: true,
+      permissions: {
+        connect: allPermissions.map((permission) => ({
+          id: permission.id,
+        })),
+      },
+    },
+  });
 
   const hashedPassword = await hashPassword(password);
 
-  await prisma.user.create({
-    data: {
+  // Create or update Admin user
+  await prisma.user.upsert({
+    where: {
+      email,
+    },
+    update: {
+      password: hashedPassword,
+      roleId: adminRole.id,
+      active: true,
+    },
+    create: {
+      name: 'System Admin',
       email,
       password: hashedPassword,
+      roleId: adminRole.id,
       active: true,
     },
   });
 
-  console.log('Seed user created successfully!');
-  console.log(`Email: ${email}`);
-  console.log(`Password: ${password}`);
+  console.log('✅ Database seeded successfully!');
+  console.log(`Admin Email: ${email}`);
+  console.log(`Admin Password: ${password}`);
+  console.log(`Permissions Assigned: ${allPermissions.length}`);
 }
 
 main()
