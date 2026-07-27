@@ -28,7 +28,22 @@ const getGroups = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateGroup = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await PermissionService.updateGroup(id as string, req.body);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Permission group updated successfully',
+    data: result,
+  });
+});
+
 export const PermissionController = {
   createGroup,
   getGroups,
+  updateGroup,
 };
