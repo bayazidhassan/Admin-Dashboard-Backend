@@ -1,3 +1,4 @@
+import AppError from '../../errors/AppError';
 import prisma from '../../lib/prisma';
 
 const createGroup = async (payload: {
@@ -94,7 +95,72 @@ const getGroups = async (query: {
   };
 };
 
+const updateGroup = async (
+  id: string,
+  payload: {
+    name?: string;
+    description?: string;
+    addActions?: string[];
+    removePermissionIds?: string[];
+  },
+) => {
+  return prisma.$transaction(async (tx) => {
+    const group = await tx.group.findUnique({
+      where: { id },
+    });
+
+    if (!group) {
+      throw new AppError(404, 'Group not found');
+    }
+
+    const groupName = payload.name
+      ? payload.name.trim().toLowerCase().replace(/\s+/g, '-')
+      : group.name;
+
+    const updatedGroup = await tx.group.update({
+      where: { id },
+      data: {
+        name: groupName,
+        description: payload.description,
+      },
+    });
+
+    if (payload.addActions?.length) {
+      const actions = [...new Set(payload.addActions)].map((action) =>
+        action.trim().toLowerCase().replace(/\s+/g, '-'),
+      );
+
+      await tx.permission.createMany({
+        data: actions.map((action) => ({
+          name: `${groupName}:${action}`,
+          description: `${action} ${groupName}`,
+          groupId: id,
+        })),
+      });
+    }
+
+    if (payload.removePermissionIds?.length) {
+      await tx.permission.deleteMany({
+        where: {
+          id: {
+            in: payload.removePermissionIds,
+          },
+          groupId: id,
+        },
+      });
+    }
+
+    return tx.group.findUnique({
+      where: { id },
+      include: {
+        permissions: true,
+      },
+    });
+  });
+};
+
 export const PermissionService = {
   createGroup,
   getGroups,
+  updateGroup,
 };
