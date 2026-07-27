@@ -42,8 +42,23 @@ const getRoles = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateRole = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await RoleService.updateRole(id as string, req.body);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Role updated successfully',
+    data: result,
+  });
+});
+
 export const RoleController = {
   createRole,
   getRoleById,
   getRoles,
+  updateRole,
 };
