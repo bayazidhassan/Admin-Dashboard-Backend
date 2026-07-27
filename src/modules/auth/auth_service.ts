@@ -23,6 +23,7 @@ const loginUser = async (email: string, password: string) => {
   const payload = {
     userId: user.id,
     email: user.email,
+    roleId: user.roleId,
   };
 
   const accessToken = generateAccessToken(payload);
@@ -77,6 +78,7 @@ const refreshToken = async (token: string) => {
   const payload = {
     userId: user.id,
     email: user.email,
+    roleId: user.roleId,
   };
 
   const newAccessToken = generateAccessToken(payload);

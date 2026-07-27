@@ -1,9 +1,18 @@
-import { JwtPayload } from '../../utils/jwt';
+import 'express';
 
 declare global {
   namespace Express {
+    interface UserPayload {
+      id: string;
+      email: string;
+      roleId: string;
+      permissions: string[];
+    }
+
     interface Request {
-      user: JwtPayload;
+      user: UserPayload;
     }
   }
 }
+
+export {};
