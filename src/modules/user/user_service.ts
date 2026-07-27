@@ -128,7 +128,34 @@ const getUsers = async (query: Record<string, unknown>) => {
   };
 };
 
+const getUserById = async (id: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      role: {
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          status: true,
+        },
+      },
+    },
+  });
+
+  if (!user) {
+    throw new AppError(404, 'User not found');
+  }
+
+  const { password, ...result } = user;
+
+  return result;
+};
+
 export const UserService = {
   createUser,
   getUsers,
+  getUserById,
 };
