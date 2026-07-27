@@ -16,6 +16,19 @@ const createGroup = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getGroups = catchAsync(async (req: Request, res: Response) => {
+  const result = await PermissionService.getGroups(req.query);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Permission groups retrieved successfully',
+    data: result,
+  });
+});
+
 export const PermissionController = {
   createGroup,
+  getGroups,
 };
