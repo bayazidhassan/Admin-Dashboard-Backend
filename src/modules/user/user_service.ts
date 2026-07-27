@@ -234,9 +234,50 @@ const updateUser = async (
   return result;
 };
 
+const updateUserStatus = async (
+  id: string,
+  payload: {
+    active: boolean;
+  },
+) => {
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!existingUser) {
+    throw new AppError(404, 'User not found');
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      active: payload.active,
+    },
+    include: {
+      role: {
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          status: true,
+        },
+      },
+    },
+  });
+
+  const { password, ...result } = updatedUser;
+
+  return result;
+};
+
 export const UserService = {
   createUser,
   getUsers,
   getUserById,
   updateUser,
+  updateUserStatus,
 };
