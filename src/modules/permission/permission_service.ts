@@ -162,7 +162,17 @@ const deletePermission = async (id: string) => {
     throw new AppError(404, 'Permission not found');
   }
 
-  // TODO: Refuse delete if permission is assigned to one or more roles
+  // TODO: Refuse delete if permission is assigned to any role
+  /*
+  const roleCount = await prisma.role.count({
+    where: { permissions: { some: { id: permissionId } } },
+  });
+  if (roleCount > 0)
+    throw new AppError(
+      409,
+      'Cannot delete: permission is assigned to one or more roles',
+    );
+  */
 
   await prisma.permission.delete({
     where: { id },

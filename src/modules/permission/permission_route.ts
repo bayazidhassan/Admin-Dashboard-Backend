@@ -23,7 +23,7 @@ router.patch(
   PermissionController.updateGroup,
 );
 router.delete(
-  '/:id',
+  '/groups/:id',
   validateRequest(deletePermissionValidationSchema),
   PermissionController.deletePermission,
 );
