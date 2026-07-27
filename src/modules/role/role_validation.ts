@@ -8,3 +8,9 @@ export const createRoleValidationSchema = z.object({
     permissionIds: z.array(z.string().min(1)).default([]),
   }),
 });
+
+export const getRoleByIdValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'Role ID is required'),
+  }),
+});
