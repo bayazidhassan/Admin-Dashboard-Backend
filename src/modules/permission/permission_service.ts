@@ -38,6 +38,63 @@ const createGroup = async (payload: {
   });
 };
 
+const getGroups = async (query: {
+  search?: string;
+  page?: string;
+  limit?: string;
+}) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+  const search = query.search?.trim() || '';
+
+  const where = search
+    ? {
+        OR: [
+          {
+            name: {
+              contains: search,
+              mode: 'insensitive' as const,
+            },
+          },
+          {
+            permissions: {
+              some: {
+                name: {
+                  contains: search,
+                  mode: 'insensitive' as const,
+                },
+              },
+            },
+          },
+        ],
+      }
+    : {};
+
+  const [items, total] = await prisma.$transaction([
+    prisma.group.findMany({
+      where,
+      include: {
+        permissions: true,
+      },
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    }),
+    prisma.group.count({ where }),
+  ]);
+
+  return {
+    items,
+    total,
+    page,
+    limit,
+  };
+};
+
 export const PermissionService = {
   createGroup,
+  getGroups,
 };
