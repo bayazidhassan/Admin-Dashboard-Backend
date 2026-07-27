@@ -5,6 +5,7 @@ import { RoleController } from './role_controller';
 import {
   createRoleValidationSchema,
   getRoleByIdValidationSchema,
+  updateRoleValidationSchema,
 } from './role_validation';
 
 const router = Router();
@@ -21,6 +22,12 @@ router.get(
   '/:id',
   validateRequest(getRoleByIdValidationSchema),
   RoleController.getRoleById,
+);
+
+router.patch(
+  '/:id',
+  validateRequest(updateRoleValidationSchema),
+  RoleController.updateRole,
 );
 
 export const RoleRoutes = router;
