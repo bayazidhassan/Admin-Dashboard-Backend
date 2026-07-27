@@ -41,7 +41,49 @@ const getRoleById = async (id: string) => {
   return role;
 };
 
+const getRoles = async (query: {
+  search?: string;
+  page?: string;
+  limit?: string;
+}) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const where = query.search
+    ? {
+        name: {
+          contains: query.search,
+          mode: 'insensitive' as const,
+        },
+      }
+    : {};
+
+  const [items, total] = await prisma.$transaction([
+    prisma.role.findMany({
+      where,
+      include: {
+        permissions: true,
+      },
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    }),
+    prisma.role.count({ where }),
+  ]);
+
+  return {
+    items,
+    total,
+    page,
+    limit,
+  };
+};
+
 export const RoleService = {
   createRole,
   getRoleById,
+  getRoles,
 };
