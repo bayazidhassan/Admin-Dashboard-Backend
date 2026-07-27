@@ -17,3 +17,9 @@ export const createUserValidationSchema = z.object({
     roleId: z.string().min(1, 'Role is required'),
   }),
 });
+
+export const getUserByIdValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'User ID is required'),
+  }),
+});
