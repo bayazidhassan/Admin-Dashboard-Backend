@@ -82,8 +82,70 @@ const getRoles = async (query: {
   };
 };
 
+const updateRole = async (
+  id: string,
+  payload: {
+    description?: string;
+    status?: boolean;
+    addPermissionIds?: string[];
+    removePermissionIds?: string[];
+  },
+) => {
+  return prisma.$transaction(async (tx) => {
+    const role = await tx.role.findUnique({
+      where: { id },
+    });
+
+    if (!role) {
+      throw new AppError(404, 'Role not found');
+    }
+
+    await tx.role.update({
+      where: { id },
+      data: {
+        description: payload.description,
+        status: payload.status,
+      },
+    });
+
+    if (payload.addPermissionIds?.length) {
+      await tx.role.update({
+        where: { id },
+        data: {
+          permissions: {
+            connect: payload.addPermissionIds.map((permissionId) => ({
+              id: permissionId,
+            })),
+          },
+        },
+      });
+    }
+
+    if (payload.removePermissionIds?.length) {
+      await tx.role.update({
+        where: { id },
+        data: {
+          permissions: {
+            disconnect: payload.removePermissionIds.map((permissionId) => ({
+              id: permissionId,
+            })),
+          },
+        },
+      });
+    }
+
+    return tx.role.findUnique({
+      where: { id },
+      include: {
+        permissions: true,
+      },
+    });
+  });
+};
+
 export const RoleService = {
   createRole,
   getRoleById,
   getRoles,
+  updateRole,
 };
