@@ -62,16 +62,23 @@ const getRoles = async (query: {
   const [items, total] = await prisma.$transaction([
     prisma.role.findMany({
       where,
-      include: {
-        permissions: true,
-      },
       skip,
       take: limit,
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        permissions: true,
+        _count: {
+          select: {
+            users: true,
+          },
+        },
+      },
     }),
-    prisma.role.count({ where }),
+    prisma.role.count({
+      where,
+    }),
   ]);
 
   return {
