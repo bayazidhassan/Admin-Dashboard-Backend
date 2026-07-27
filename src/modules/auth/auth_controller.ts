@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import AppError from '../../errors/AppError';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { AuthService } from './auth_service';
@@ -20,7 +21,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
     res,
     statusCode: 200,
     success: true,
-    message: 'Login successful.',
+    message: 'Login successful',
     data: {
       accessToken: result.accessToken,
     },
@@ -39,7 +40,35 @@ const session = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const refreshToken = catchAsync(async (req: Request, res: Response) => {
+  const token = req.cookies.refreshToken;
+
+  if (!token) {
+    throw new AppError(401, 'Unauthorized');
+  }
+
+  const result = await AuthService.refreshToken(token);
+
+  res.cookie('refreshToken', result.refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Token refreshed successfully',
+    data: {
+      accessToken: result.accessToken,
+    },
+  });
+});
+
 export const AuthController = {
   login,
   session,
+  refreshToken,
 };
