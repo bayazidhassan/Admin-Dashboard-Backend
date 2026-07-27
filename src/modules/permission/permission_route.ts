@@ -2,7 +2,10 @@ import { Router } from 'express';
 import authenticate from '../../middlewares/authenticate';
 import validateRequest from '../../middlewares/validateRequest';
 import { PermissionController } from './permission_controller';
-import { createGroupValidationSchema } from './permission_validation';
+import {
+  createGroupValidationSchema,
+  updateGroupValidationSchema,
+} from './permission_validation';
 
 const router = Router();
 
@@ -13,5 +16,10 @@ router.post(
   PermissionController.createGroup,
 );
 router.get('/groups', PermissionController.getGroups);
+router.patch(
+  '/groups/:id',
+  validateRequest(updateGroupValidationSchema),
+  PermissionController.updateGroup,
+);
 
 export const PermissionRoutes = router;
