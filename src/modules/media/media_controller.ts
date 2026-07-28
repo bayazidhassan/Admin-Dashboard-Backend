@@ -19,6 +19,19 @@ const uploadMedia = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMediaList = catchAsync(async (req: Request, res: Response) => {
+  const result = await MediaService.getMediaList(req.query);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Media retrieved successfully',
+    data: result,
+  });
+});
+
 export const MediaController = {
   uploadMedia,
+  getMediaList,
 };
