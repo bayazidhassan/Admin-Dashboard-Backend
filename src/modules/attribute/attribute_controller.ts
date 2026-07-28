@@ -30,4 +30,5 @@ const getAttributes = catchAsync(async (req: Request, res: Response) => {
 
 export const AttributeController = {
   createAttribute,
+  getAttributes,
 };

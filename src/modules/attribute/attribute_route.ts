@@ -16,4 +16,11 @@ router.post(
   AttributeController.createAttribute,
 );
 
+router.get(
+  '/',
+  authenticate,
+  authorize('attribute:read'),
+  AttributeController.getAttributes,
+);
+
 export const AttributeRoutes = router;
