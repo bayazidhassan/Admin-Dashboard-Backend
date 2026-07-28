@@ -7,6 +7,7 @@ import { BrandController } from './brand_controller';
 import {
   createBrandValidationSchema,
   getBrandByIdValidationSchema,
+  updateBrandValidationSchema,
 } from './brand_validation';
 
 const router = Router();
@@ -32,6 +33,14 @@ router.get(
   authorize('brand:read'),
   validateRequest(getBrandByIdValidationSchema),
   BrandController.getBrandById,
+);
+
+router.patch(
+  '/:id',
+  authenticate,
+  authorize('brand:update'),
+  validateRequest(updateBrandValidationSchema),
+  BrandController.updateBrand,
 );
 
 export const BrandRoutes = router;

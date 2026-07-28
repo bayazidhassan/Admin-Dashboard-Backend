@@ -59,4 +59,5 @@ export const BrandController = {
   createBrand,
   getBrands,
   getBrandById,
+  updateBrand,
 };
