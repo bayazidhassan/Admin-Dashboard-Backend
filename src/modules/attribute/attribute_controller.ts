@@ -28,7 +28,22 @@ const getAttributes = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAttributeById = catchAsync(async (req: Request, res: Response) => {
+  const result = await AttributeService.getAttributeById(
+    req.params.id as string,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Attribute retrieved successfully',
+    data: result,
+  });
+});
+
 export const AttributeController = {
   createAttribute,
   getAttributes,
+  getAttributeById,
 };
