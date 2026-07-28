@@ -16,4 +16,11 @@ router.post(
   BrandController.createBrand,
 );
 
+router.get(
+  '/',
+  authenticate,
+  authorize('brand:read'),
+  BrandController.getBrands,
+);
+
 export const BrandRoutes = router;
