@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { AttributeRoutes } from '../modules/attribute/attribute_route';
 import { AuthRoutes } from '../modules/auth/auth_route';
 import { BrandRoutes } from '../modules/brand/brand_route';
 import { CategoryRoutes } from '../modules/category/category_route';
@@ -16,5 +17,6 @@ router.use('/users', UserRoutes);
 router.use('/media', MediaRoutes);
 router.use('/categories', CategoryRoutes);
 router.use('/brands', BrandRoutes);
+router.use('/attributes', AttributeRoutes);
 
 export default router;
