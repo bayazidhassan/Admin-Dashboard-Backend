@@ -84,6 +84,21 @@ const addAttributeValue = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateAttributeValue = catchAsync(async (req: Request, res: Response) => {
+  const result = await AttributeService.updateAttributeValue(
+    req.params.valueId as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Attribute value updated successfully',
+    data: result,
+  });
+});
+
 export const AttributeController = {
   createAttribute,
   getAttributes,
@@ -91,4 +106,5 @@ export const AttributeController = {
   updateAttribute,
   deleteAttribute,
   addAttributeValue,
+  updateAttributeValue,
 };
