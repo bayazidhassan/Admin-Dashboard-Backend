@@ -59,3 +59,7 @@ const uploadMedia = async (
 
   return mediaList;
 };
+
+export const MediaService = {
+  uploadMedia,
+};
