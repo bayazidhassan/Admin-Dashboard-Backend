@@ -72,4 +72,5 @@ export const BrandController = {
   getBrands,
   getBrandById,
   updateBrand,
+  deleteBrand,
 };

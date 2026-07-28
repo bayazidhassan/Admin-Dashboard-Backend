@@ -43,4 +43,12 @@ router.patch(
   BrandController.updateBrand,
 );
 
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('brand:delete'),
+  validateRequest(getBrandByIdValidationSchema),
+  BrandController.deleteBrand,
+);
+
 export const BrandRoutes = router;
