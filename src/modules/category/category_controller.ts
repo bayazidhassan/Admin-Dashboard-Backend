@@ -67,10 +67,23 @@ const deleteCategory = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getCategoryTree = catchAsync(async (req: Request, res: Response) => {
+  const result = await CategoryService.getCategoryTree();
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Category tree retrieved successfully',
+    data: result,
+  });
+});
+
 export const CategoryController = {
   createCategory,
   getCategories,
   getCategoryById,
   updateCategory,
   deleteCategory,
+  getCategoryTree,
 };
