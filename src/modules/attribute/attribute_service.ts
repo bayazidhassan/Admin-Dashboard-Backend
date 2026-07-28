@@ -94,7 +94,29 @@ const getAttributes = async (query: Record<string, unknown>) => {
   };
 };
 
+const getAttributeById = async (id: string) => {
+  const attribute = await prisma.attribute.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      values: {
+        orderBy: {
+          createdAt: 'asc',
+        },
+      },
+    },
+  });
+
+  if (!attribute) {
+    throw new AppError(404, 'Attribute not found');
+  }
+
+  return attribute;
+};
+
 export const AttributeService = {
   createAttribute,
   getAttributes,
+  getAttributeById,
 };
