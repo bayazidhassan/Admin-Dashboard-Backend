@@ -58,9 +58,22 @@ const updateMediaMetadata = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteMedia = catchAsync(async (req: Request, res: Response) => {
+  await MediaService.deleteMedia(req.params.id as string);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Media deleted successfully',
+    data: null,
+  });
+});
+
 export const MediaController = {
   uploadMedia,
   getMediaList,
   getMediaById,
   updateMediaMetadata,
+  deleteMedia,
 };
