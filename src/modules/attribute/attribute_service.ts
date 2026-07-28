@@ -224,6 +224,50 @@ const addAttributeValue = async (
   });
 };
 
+const updateAttributeValue = async (
+  valueId: string,
+  payload: {
+    value?: string;
+    slug?: string;
+    referenceValue?: string;
+  },
+) => {
+  const value = await prisma.attributeValue.findUnique({
+    where: {
+      id: valueId,
+    },
+  });
+
+  if (!value) {
+    throw new AppError(404, 'Attribute value not found');
+  }
+
+  if (payload.value) {
+    const exists = await prisma.attributeValue.findUnique({
+      where: {
+        attributeId_value: {
+          attributeId: value.attributeId,
+          value: payload.value,
+        },
+      },
+    });
+
+    if (exists && exists.id !== valueId) {
+      throw new AppError(
+        409,
+        'Attribute value already exists for this attribute',
+      );
+    }
+  }
+
+  return await prisma.attributeValue.update({
+    where: {
+      id: valueId,
+    },
+    data: payload,
+  });
+};
+
 export const AttributeService = {
   createAttribute,
   getAttributes,
@@ -231,4 +275,5 @@ export const AttributeService = {
   updateAttribute,
   deleteAttribute,
   addAttributeValue,
+  updateAttributeValue,
 };
