@@ -4,7 +4,10 @@ import authenticate from '../../middlewares/authenticate';
 import authorize from '../../middlewares/authorize';
 import validateRequest from '../../middlewares/validateRequest';
 import { BrandController } from './brand_controller';
-import { createBrandValidationSchema } from './brand_validation';
+import {
+  createBrandValidationSchema,
+  getBrandByIdValidationSchema,
+} from './brand_validation';
 
 const router = Router();
 
@@ -21,6 +24,14 @@ router.get(
   authenticate,
   authorize('brand:read'),
   BrandController.getBrands,
+);
+
+router.get(
+  '/:id',
+  authenticate,
+  authorize('brand:read'),
+  validateRequest(getBrandByIdValidationSchema),
+  BrandController.getBrandById,
 );
 
 export const BrandRoutes = router;
