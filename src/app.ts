@@ -1,5 +1,6 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import path from 'path';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import router from './routes';
 
@@ -13,6 +14,8 @@ app.use('/api/v1', router);
 app.get('/', (req, res) => {
   res.send('Hello Admin Dashboard!');
 });
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use(globalErrorHandler);
 
