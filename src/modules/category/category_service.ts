@@ -127,7 +127,43 @@ const getCategories = async (query: Record<string, unknown>) => {
   };
 };
 
+const getCategoryById = async (id: string) => {
+  const category = await prisma.category.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      parent: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+      children: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          active: true,
+          sortOrder: true,
+        },
+        orderBy: {
+          sortOrder: 'asc',
+        },
+      },
+    },
+  });
+
+  if (!category) {
+    throw new AppError(404, 'Category not found');
+  }
+
+  return category;
+};
+
 export const CategoryService = {
   createCategory,
   getCategories,
+  getCategoryById,
 };
