@@ -263,10 +263,51 @@ const deleteCategory = async (id: string) => {
   return null;
 };
 
+const getCategoryTree = async () => {
+  const categories = await prisma.category.findMany({
+    orderBy: [
+      {
+        sortOrder: 'asc',
+      },
+      {
+        createdAt: 'asc',
+      },
+    ],
+  });
+
+  const categoryMap = new Map();
+
+  categories.forEach((category) => {
+    categoryMap.set(category.id, {
+      ...category,
+      children: [],
+    });
+  });
+
+  const tree: any[] = [];
+
+  categories.forEach((category) => {
+    const node = categoryMap.get(category.id);
+
+    if (category.parentId) {
+      const parent = categoryMap.get(category.parentId);
+
+      if (parent) {
+        parent.children.push(node);
+      }
+    } else {
+      tree.push(node);
+    }
+  });
+
+  return tree;
+};
+
 export const CategoryService = {
   createCategory,
   getCategories,
   getCategoryById,
   updateCategory,
   deleteCategory,
+  getCategoryTree,
 };
