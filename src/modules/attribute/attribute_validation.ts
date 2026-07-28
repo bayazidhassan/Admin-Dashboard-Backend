@@ -21,3 +21,19 @@ export const getAttributeByIdValidationSchema = z.object({
     id: z.string().min(1, 'Attribute ID is required'),
   }),
 });
+
+export const updateAttributeValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'Attribute ID is required'),
+  }),
+
+  body: z.object({
+    name: z.string().trim().min(1).optional(),
+
+    slug: z.string().trim().min(1).optional(),
+
+    type: z
+      .enum(['dropdown', 'radio', 'checkbox', 'color_swatch', 'image_swatch'])
+      .optional(),
+  }),
+});
