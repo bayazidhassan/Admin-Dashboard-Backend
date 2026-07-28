@@ -64,3 +64,8 @@ export type Role = Prisma.RoleModel
  * 
  */
 export type Media = Prisma.MediaModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
