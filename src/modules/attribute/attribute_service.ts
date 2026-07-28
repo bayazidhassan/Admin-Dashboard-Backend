@@ -115,8 +115,53 @@ const getAttributeById = async (id: string) => {
   return attribute;
 };
 
+const updateAttribute = async (
+  id: string,
+  payload: {
+    name?: string;
+    slug?: string;
+    type?: 'dropdown' | 'radio' | 'checkbox' | 'color_swatch' | 'image_swatch';
+  },
+) => {
+  const attribute = await prisma.attribute.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!attribute) {
+    throw new AppError(404, 'Attribute not found');
+  }
+
+  if (payload.name || payload.slug) {
+    const existingAttribute = await prisma.attribute.findFirst({
+      where: {
+        id: {
+          not: id,
+        },
+        OR: [
+          ...(payload.name ? [{ name: payload.name }] : []),
+          ...(payload.slug ? [{ slug: payload.slug }] : []),
+        ],
+      },
+    });
+
+    if (existingAttribute) {
+      throw new AppError(409, 'Attribute name or slug already exists');
+    }
+  }
+
+  return await prisma.attribute.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+};
+
 export const AttributeService = {
   createAttribute,
   getAttributes,
   getAttributeById,
+  updateAttribute,
 };
