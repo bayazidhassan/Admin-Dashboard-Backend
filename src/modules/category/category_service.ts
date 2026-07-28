@@ -47,6 +47,87 @@ const createCategory = async (payload: {
   return category;
 };
 
+const getCategories = async (query: Record<string, unknown>) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const where: any = {};
+
+  if (query.search) {
+    where.OR = [
+      {
+        name: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+      {
+        slug: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+      {
+        description: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+    ];
+  }
+
+  if (query.active !== undefined) {
+    where.active = query.active === 'true';
+  }
+
+  if (query.parentId) {
+    where.parentId = String(query.parentId);
+  }
+
+  const [items, total] = await prisma.$transaction([
+    prisma.category.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: [
+        {
+          sortOrder: 'asc',
+        },
+        {
+          createdAt: 'desc',
+        },
+      ],
+      include: {
+        parent: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+        _count: {
+          select: {
+            children: true,
+          },
+        },
+      },
+    }),
+
+    prisma.category.count({
+      where,
+    }),
+  ]);
+
+  return {
+    items,
+    total,
+    page,
+    limit,
+  };
+};
+
 export const CategoryService = {
   createCategory,
+  getCategories,
 };
