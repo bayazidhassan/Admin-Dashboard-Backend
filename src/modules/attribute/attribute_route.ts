@@ -9,6 +9,7 @@ import {
   createAttributeValidationSchema,
   getAttributeByIdValidationSchema,
   updateAttributeValidationSchema,
+  updateAttributeValueValidationSchema,
 } from './attribute_validation';
 
 const router = Router();
@@ -58,6 +59,14 @@ router.post(
   authorize('attribute:update'),
   validateRequest(addAttributeValueValidationSchema),
   AttributeController.addAttributeValue,
+);
+
+router.patch(
+  '/values/:valueId',
+  authenticate,
+  authorize('attribute:update'),
+  validateRequest(updateAttributeValueValidationSchema),
+  AttributeController.updateAttributeValue,
 );
 
 export const AttributeRoutes = router;
