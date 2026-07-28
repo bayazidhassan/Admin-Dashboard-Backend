@@ -1,0 +1,19 @@
+import { z } from 'zod';
+
+export const createCategoryValidationSchema = z.object({
+  body: z.object({
+    name: z.string().trim().min(1, 'Name is required'),
+
+    slug: z.string().trim().min(1, 'Slug is required'),
+
+    description: z.string().trim().optional(),
+
+    image: z.string().trim().optional(),
+
+    parentId: z.string().trim().optional(),
+
+    active: z.boolean().optional(),
+
+    sortOrder: z.number().int().optional(),
+  }),
+});
