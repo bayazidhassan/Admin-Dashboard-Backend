@@ -1,0 +1,21 @@
+import { Request, Response } from 'express';
+
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import { ProductService } from './product_service';
+
+const createProduct = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.createProduct(req.body);
+
+  sendResponse({
+    res,
+    statusCode: 201,
+    success: true,
+    message: 'Product created successfully',
+    data: result,
+  });
+});
+
+export const ProductController = {
+  createProduct,
+};
