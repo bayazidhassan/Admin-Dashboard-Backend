@@ -159,9 +159,33 @@ const updateAttribute = async (
   });
 };
 
+const deleteAttribute = async (id: string) => {
+  const attribute = await prisma.attribute.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!attribute) {
+    throw new AppError(404, 'Attribute not found');
+  }
+
+  // TODO (Module 9):
+  // Refuse deletion if this attribute is used by any product variant.
+
+  await prisma.attribute.delete({
+    where: {
+      id,
+    },
+  });
+
+  return null;
+};
+
 export const AttributeService = {
   createAttribute,
   getAttributes,
   getAttributeById,
   updateAttribute,
+  deleteAttribute,
 };
