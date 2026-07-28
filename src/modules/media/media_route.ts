@@ -43,4 +43,12 @@ router.patch(
   MediaController.updateMediaMetadata,
 );
 
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('media:delete'),
+  validateRequest(getMediaByIdValidationSchema),
+  MediaController.deleteMedia,
+);
+
 export const MediaRoutes = router;
