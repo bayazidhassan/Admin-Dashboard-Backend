@@ -43,4 +43,12 @@ router.patch(
   CategoryController.updateCategory,
 );
 
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('category:delete'),
+  validateRequest(getCategoryByIdValidationSchema),
+  CategoryController.deleteCategory,
+);
+
 export const CategoryRoutes = router;
