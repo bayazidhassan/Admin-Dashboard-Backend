@@ -95,7 +95,22 @@ const getBrands = async (query: Record<string, unknown>) => {
   };
 };
 
+const getBrandById = async (id: string) => {
+  const brand = await prisma.brand.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!brand) {
+    throw new AppError(404, 'Brand not found');
+  }
+
+  return brand;
+};
+
 export const BrandService = {
   createBrand,
   getBrands,
+  getBrandById,
 };
