@@ -43,8 +43,24 @@ const getMediaById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateMediaMetadata = catchAsync(async (req: Request, res: Response) => {
+  const result = await MediaService.updateMediaMetadata(
+    req.params.id as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Media updated successfully',
+    data: result,
+  });
+});
+
 export const MediaController = {
   uploadMedia,
   getMediaList,
   getMediaById,
+  updateMediaMetadata,
 };
