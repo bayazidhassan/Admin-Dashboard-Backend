@@ -163,9 +163,33 @@ const updateBrand = async (
   });
 };
 
+const deleteBrand = async (id: string) => {
+  const brand = await prisma.brand.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!brand) {
+    throw new AppError(404, 'Brand not found');
+  }
+
+  // TODO (Module 9):
+  // Refuse deletion if any Product references this brand.
+
+  await prisma.brand.delete({
+    where: {
+      id,
+    },
+  });
+
+  return null;
+};
+
 export const BrandService = {
   createBrand,
   getBrands,
   getBrandById,
   updateBrand,
+  deleteBrand,
 };
