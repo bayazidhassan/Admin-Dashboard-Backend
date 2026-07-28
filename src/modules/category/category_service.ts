@@ -162,6 +162,73 @@ const getCategoryById = async (id: string) => {
   return category;
 };
 
+const updateCategory = async (
+  id: string,
+  payload: {
+    name?: string;
+    slug?: string;
+    description?: string;
+    image?: string;
+    parentId?: string;
+    active?: boolean;
+    sortOrder?: number;
+  },
+) => {
+  const category = await prisma.category.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!category) {
+    throw new AppError(404, 'Category not found');
+  }
+
+  // Cannot be its own parent
+  if (payload.parentId === id) {
+    throw new AppError(400, 'Category cannot be its own parent');
+  }
+
+  // Cycle detection
+  if (payload.parentId) {
+    let currentParentId: string | null = payload.parentId;
+
+    while (currentParentId) {
+      if (currentParentId === id) {
+        throw new AppError(400, 'Invalid parent category. Cycle detected.');
+      }
+
+      const parent: { parentId: string | null } | null =
+        await prisma.category.findUnique({
+          where: {
+            id: currentParentId,
+          },
+          select: {
+            parentId: true,
+          },
+        });
+
+      currentParentId = parent?.parentId ?? null;
+    }
+  }
+
+  return await prisma.category.update({
+    where: {
+      id,
+    },
+    data: payload,
+    include: {
+      parent: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+    },
+  });
+};
+
 export const CategoryService = {
   createCategory,
   getCategories,
