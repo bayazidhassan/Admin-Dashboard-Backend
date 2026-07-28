@@ -126,7 +126,31 @@ const getMediaList = async (query: Record<string, unknown>) => {
   };
 };
 
+const getMediaById = async (id: string) => {
+  const media = await prisma.media.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      uploadedBy: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  if (!media) {
+    throw new AppError(404, 'Media not found');
+  }
+
+  return media;
+};
+
 export const MediaService = {
   uploadMedia,
   getMediaList,
+  getMediaById,
 };
