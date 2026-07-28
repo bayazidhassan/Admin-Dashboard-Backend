@@ -2,8 +2,10 @@ import { Router } from 'express';
 
 import authenticate from '../../middlewares/authenticate';
 import authorize from '../../middlewares/authorize';
+import validateRequest from '../../middlewares/validateRequest';
 import { upload } from '../../utils/multer';
 import { MediaController } from './media_controller';
+import { getMediaByIdValidationSchema } from './media_validation';
 
 const router = Router();
 
@@ -20,6 +22,14 @@ router.get(
   authenticate,
   authorize('media:read'),
   MediaController.getMediaList,
+);
+
+router.get(
+  '/:id',
+  authenticate,
+  authorize('media:read'),
+  validateRequest(getMediaByIdValidationSchema),
+  MediaController.getMediaById,
 );
 
 export const MediaRoutes = router;
