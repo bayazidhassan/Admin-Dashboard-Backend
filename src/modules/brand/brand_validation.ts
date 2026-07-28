@@ -19,3 +19,21 @@ export const getBrandByIdValidationSchema = z.object({
     id: z.string().min(1, 'Brand ID is required'),
   }),
 });
+
+export const updateBrandValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'Brand ID is required'),
+  }),
+
+  body: z.object({
+    name: z.string().trim().min(1).optional(),
+
+    slug: z.string().trim().min(1).optional(),
+
+    logo: z.string().trim().optional(),
+
+    status: z.boolean().optional(),
+
+    description: z.string().trim().optional(),
+  }),
+});
