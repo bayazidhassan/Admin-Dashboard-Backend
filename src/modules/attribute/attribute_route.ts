@@ -43,4 +43,12 @@ router.patch(
   AttributeController.updateAttribute,
 );
 
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('attribute:delete'),
+  validateRequest(getAttributeByIdValidationSchema),
+  AttributeController.deleteAttribute,
+);
+
 export const AttributeRoutes = router;
