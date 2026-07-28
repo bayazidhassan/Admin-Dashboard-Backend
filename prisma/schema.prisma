@@ -21,6 +21,8 @@ model User {
   roleId       String
   role         Role     @relation(fields: [roleId], references: [id])
 
+  media Media[]
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -58,4 +60,25 @@ model Role {
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  fileName     String
+  storedPath   String
+  publicUrl    String
+  mimeType     String
+  type         String
+  size         Int
+  width        Int?
+  height       Int?
+  thumbnail    String?
+  altText      String?
+  title        String?
+
+  uploadedById String
+  uploadedBy   User @relation(fields: [uploadedById], references: [id])
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

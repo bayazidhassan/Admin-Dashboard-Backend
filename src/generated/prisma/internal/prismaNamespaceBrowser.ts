@@ -54,7 +54,8 @@ export const ModelName = {
   User: 'User',
   Group: 'Group',
   Permission: 'Permission',
-  Role: 'Role'
+  Role: 'Role',
+  Media: 'Media'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -124,6 +125,27 @@ export const RoleScalarFieldEnum = {
 } as const
 
 export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
+
+
+export const MediaScalarFieldEnum = {
+  id: 'id',
+  fileName: 'fileName',
+  storedPath: 'storedPath',
+  publicUrl: 'publicUrl',
+  mimeType: 'mimeType',
+  type: 'type',
+  size: 'size',
+  width: 'width',
+  height: 'height',
+  thumbnail: 'thumbnail',
+  altText: 'altText',
+  title: 'title',
+  uploadedById: 'uploadedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
 
 
 export const SortOrder = {

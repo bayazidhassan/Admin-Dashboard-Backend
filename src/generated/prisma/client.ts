@@ -59,3 +59,8 @@ export type Permission = Prisma.PermissionModel
  * 
  */
 export type Role = Prisma.RoleModel
+/**
+ * Model Media
+ * 
+ */
+export type Media = Prisma.MediaModel
