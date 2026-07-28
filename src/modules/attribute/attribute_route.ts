@@ -5,6 +5,7 @@ import authorize from '../../middlewares/authorize';
 import validateRequest from '../../middlewares/validateRequest';
 import { AttributeController } from './attribute_controller';
 import {
+  addAttributeValueValidationSchema,
   createAttributeValidationSchema,
   getAttributeByIdValidationSchema,
   updateAttributeValidationSchema,
@@ -49,6 +50,14 @@ router.delete(
   authorize('attribute:delete'),
   validateRequest(getAttributeByIdValidationSchema),
   AttributeController.deleteAttribute,
+);
+
+router.post(
+  '/:id/values',
+  authenticate,
+  authorize('attribute:update'),
+  validateRequest(addAttributeValueValidationSchema),
+  AttributeController.addAttributeValue,
 );
 
 export const AttributeRoutes = router;
