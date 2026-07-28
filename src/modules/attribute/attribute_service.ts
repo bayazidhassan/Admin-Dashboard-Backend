@@ -182,10 +182,53 @@ const deleteAttribute = async (id: string) => {
   return null;
 };
 
+const addAttributeValue = async (
+  attributeId: string,
+  payload: {
+    value: string;
+    slug: string;
+    referenceValue?: string;
+  },
+) => {
+  const attribute = await prisma.attribute.findUnique({
+    where: {
+      id: attributeId,
+    },
+  });
+
+  if (!attribute) {
+    throw new AppError(404, 'Attribute not found');
+  }
+
+  const existingValue = await prisma.attributeValue.findUnique({
+    where: {
+      attributeId_value: {
+        attributeId,
+        value: payload.value,
+      },
+    },
+  });
+
+  if (existingValue) {
+    throw new AppError(
+      409,
+      'Attribute value already exists for this attribute',
+    );
+  }
+
+  return await prisma.attributeValue.create({
+    data: {
+      ...payload,
+      attributeId,
+    },
+  });
+};
+
 export const AttributeService = {
   createAttribute,
   getAttributes,
   getAttributeById,
   updateAttribute,
   deleteAttribute,
+  addAttributeValue,
 };
