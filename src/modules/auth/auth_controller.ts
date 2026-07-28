@@ -29,7 +29,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
 });
 
 const session = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthService.getSession(req.user.userId);
+  const result = await AuthService.getSession(req.user.id);
 
   sendResponse({
     res,
