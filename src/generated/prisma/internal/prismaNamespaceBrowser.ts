@@ -59,7 +59,10 @@ export const ModelName = {
   Category: 'Category',
   Brand: 'Brand',
   Attribute: 'Attribute',
-  AttributeValue: 'AttributeValue'
+  AttributeValue: 'AttributeValue',
+  Product: 'Product',
+  ProductVariant: 'ProductVariant',
+  ProductMedia: 'ProductMedia'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -205,6 +208,63 @@ export const AttributeValueScalarFieldEnum = {
 } as const
 
 export type AttributeValueScalarFieldEnum = (typeof AttributeValueScalarFieldEnum)[keyof typeof AttributeValueScalarFieldEnum]
+
+
+export const ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  sku: 'sku',
+  shortDescription: 'shortDescription',
+  longDescription: 'longDescription',
+  hasVariants: 'hasVariants',
+  price: 'price',
+  salePrice: 'salePrice',
+  stock: 'stock',
+  stockStatus: 'stockStatus',
+  weight: 'weight',
+  active: 'active',
+  featured: 'featured',
+  sortOrder: 'sortOrder',
+  brandId: 'brandId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const ProductVariantScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  sku: 'sku',
+  price: 'price',
+  salePrice: 'salePrice',
+  stock: 'stock',
+  stockStatus: 'stockStatus',
+  lowStockThreshold: 'lowStockThreshold',
+  weight: 'weight',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductVariantScalarFieldEnum = (typeof ProductVariantScalarFieldEnum)[keyof typeof ProductVariantScalarFieldEnum]
+
+
+export const ProductMediaScalarFieldEnum = {
+  id: 'id',
+  mediaId: 'mediaId',
+  productId: 'productId',
+  variantId: 'variantId',
+  attributeValueId: 'attributeValueId',
+  isThumbnail: 'isThumbnail',
+  isGallery: 'isGallery',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type ProductMediaScalarFieldEnum = (typeof ProductMediaScalarFieldEnum)[keyof typeof ProductMediaScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -79,8 +79,10 @@ model Media {
   uploadedById String
   uploadedBy   User @relation(fields: [uploadedById], references: [id])
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  productAttachments ProductMedia[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
@@ -89,13 +91,13 @@ model Category {
   slug        String     @unique
   description String?
   image       String?
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  active      Boolean    @default(true)
+  sortOrder   Int        @default(0)
 
-  parentId String?
-  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryTree")
-
-  active    Boolean @default(true)
-  sortOrder Int     @default(0)
+  products Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -108,6 +110,8 @@ model Brand {
   logo        String?
   status      Boolean  @default(true)
   description String?
+
+  products Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -135,8 +139,101 @@ model AttributeValue {
   attributeId String
   attribute   Attribute @relation(fields: [attributeId], references: [id])
 
+  variants ProductVariant[]
+
+  mediaAttachments ProductMedia[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([attributeId, value])
+}
+
+model Product {
+  id               String   @id @default(cuid())
+
+  name             String
+  slug             String   @unique
+  sku              String?  @unique
+
+  shortDescription String?
+  longDescription  String?
+
+  hasVariants Boolean @default(false)
+
+  price     Float?
+  salePrice Float?
+  stock     Int?
+
+  stockStatus String?
+
+  weight Float?
+
+  active    Boolean @default(true)
+  featured  Boolean @default(false)
+  sortOrder Int     @default(0)
+
+  brandId String?
+  brand   Brand? @relation(fields: [brandId], references: [id])
+
+  categories Category[]
+
+  variants ProductVariant[]
+
+  mediaAttachments ProductMedia[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductVariant {
+  id String @id @default(cuid())
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  sku String @unique
+
+  price     Float
+  salePrice Float?
+
+  stock Int
+
+  stockStatus String?
+
+  lowStockThreshold Int?
+
+  weight Float?
+
+  active Boolean @default(true)
+
+  attributeValues AttributeValue[]
+
+  mediaAttachments ProductMedia[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductMedia {
+  id String @id @default(cuid())
+
+  mediaId String
+  media   Media @relation(fields: [mediaId], references: [id])
+
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  variantId String?
+  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  attributeValueId String?
+  attributeValue   AttributeValue? @relation(fields: [attributeValueId], references: [id])
+
+  isThumbnail Boolean @default(false)
+  isGallery   Boolean @default(true)
+
+  sortOrder Int @default(0)
+
+  createdAt DateTime @default(now())
 }

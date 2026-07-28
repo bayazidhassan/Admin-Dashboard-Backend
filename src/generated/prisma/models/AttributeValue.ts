@@ -199,6 +199,8 @@ export type AttributeValueWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
   attribute?: Prisma.XOR<Prisma.AttributeScalarRelationFilter, Prisma.AttributeWhereInput>
+  variants?: Prisma.ProductVariantListRelationFilter
+  mediaAttachments?: Prisma.ProductMediaListRelationFilter
 }
 
 export type AttributeValueOrderByWithRelationInput = {
@@ -210,6 +212,8 @@ export type AttributeValueOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   attribute?: Prisma.AttributeOrderByWithRelationInput
+  variants?: Prisma.ProductVariantOrderByRelationAggregateInput
+  mediaAttachments?: Prisma.ProductMediaOrderByRelationAggregateInput
 }
 
 export type AttributeValueWhereUniqueInput = Prisma.AtLeast<{
@@ -225,6 +229,8 @@ export type AttributeValueWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
   attribute?: Prisma.XOR<Prisma.AttributeScalarRelationFilter, Prisma.AttributeWhereInput>
+  variants?: Prisma.ProductVariantListRelationFilter
+  mediaAttachments?: Prisma.ProductMediaListRelationFilter
 }, "id" | "attributeId_value">
 
 export type AttributeValueOrderByWithAggregationInput = {
@@ -261,6 +267,8 @@ export type AttributeValueCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   attribute: Prisma.AttributeCreateNestedOneWithoutValuesInput
+  variants?: Prisma.ProductVariantCreateNestedManyWithoutAttributeValuesInput
+  mediaAttachments?: Prisma.ProductMediaCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueUncheckedCreateInput = {
@@ -271,6 +279,8 @@ export type AttributeValueUncheckedCreateInput = {
   attributeId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutAttributeValuesInput
+  mediaAttachments?: Prisma.ProductMediaUncheckedCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueUpdateInput = {
@@ -281,6 +291,8 @@ export type AttributeValueUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attribute?: Prisma.AttributeUpdateOneRequiredWithoutValuesNestedInput
+  variants?: Prisma.ProductVariantUpdateManyWithoutAttributeValuesNestedInput
+  mediaAttachments?: Prisma.ProductMediaUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueUncheckedUpdateInput = {
@@ -291,6 +303,8 @@ export type AttributeValueUncheckedUpdateInput = {
   attributeId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutAttributeValuesNestedInput
+  mediaAttachments?: Prisma.ProductMediaUncheckedUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueCreateManyInput = {
@@ -367,6 +381,11 @@ export type AttributeValueMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type AttributeValueNullableScalarRelationFilter = {
+  is?: Prisma.AttributeValueWhereInput | null
+  isNot?: Prisma.AttributeValueWhereInput | null
+}
+
 export type AttributeValueCreateNestedManyWithoutAttributeInput = {
   create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutAttributeInput, Prisma.AttributeValueUncheckedCreateWithoutAttributeInput> | Prisma.AttributeValueCreateWithoutAttributeInput[] | Prisma.AttributeValueUncheckedCreateWithoutAttributeInput[]
   connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutAttributeInput | Prisma.AttributeValueCreateOrConnectWithoutAttributeInput[]
@@ -409,6 +428,60 @@ export type AttributeValueUncheckedUpdateManyWithoutAttributeNestedInput = {
   deleteMany?: Prisma.AttributeValueScalarWhereInput | Prisma.AttributeValueScalarWhereInput[]
 }
 
+export type AttributeValueCreateNestedManyWithoutVariantsInput = {
+  create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutVariantsInput, Prisma.AttributeValueUncheckedCreateWithoutVariantsInput> | Prisma.AttributeValueCreateWithoutVariantsInput[] | Prisma.AttributeValueUncheckedCreateWithoutVariantsInput[]
+  connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutVariantsInput | Prisma.AttributeValueCreateOrConnectWithoutVariantsInput[]
+  connect?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+}
+
+export type AttributeValueUncheckedCreateNestedManyWithoutVariantsInput = {
+  create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutVariantsInput, Prisma.AttributeValueUncheckedCreateWithoutVariantsInput> | Prisma.AttributeValueCreateWithoutVariantsInput[] | Prisma.AttributeValueUncheckedCreateWithoutVariantsInput[]
+  connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutVariantsInput | Prisma.AttributeValueCreateOrConnectWithoutVariantsInput[]
+  connect?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+}
+
+export type AttributeValueUpdateManyWithoutVariantsNestedInput = {
+  create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutVariantsInput, Prisma.AttributeValueUncheckedCreateWithoutVariantsInput> | Prisma.AttributeValueCreateWithoutVariantsInput[] | Prisma.AttributeValueUncheckedCreateWithoutVariantsInput[]
+  connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutVariantsInput | Prisma.AttributeValueCreateOrConnectWithoutVariantsInput[]
+  upsert?: Prisma.AttributeValueUpsertWithWhereUniqueWithoutVariantsInput | Prisma.AttributeValueUpsertWithWhereUniqueWithoutVariantsInput[]
+  set?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+  disconnect?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+  delete?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+  connect?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+  update?: Prisma.AttributeValueUpdateWithWhereUniqueWithoutVariantsInput | Prisma.AttributeValueUpdateWithWhereUniqueWithoutVariantsInput[]
+  updateMany?: Prisma.AttributeValueUpdateManyWithWhereWithoutVariantsInput | Prisma.AttributeValueUpdateManyWithWhereWithoutVariantsInput[]
+  deleteMany?: Prisma.AttributeValueScalarWhereInput | Prisma.AttributeValueScalarWhereInput[]
+}
+
+export type AttributeValueUncheckedUpdateManyWithoutVariantsNestedInput = {
+  create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutVariantsInput, Prisma.AttributeValueUncheckedCreateWithoutVariantsInput> | Prisma.AttributeValueCreateWithoutVariantsInput[] | Prisma.AttributeValueUncheckedCreateWithoutVariantsInput[]
+  connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutVariantsInput | Prisma.AttributeValueCreateOrConnectWithoutVariantsInput[]
+  upsert?: Prisma.AttributeValueUpsertWithWhereUniqueWithoutVariantsInput | Prisma.AttributeValueUpsertWithWhereUniqueWithoutVariantsInput[]
+  set?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+  disconnect?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+  delete?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+  connect?: Prisma.AttributeValueWhereUniqueInput | Prisma.AttributeValueWhereUniqueInput[]
+  update?: Prisma.AttributeValueUpdateWithWhereUniqueWithoutVariantsInput | Prisma.AttributeValueUpdateWithWhereUniqueWithoutVariantsInput[]
+  updateMany?: Prisma.AttributeValueUpdateManyWithWhereWithoutVariantsInput | Prisma.AttributeValueUpdateManyWithWhereWithoutVariantsInput[]
+  deleteMany?: Prisma.AttributeValueScalarWhereInput | Prisma.AttributeValueScalarWhereInput[]
+}
+
+export type AttributeValueCreateNestedOneWithoutMediaAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutMediaAttachmentsInput, Prisma.AttributeValueUncheckedCreateWithoutMediaAttachmentsInput>
+  connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutMediaAttachmentsInput
+  connect?: Prisma.AttributeValueWhereUniqueInput
+}
+
+export type AttributeValueUpdateOneWithoutMediaAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AttributeValueCreateWithoutMediaAttachmentsInput, Prisma.AttributeValueUncheckedCreateWithoutMediaAttachmentsInput>
+  connectOrCreate?: Prisma.AttributeValueCreateOrConnectWithoutMediaAttachmentsInput
+  upsert?: Prisma.AttributeValueUpsertWithoutMediaAttachmentsInput
+  disconnect?: Prisma.AttributeValueWhereInput | boolean
+  delete?: Prisma.AttributeValueWhereInput | boolean
+  connect?: Prisma.AttributeValueWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttributeValueUpdateToOneWithWhereWithoutMediaAttachmentsInput, Prisma.AttributeValueUpdateWithoutMediaAttachmentsInput>, Prisma.AttributeValueUncheckedUpdateWithoutMediaAttachmentsInput>
+}
+
 export type AttributeValueCreateWithoutAttributeInput = {
   id?: string
   value: string
@@ -416,6 +489,8 @@ export type AttributeValueCreateWithoutAttributeInput = {
   referenceValue?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  variants?: Prisma.ProductVariantCreateNestedManyWithoutAttributeValuesInput
+  mediaAttachments?: Prisma.ProductMediaCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueUncheckedCreateWithoutAttributeInput = {
@@ -425,6 +500,8 @@ export type AttributeValueUncheckedCreateWithoutAttributeInput = {
   referenceValue?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutAttributeValuesInput
+  mediaAttachments?: Prisma.ProductMediaUncheckedCreateNestedManyWithoutAttributeValueInput
 }
 
 export type AttributeValueCreateOrConnectWithoutAttributeInput = {
@@ -466,6 +543,109 @@ export type AttributeValueScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"AttributeValue"> | Date | string
 }
 
+export type AttributeValueCreateWithoutVariantsInput = {
+  id?: string
+  value: string
+  slug: string
+  referenceValue?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  attribute: Prisma.AttributeCreateNestedOneWithoutValuesInput
+  mediaAttachments?: Prisma.ProductMediaCreateNestedManyWithoutAttributeValueInput
+}
+
+export type AttributeValueUncheckedCreateWithoutVariantsInput = {
+  id?: string
+  value: string
+  slug: string
+  referenceValue?: string | null
+  attributeId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mediaAttachments?: Prisma.ProductMediaUncheckedCreateNestedManyWithoutAttributeValueInput
+}
+
+export type AttributeValueCreateOrConnectWithoutVariantsInput = {
+  where: Prisma.AttributeValueWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttributeValueCreateWithoutVariantsInput, Prisma.AttributeValueUncheckedCreateWithoutVariantsInput>
+}
+
+export type AttributeValueUpsertWithWhereUniqueWithoutVariantsInput = {
+  where: Prisma.AttributeValueWhereUniqueInput
+  update: Prisma.XOR<Prisma.AttributeValueUpdateWithoutVariantsInput, Prisma.AttributeValueUncheckedUpdateWithoutVariantsInput>
+  create: Prisma.XOR<Prisma.AttributeValueCreateWithoutVariantsInput, Prisma.AttributeValueUncheckedCreateWithoutVariantsInput>
+}
+
+export type AttributeValueUpdateWithWhereUniqueWithoutVariantsInput = {
+  where: Prisma.AttributeValueWhereUniqueInput
+  data: Prisma.XOR<Prisma.AttributeValueUpdateWithoutVariantsInput, Prisma.AttributeValueUncheckedUpdateWithoutVariantsInput>
+}
+
+export type AttributeValueUpdateManyWithWhereWithoutVariantsInput = {
+  where: Prisma.AttributeValueScalarWhereInput
+  data: Prisma.XOR<Prisma.AttributeValueUpdateManyMutationInput, Prisma.AttributeValueUncheckedUpdateManyWithoutVariantsInput>
+}
+
+export type AttributeValueCreateWithoutMediaAttachmentsInput = {
+  id?: string
+  value: string
+  slug: string
+  referenceValue?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  attribute: Prisma.AttributeCreateNestedOneWithoutValuesInput
+  variants?: Prisma.ProductVariantCreateNestedManyWithoutAttributeValuesInput
+}
+
+export type AttributeValueUncheckedCreateWithoutMediaAttachmentsInput = {
+  id?: string
+  value: string
+  slug: string
+  referenceValue?: string | null
+  attributeId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutAttributeValuesInput
+}
+
+export type AttributeValueCreateOrConnectWithoutMediaAttachmentsInput = {
+  where: Prisma.AttributeValueWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttributeValueCreateWithoutMediaAttachmentsInput, Prisma.AttributeValueUncheckedCreateWithoutMediaAttachmentsInput>
+}
+
+export type AttributeValueUpsertWithoutMediaAttachmentsInput = {
+  update: Prisma.XOR<Prisma.AttributeValueUpdateWithoutMediaAttachmentsInput, Prisma.AttributeValueUncheckedUpdateWithoutMediaAttachmentsInput>
+  create: Prisma.XOR<Prisma.AttributeValueCreateWithoutMediaAttachmentsInput, Prisma.AttributeValueUncheckedCreateWithoutMediaAttachmentsInput>
+  where?: Prisma.AttributeValueWhereInput
+}
+
+export type AttributeValueUpdateToOneWithWhereWithoutMediaAttachmentsInput = {
+  where?: Prisma.AttributeValueWhereInput
+  data: Prisma.XOR<Prisma.AttributeValueUpdateWithoutMediaAttachmentsInput, Prisma.AttributeValueUncheckedUpdateWithoutMediaAttachmentsInput>
+}
+
+export type AttributeValueUpdateWithoutMediaAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  referenceValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attribute?: Prisma.AttributeUpdateOneRequiredWithoutValuesNestedInput
+  variants?: Prisma.ProductVariantUpdateManyWithoutAttributeValuesNestedInput
+}
+
+export type AttributeValueUncheckedUpdateWithoutMediaAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  referenceValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutAttributeValuesNestedInput
+}
+
 export type AttributeValueCreateManyAttributeInput = {
   id?: string
   value: string
@@ -482,6 +662,8 @@ export type AttributeValueUpdateWithoutAttributeInput = {
   referenceValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.ProductVariantUpdateManyWithoutAttributeValuesNestedInput
+  mediaAttachments?: Prisma.ProductMediaUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueUncheckedUpdateWithoutAttributeInput = {
@@ -491,6 +673,8 @@ export type AttributeValueUncheckedUpdateWithoutAttributeInput = {
   referenceValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutAttributeValuesNestedInput
+  mediaAttachments?: Prisma.ProductMediaUncheckedUpdateManyWithoutAttributeValueNestedInput
 }
 
 export type AttributeValueUncheckedUpdateManyWithoutAttributeInput = {
@@ -502,6 +686,76 @@ export type AttributeValueUncheckedUpdateManyWithoutAttributeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type AttributeValueUpdateWithoutVariantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  referenceValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attribute?: Prisma.AttributeUpdateOneRequiredWithoutValuesNestedInput
+  mediaAttachments?: Prisma.ProductMediaUpdateManyWithoutAttributeValueNestedInput
+}
+
+export type AttributeValueUncheckedUpdateWithoutVariantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  referenceValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mediaAttachments?: Prisma.ProductMediaUncheckedUpdateManyWithoutAttributeValueNestedInput
+}
+
+export type AttributeValueUncheckedUpdateManyWithoutVariantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  referenceValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attributeId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type AttributeValueCountOutputType
+ */
+
+export type AttributeValueCountOutputType = {
+  variants: number
+  mediaAttachments: number
+}
+
+export type AttributeValueCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  variants?: boolean | AttributeValueCountOutputTypeCountVariantsArgs
+  mediaAttachments?: boolean | AttributeValueCountOutputTypeCountMediaAttachmentsArgs
+}
+
+/**
+ * AttributeValueCountOutputType without action
+ */
+export type AttributeValueCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AttributeValueCountOutputType
+   */
+  select?: Prisma.AttributeValueCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AttributeValueCountOutputType without action
+ */
+export type AttributeValueCountOutputTypeCountVariantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProductVariantWhereInput
+}
+
+/**
+ * AttributeValueCountOutputType without action
+ */
+export type AttributeValueCountOutputTypeCountMediaAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProductMediaWhereInput
+}
 
 
 export type AttributeValueSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -513,6 +767,9 @@ export type AttributeValueSelect<ExtArgs extends runtime.Types.Extensions.Intern
   createdAt?: boolean
   updatedAt?: boolean
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
+  variants?: boolean | Prisma.AttributeValue$variantsArgs<ExtArgs>
+  mediaAttachments?: boolean | Prisma.AttributeValue$mediaAttachmentsArgs<ExtArgs>
+  _count?: boolean | Prisma.AttributeValueCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attributeValue"]>
 
 export type AttributeValueSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -550,6 +807,9 @@ export type AttributeValueSelectScalar = {
 export type AttributeValueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "value" | "slug" | "referenceValue" | "attributeId" | "createdAt" | "updatedAt", ExtArgs["result"]["attributeValue"]>
 export type AttributeValueInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
+  variants?: boolean | Prisma.AttributeValue$variantsArgs<ExtArgs>
+  mediaAttachments?: boolean | Prisma.AttributeValue$mediaAttachmentsArgs<ExtArgs>
+  _count?: boolean | Prisma.AttributeValueCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AttributeValueIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attribute?: boolean | Prisma.AttributeDefaultArgs<ExtArgs>
@@ -562,6 +822,8 @@ export type $AttributeValuePayload<ExtArgs extends runtime.Types.Extensions.Inte
   name: "AttributeValue"
   objects: {
     attribute: Prisma.$AttributePayload<ExtArgs>
+    variants: Prisma.$ProductVariantPayload<ExtArgs>[]
+    mediaAttachments: Prisma.$ProductMediaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -966,6 +1228,8 @@ readonly fields: AttributeValueFieldRefs;
 export interface Prisma__AttributeValueClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   attribute<T extends Prisma.AttributeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeDefaultArgs<ExtArgs>>): Prisma.Prisma__AttributeClient<runtime.Types.Result.GetResult<Prisma.$AttributePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  variants<T extends Prisma.AttributeValue$variantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeValue$variantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mediaAttachments<T extends Prisma.AttributeValue$mediaAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AttributeValue$mediaAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1400,6 +1664,54 @@ export type AttributeValueDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many AttributeValues to delete.
    */
   limit?: number
+}
+
+/**
+ * AttributeValue.variants
+ */
+export type AttributeValue$variantsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProductVariant
+   */
+  select?: Prisma.ProductVariantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProductVariant
+   */
+  omit?: Prisma.ProductVariantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductVariantInclude<ExtArgs> | null
+  where?: Prisma.ProductVariantWhereInput
+  orderBy?: Prisma.ProductVariantOrderByWithRelationInput | Prisma.ProductVariantOrderByWithRelationInput[]
+  cursor?: Prisma.ProductVariantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProductVariantScalarFieldEnum | Prisma.ProductVariantScalarFieldEnum[]
+}
+
+/**
+ * AttributeValue.mediaAttachments
+ */
+export type AttributeValue$mediaAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProductMedia
+   */
+  select?: Prisma.ProductMediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProductMedia
+   */
+  omit?: Prisma.ProductMediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductMediaInclude<ExtArgs> | null
+  where?: Prisma.ProductMediaWhereInput
+  orderBy?: Prisma.ProductMediaOrderByWithRelationInput | Prisma.ProductMediaOrderByWithRelationInput[]
+  cursor?: Prisma.ProductMediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProductMediaScalarFieldEnum | Prisma.ProductMediaScalarFieldEnum[]
 }
 
 /**

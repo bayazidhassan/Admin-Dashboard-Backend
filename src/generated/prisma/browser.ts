@@ -62,3 +62,18 @@ export type Attribute = Prisma.AttributeModel
  * 
  */
 export type AttributeValue = Prisma.AttributeValueModel
+/**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel
+/**
+ * Model ProductVariant
+ * 
+ */
+export type ProductVariant = Prisma.ProductVariantModel
+/**
+ * Model ProductMedia
+ * 
+ */
+export type ProductMedia = Prisma.ProductMediaModel
