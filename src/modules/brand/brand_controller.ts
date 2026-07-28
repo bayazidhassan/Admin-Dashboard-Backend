@@ -28,7 +28,20 @@ const getBrands = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getBrandById = catchAsync(async (req: Request, res: Response) => {
+  const result = await BrandService.getBrandById(req.params.id as string);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Brand retrieved successfully',
+    data: result,
+  });
+});
+
 export const BrandController = {
   createBrand,
   getBrands,
+  getBrandById,
 };
