@@ -51,3 +51,15 @@ export const addAttributeValueValidationSchema = z.object({
     referenceValue: z.string().trim().optional(),
   }),
 });
+
+export const updateAttributeValueValidationSchema = z.object({
+  params: z.object({
+    valueId: z.string().min(1),
+  }),
+
+  body: z.object({
+    value: z.string().trim().optional(),
+    slug: z.string().trim().optional(),
+    referenceValue: z.string().trim().optional(),
+  }),
+});
