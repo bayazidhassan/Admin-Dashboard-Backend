@@ -47,3 +47,8 @@ export type Media = Prisma.MediaModel
  * 
  */
 export type Category = Prisma.CategoryModel
+/**
+ * Model Brand
+ * 
+ */
+export type Brand = Prisma.BrandModel
