@@ -5,7 +5,10 @@ import authorize from '../../middlewares/authorize';
 import validateRequest from '../../middlewares/validateRequest';
 import { upload } from '../../utils/multer';
 import { MediaController } from './media_controller';
-import { getMediaByIdValidationSchema } from './media_validation';
+import {
+  getMediaByIdValidationSchema,
+  updateMediaMetadataValidationSchema,
+} from './media_validation';
 
 const router = Router();
 
@@ -30,6 +33,14 @@ router.get(
   authorize('media:read'),
   validateRequest(getMediaByIdValidationSchema),
   MediaController.getMediaById,
+);
+
+router.patch(
+  '/:id',
+  authenticate,
+  authorize('media:update'),
+  validateRequest(updateMediaMetadataValidationSchema),
+  MediaController.updateMediaMetadata,
 );
 
 export const MediaRoutes = router;
