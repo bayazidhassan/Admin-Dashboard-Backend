@@ -16,4 +16,11 @@ router.post(
   CategoryController.createCategory,
 );
 
+router.get(
+  '/',
+  authenticate,
+  authorize('category:read'),
+  CategoryController.getCategories,
+);
+
 export const CategoryRoutes = router;
