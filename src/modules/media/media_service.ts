@@ -149,8 +149,37 @@ const getMediaById = async (id: string) => {
   return media;
 };
 
+const updateMediaMetadata = async (
+  id: string,
+  payload: {
+    title?: string;
+    altText?: string;
+  },
+) => {
+  const media = await prisma.media.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!media) {
+    throw new AppError(404, 'Media not found');
+  }
+
+  return await prisma.media.update({
+    where: {
+      id,
+    },
+    data: {
+      title: payload.title,
+      altText: payload.altText,
+    },
+  });
+};
+
 export const MediaService = {
   uploadMedia,
   getMediaList,
   getMediaById,
+  updateMediaMetadata,
 };
