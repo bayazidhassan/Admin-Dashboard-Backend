@@ -34,6 +34,67 @@ const createAttribute = async (payload: {
   return attribute;
 };
 
+const getAttributes = async (query: Record<string, unknown>) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const where: any = {};
+
+  if (query.search) {
+    where.OR = [
+      {
+        name: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+      {
+        slug: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+      {
+        type: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+    ];
+  }
+
+  const [items, total] = await prisma.$transaction([
+    prisma.attribute.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        _count: {
+          select: {
+            values: true,
+          },
+        },
+      },
+    }),
+
+    prisma.attribute.count({
+      where,
+    }),
+  ]);
+
+  return {
+    items,
+    total,
+    page,
+    limit,
+  };
+};
+
 export const AttributeService = {
   createAttribute,
+  getAttributes,
 };
