@@ -229,9 +229,44 @@ const updateCategory = async (
   });
 };
 
+const deleteCategory = async (id: string) => {
+  const category = await prisma.category.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      _count: {
+        select: {
+          children: true,
+        },
+      },
+    },
+  });
+
+  if (!category) {
+    throw new AppError(404, 'Category not found');
+  }
+
+  if (category._count.children > 0) {
+    throw new AppError(
+      409,
+      'Cannot delete category because it has child categories',
+    );
+  }
+
+  await prisma.category.delete({
+    where: {
+      id,
+    },
+  });
+
+  return null;
+};
+
 export const CategoryService = {
   createCategory,
   getCategories,
   getCategoryById,
   updateCategory,
+  deleteCategory,
 };
