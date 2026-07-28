@@ -7,6 +7,7 @@ import { AttributeController } from './attribute_controller';
 import {
   createAttributeValidationSchema,
   getAttributeByIdValidationSchema,
+  updateAttributeValidationSchema,
 } from './attribute_validation';
 
 const router = Router();
@@ -32,6 +33,14 @@ router.get(
   authorize('attribute:read'),
   validateRequest(getAttributeByIdValidationSchema),
   AttributeController.getAttributeById,
+);
+
+router.patch(
+  '/:id',
+  authenticate,
+  authorize('attribute:update'),
+  validateRequest(updateAttributeValidationSchema),
+  AttributeController.updateAttribute,
 );
 
 export const AttributeRoutes = router;
