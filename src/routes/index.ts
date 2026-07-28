@@ -5,6 +5,7 @@ import { BrandRoutes } from '../modules/brand/brand_route';
 import { CategoryRoutes } from '../modules/category/category_route';
 import { MediaRoutes } from '../modules/media/media_route';
 import { PermissionRoutes } from '../modules/permission/permission_route';
+import { ProductRoutes } from '../modules/product/product_route';
 import { RoleRoutes } from '../modules/role/role_route';
 import { UserRoutes } from '../modules/user/user_route';
 
@@ -18,5 +19,6 @@ router.use('/media', MediaRoutes);
 router.use('/categories', CategoryRoutes);
 router.use('/brands', BrandRoutes);
 router.use('/attributes', AttributeRoutes);
+router.use('/products', ProductRoutes);
 
 export default router;
