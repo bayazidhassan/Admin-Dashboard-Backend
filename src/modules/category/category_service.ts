@@ -233,4 +233,5 @@ export const CategoryService = {
   createCategory,
   getCategories,
   getCategoryById,
+  updateCategory,
 };
