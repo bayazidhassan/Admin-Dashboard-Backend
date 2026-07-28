@@ -21,6 +21,13 @@ router.post(
 );
 
 router.get(
+  '/tree',
+  authenticate,
+  authorize('category:read'),
+  CategoryController.getCategoryTree,
+);
+
+router.get(
   '/',
   authenticate,
   authorize('category:read'),
