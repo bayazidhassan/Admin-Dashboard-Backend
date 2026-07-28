@@ -4,7 +4,10 @@ import authenticate from '../../middlewares/authenticate';
 import authorize from '../../middlewares/authorize';
 import validateRequest from '../../middlewares/validateRequest';
 import { AttributeController } from './attribute_controller';
-import { createAttributeValidationSchema } from './attribute_validation';
+import {
+  createAttributeValidationSchema,
+  getAttributeByIdValidationSchema,
+} from './attribute_validation';
 
 const router = Router();
 
@@ -21,6 +24,14 @@ router.get(
   authenticate,
   authorize('attribute:read'),
   AttributeController.getAttributes,
+);
+
+router.get(
+  '/:id',
+  authenticate,
+  authorize('attribute:read'),
+  validateRequest(getAttributeByIdValidationSchema),
+  AttributeController.getAttributeById,
 );
 
 export const AttributeRoutes = router;
