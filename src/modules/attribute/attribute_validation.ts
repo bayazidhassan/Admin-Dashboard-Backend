@@ -15,3 +15,9 @@ export const createAttributeValidationSchema = z.object({
     ]),
   }),
 });
+
+export const getAttributeByIdValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'Attribute ID is required'),
+  }),
+});
