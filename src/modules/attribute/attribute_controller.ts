@@ -57,9 +57,22 @@ const updateAttribute = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteAttribute = catchAsync(async (req: Request, res: Response) => {
+  await AttributeService.deleteAttribute(req.params.id as string);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Attribute deleted successfully',
+    data: null,
+  });
+});
+
 export const AttributeController = {
   createAttribute,
   getAttributes,
   getAttributeById,
   updateAttribute,
+  deleteAttribute,
 };
