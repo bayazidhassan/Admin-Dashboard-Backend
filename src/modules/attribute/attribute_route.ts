@@ -69,4 +69,12 @@ router.patch(
   AttributeController.updateAttributeValue,
 );
 
+router.delete(
+  '/values/:valueId',
+  authenticate,
+  authorize('attribute:delete'),
+  validateRequest(updateAttributeValueValidationSchema.pick({ params: true })),
+  AttributeController.deleteAttributeValue,
+);
+
 export const AttributeRoutes = router;
