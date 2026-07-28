@@ -37,3 +37,17 @@ export const updateAttributeValidationSchema = z.object({
       .optional(),
   }),
 });
+
+export const addAttributeValueValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'Attribute ID is required'),
+  }),
+
+  body: z.object({
+    value: z.string().trim().min(1, 'Value is required'),
+
+    slug: z.string().trim().min(1, 'Slug is required'),
+
+    referenceValue: z.string().trim().optional(),
+  }),
+});
