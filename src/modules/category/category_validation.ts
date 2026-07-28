@@ -17,3 +17,9 @@ export const createCategoryValidationSchema = z.object({
     sortOrder: z.number().int().optional(),
   }),
 });
+
+export const getCategoryByIdValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'Category ID is required'),
+  }),
+});
