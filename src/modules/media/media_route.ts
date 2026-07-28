@@ -15,4 +15,11 @@ router.post(
   MediaController.uploadMedia,
 );
 
+router.get(
+  '/',
+  authenticate,
+  authorize('media:read'),
+  MediaController.getMediaList,
+);
+
 export const MediaRoutes = router;
