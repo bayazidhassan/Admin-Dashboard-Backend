@@ -7,6 +7,7 @@ import { CategoryController } from './category_controller';
 import {
   createCategoryValidationSchema,
   getCategoryByIdValidationSchema,
+  updateCategoryValidationSchema,
 } from './category_validation';
 
 const router = Router();
@@ -32,6 +33,14 @@ router.get(
   authorize('category:read'),
   validateRequest(getCategoryByIdValidationSchema),
   CategoryController.getCategoryById,
+);
+
+router.patch(
+  '/:id',
+  authenticate,
+  authorize('category:update'),
+  validateRequest(updateCategoryValidationSchema),
+  CategoryController.updateCategory,
 );
 
 export const CategoryRoutes = router;
