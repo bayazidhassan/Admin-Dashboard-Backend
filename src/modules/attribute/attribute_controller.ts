@@ -42,8 +42,24 @@ const getAttributeById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateAttribute = catchAsync(async (req: Request, res: Response) => {
+  const result = await AttributeService.updateAttribute(
+    req.params.id as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Attribute updated successfully',
+    data: result,
+  });
+});
+
 export const AttributeController = {
   createAttribute,
   getAttributes,
   getAttributeById,
+  updateAttribute,
 };
