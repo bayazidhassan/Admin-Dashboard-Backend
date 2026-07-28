@@ -16,6 +16,18 @@ const createAttribute = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAttributes = catchAsync(async (req: Request, res: Response) => {
+  const result = await AttributeService.getAttributes(req.query);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Attributes retrieved successfully',
+    data: result,
+  });
+});
+
 export const AttributeController = {
   createAttribute,
 };
