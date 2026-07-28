@@ -177,9 +177,41 @@ const updateMediaMetadata = async (
   });
 };
 
+const deleteMedia = async (id: string) => {
+  const media = await prisma.media.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!media) {
+    throw new AppError(404, 'Media not found');
+  }
+
+  await prisma.media.delete({
+    where: {
+      id,
+    },
+  });
+
+  await fs.unlink(media.storedPath).catch(() => {});
+
+  if (media.thumbnail) {
+    const thumbnailPath = path.join(
+      process.cwd(),
+      media.thumbnail.replace(/^\//, ''),
+    );
+
+    await fs.unlink(thumbnailPath).catch(() => {});
+  }
+
+  return null;
+};
+
 export const MediaService = {
   uploadMedia,
   getMediaList,
   getMediaById,
   updateMediaMetadata,
+  deleteMedia,
 };
