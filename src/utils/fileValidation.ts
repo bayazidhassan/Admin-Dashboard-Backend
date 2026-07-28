@@ -5,6 +5,7 @@ import { fileTypeFromBuffer } from 'file-type';
 import AppError from '../errors/AppError';
 
 const ALLOWED_MIME_TYPES = [
+  'image/jpg',
   'image/jpeg',
   'image/png',
   'image/webp',
