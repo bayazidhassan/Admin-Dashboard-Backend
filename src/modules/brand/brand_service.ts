@@ -109,8 +109,63 @@ const getBrandById = async (id: string) => {
   return brand;
 };
 
+const updateBrand = async (
+  id: string,
+  payload: {
+    name?: string;
+    slug?: string;
+    logo?: string;
+    status?: boolean;
+    description?: string;
+  },
+) => {
+  const brand = await prisma.brand.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!brand) {
+    throw new AppError(404, 'Brand not found');
+  }
+
+  if (payload.name || payload.slug) {
+    const existingBrand = await prisma.brand.findFirst({
+      where: {
+        id: {
+          not: id,
+        },
+        OR: [
+          payload.name
+            ? {
+                name: payload.name,
+              }
+            : {},
+          payload.slug
+            ? {
+                slug: payload.slug,
+              }
+            : {},
+        ],
+      },
+    });
+
+    if (existingBrand) {
+      throw new AppError(409, 'Brand name or slug already exists');
+    }
+  }
+
+  return await prisma.brand.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+};
+
 export const BrandService = {
   createBrand,
   getBrands,
   getBrandById,
+  updateBrand,
 };
