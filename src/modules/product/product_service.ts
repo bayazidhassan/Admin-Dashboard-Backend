@@ -1,6 +1,5 @@
 import AppError from '../../errors/AppError';
 import prisma from '../../lib/prisma';
-import { generateVariantCombinations } from '../../utils/generateVariantCombinations';
 
 const getStockStatus = (stock: number) => {
   if (stock === 0) return 'out_of_stock';
@@ -682,8 +681,31 @@ const generateVariants = async (payload: {
     attributeValueIds: string[];
   }[];
 }) => {
-  // Validate every attribute value exists
+  const groupedAttributes: {
+    attributeId: string;
+    attributeName: string;
+    values: {
+      id: string;
+      value: string;
+    }[];
+  }[] = [];
+
+  // Validate and prepare data
   for (const attribute of payload.attributes) {
+    const dbAttribute = await prisma.attribute.findUnique({
+      where: {
+        id: attribute.attributeId,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    if (!dbAttribute) {
+      throw new AppError(404, 'Attribute not found');
+    }
+
     const values = await prisma.attributeValue.findMany({
       where: {
         id: {
@@ -701,18 +723,58 @@ const generateVariants = async (payload: {
       throw new AppError(404, 'One or more attribute values not found');
     }
 
-    // Ensure values belong to the specified attribute
-    const invalid = values.some((v) => v.attributeId !== attribute.attributeId);
-
-    if (invalid) {
+    if (values.some((v) => v.attributeId !== attribute.attributeId)) {
       throw new AppError(
         400,
         'Attribute values do not belong to the specified attribute',
       );
     }
+
+    groupedAttributes.push({
+      attributeId: dbAttribute.id,
+      attributeName: dbAttribute.name,
+      values,
+    });
   }
 
-  const combinations = generateVariantCombinations(payload.attributes);
+  // Generate combinations
+  let combinations: {
+    attributeValueIds: string[];
+    attributes: {
+      attributeId: string;
+      attributeName: string;
+      attributeValueId: string;
+      value: string;
+    }[];
+  }[] = [
+    {
+      attributeValueIds: [],
+      attributes: [],
+    },
+  ];
+
+  for (const attribute of groupedAttributes) {
+    const temp: typeof combinations = [];
+
+    for (const combination of combinations) {
+      for (const value of attribute.values) {
+        temp.push({
+          attributeValueIds: [...combination.attributeValueIds, value.id],
+          attributes: [
+            ...combination.attributes,
+            {
+              attributeId: attribute.attributeId,
+              attributeName: attribute.attributeName,
+              attributeValueId: value.id,
+              value: value.value,
+            },
+          ],
+        });
+      }
+    }
+
+    combinations = temp;
+  }
 
   return {
     total: combinations.length,
