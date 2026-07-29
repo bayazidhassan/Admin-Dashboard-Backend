@@ -864,6 +864,51 @@ const attachProductMedia = async (
   });
 };
 
+const detachProductMedia = async (productId: string, mediaId: string) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!product) {
+    throw new AppError(404, 'Product not found');
+  }
+
+  const attachment = await prisma.productMedia.findFirst({
+    where: {
+      productId,
+      mediaId,
+    },
+  });
+
+  if (!attachment) {
+    throw new AppError(404, 'Media is not attached to this product');
+  }
+
+  await prisma.productMedia.delete({
+    where: {
+      id: attachment.id,
+    },
+  });
+
+  return await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+    include: {
+      mediaAttachments: {
+        orderBy: {
+          sortOrder: 'asc',
+        },
+        include: {
+          media: true,
+        },
+      },
+    },
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -875,4 +920,5 @@ export const ProductService = {
   deleteVariant,
   generateVariants,
   attachProductMedia,
+  detachProductMedia,
 };
