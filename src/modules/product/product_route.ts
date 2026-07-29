@@ -43,4 +43,12 @@ router.patch(
   ProductController.updateProduct,
 );
 
+router.delete(
+  '/:id',
+  authenticate,
+  authorize('product:delete'),
+  validateRequest(getProductByIdValidationSchema),
+  ProductController.deleteProduct,
+);
+
 export const ProductRoutes = router;
