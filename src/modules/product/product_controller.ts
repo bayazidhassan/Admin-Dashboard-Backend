@@ -240,6 +240,21 @@ const updateVariableProduct = catchAsync(async (req, res) => {
   });
 });
 
+const addVariant = catchAsync(async (req, res) => {
+  const result = await ProductService.addVariant(
+    req.params.id as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 201,
+    success: true,
+    message: 'Variant added successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -258,4 +273,5 @@ export const ProductController = {
   attachAttributeValueMedia,
   detachAttributeValueMedia,
   updateVariableProduct,
+  addVariant,
 };
