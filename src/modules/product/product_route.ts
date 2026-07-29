@@ -10,6 +10,7 @@ import {
   createProductValidationSchema,
   createVariableProductValidationSchema,
   detachProductMediaValidationSchema,
+  detachVariantMediaValidationSchema,
   generateVariantsValidationSchema,
   getProductByIdValidationSchema,
   updateProductValidationSchema,
@@ -87,6 +88,14 @@ router.post(
   authorize('product:update'),
   validateRequest(attachVariantMediaValidationSchema),
   ProductController.attachVariantMedia,
+);
+
+router.delete(
+  '/variants/:variantId/media/:mediaId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(detachVariantMediaValidationSchema),
+  ProductController.detachVariantMedia,
 );
 
 router.patch(
