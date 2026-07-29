@@ -1,5 +1,6 @@
 import AppError from '../../errors/AppError';
 import prisma from '../../lib/prisma';
+import { generateVariantCombinations } from '../../utils/generateVariantCombinations';
 
 const getStockStatus = (stock: number) => {
   if (stock === 0) return 'out_of_stock';
@@ -675,6 +676,50 @@ const deleteVariant = async (variantId: string) => {
   return null;
 };
 
+const generateVariants = async (payload: {
+  attributes: {
+    attributeId: string;
+    attributeValueIds: string[];
+  }[];
+}) => {
+  // Validate every attribute value exists
+  for (const attribute of payload.attributes) {
+    const values = await prisma.attributeValue.findMany({
+      where: {
+        id: {
+          in: attribute.attributeValueIds,
+        },
+      },
+      select: {
+        id: true,
+        value: true,
+        attributeId: true,
+      },
+    });
+
+    if (values.length !== attribute.attributeValueIds.length) {
+      throw new AppError(404, 'One or more attribute values not found');
+    }
+
+    // Ensure values belong to the specified attribute
+    const invalid = values.some((v) => v.attributeId !== attribute.attributeId);
+
+    if (invalid) {
+      throw new AppError(
+        400,
+        'Attribute values do not belong to the specified attribute',
+      );
+    }
+  }
+
+  const combinations = generateVariantCombinations(payload.attributes);
+
+  return {
+    total: combinations.length,
+    combinations,
+  };
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -684,4 +729,5 @@ export const ProductService = {
   createVariableProduct,
   updateVariant,
   deleteVariant,
+  generateVariants,
 };
