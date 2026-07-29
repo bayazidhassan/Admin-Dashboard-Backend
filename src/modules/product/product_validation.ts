@@ -272,3 +272,27 @@ export const updateVariableProductValidationSchema = z.object({
     categoryIds: z.array(z.string().min(1)).optional(),
   }),
 });
+
+export const addVariantValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+
+  body: z.object({
+    sku: z.string().trim().min(1),
+
+    price: z.number().nonnegative(),
+
+    salePrice: z.number().nonnegative().optional(),
+
+    stock: z.number().int().nonnegative(),
+
+    lowStockThreshold: z.number().int().nonnegative().optional(),
+
+    weight: z.number().nonnegative().optional(),
+
+    active: z.boolean().optional(),
+
+    attributeValueIds: z.array(z.string().min(1)).min(1),
+  }),
+});
