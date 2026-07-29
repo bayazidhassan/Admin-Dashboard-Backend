@@ -81,6 +81,21 @@ const createVariableProduct = catchAsync(
   },
 );
 
+const updateVariant = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.updateVariant(
+    req.params.variantId as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Variant updated successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -88,4 +103,5 @@ export const ProductController = {
   updateProduct,
   deleteProduct,
   createVariableProduct,
+  updateVariant,
 };
