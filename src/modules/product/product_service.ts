@@ -42,6 +42,22 @@ const createProduct = async (payload: {
     throw new AppError(409, 'Product already exists');
   }
 
+  if (payload.price < 0) {
+    throw new AppError(400, 'Price cannot be negative');
+  }
+
+  if (payload.stock < 0) {
+    throw new AppError(400, 'Stock cannot be negative');
+  }
+
+  if (payload.salePrice !== undefined && payload.salePrice < 0) {
+    throw new AppError(400, 'Sale price cannot be negative');
+  }
+
+  if (payload.salePrice !== undefined && payload.salePrice > payload.price) {
+    throw new AppError(400, 'Sale price cannot be greater than price');
+  }
+
   if (payload.brandId) {
     const brand = await prisma.brand.findUnique({
       where: {
