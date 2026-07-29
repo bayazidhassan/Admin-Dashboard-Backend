@@ -135,6 +135,21 @@ const attachProductMedia = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const detachProductMedia = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.detachProductMedia(
+    req.params.id as string,
+    req.params.mediaId as string,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Media detached from product successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -146,4 +161,5 @@ export const ProductController = {
   deleteVariant,
   generateVariants,
   attachProductMedia,
+  detachProductMedia,
 };
