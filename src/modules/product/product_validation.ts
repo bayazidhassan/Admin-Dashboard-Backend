@@ -224,3 +224,16 @@ export const reorderProductMediaValidationSchema = z.object({
       .min(1),
   }),
 });
+
+export const attachAttributeValueMediaValidationSchema = z.object({
+  params: z.object({
+    valueId: z.string().cuid(),
+  }),
+
+  body: z.object({
+    mediaId: z.string().cuid(),
+    isThumbnail: z.boolean().optional(),
+    isGallery: z.boolean().optional(),
+    sortOrder: z.number().int().min(0).optional(),
+  }),
+});
