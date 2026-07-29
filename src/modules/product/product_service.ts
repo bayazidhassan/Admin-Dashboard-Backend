@@ -370,9 +370,34 @@ const updateProduct = async (
   });
 };
 
+const deleteProduct = async (id: string) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!product) {
+    throw new AppError(404, 'Product not found');
+  }
+
+  await prisma.product.delete({
+    where: {
+      id,
+    },
+  });
+
+  // ProductVariants and ProductMedia are deleted automatically
+  // because of `onDelete: Cascade`.
+  // Media records remain untouched.
+
+  return null;
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
   getProductById,
   updateProduct,
+  deleteProduct,
 };
