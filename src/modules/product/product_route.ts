@@ -5,6 +5,7 @@ import authorize from '../../middlewares/authorize';
 import validateRequest from '../../middlewares/validateRequest';
 import { ProductController } from './product_controller';
 import {
+  attachAttributeValueMediaValidationSchema,
   attachProductMediaValidationSchema,
   attachVariantMediaValidationSchema,
   createProductValidationSchema,
@@ -105,6 +106,14 @@ router.patch(
   authorize('product:update'),
   validateRequest(updateVariantValidationSchema),
   ProductController.updateVariant,
+);
+
+router.post(
+  '/attribute-values/:valueId/media',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(attachAttributeValueMediaValidationSchema),
+  ProductController.attachAttributeValueMedia,
 );
 
 router.patch(
