@@ -5,6 +5,7 @@ import authorize from '../../middlewares/authorize';
 import validateRequest from '../../middlewares/validateRequest';
 import { ProductController } from './product_controller';
 import {
+  addVariantValidationSchema,
   attachAttributeValueMediaValidationSchema,
   attachProductMediaValidationSchema,
   attachVariantMediaValidationSchema,
@@ -48,27 +49,19 @@ router.post(
 );
 
 router.post(
+  '/:id/variants',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(addVariantValidationSchema),
+  ProductController.addVariant,
+);
+
+router.post(
   '/:id/media',
   authenticate,
   authorize('product:update'),
   validateRequest(attachProductMediaValidationSchema),
   ProductController.attachProductMedia,
-);
-
-router.patch(
-  '/:id/media/reorder',
-  authenticate,
-  authorize('product:update'),
-  validateRequest(reorderProductMediaValidationSchema),
-  ProductController.reorderProductMedia,
-);
-
-router.delete(
-  '/:id/media/:mediaId',
-  authenticate,
-  authorize('product:update'),
-  validateRequest(detachProductMediaValidationSchema),
-  ProductController.detachProductMedia,
 );
 
 router.post(
@@ -79,12 +72,12 @@ router.post(
   ProductController.attachVariantMedia,
 );
 
-router.delete(
-  '/variants/:variantId/media/:mediaId',
+router.post(
+  '/attribute-values/:valueId/media',
   authenticate,
   authorize('product:update'),
-  validateRequest(detachVariantMediaValidationSchema),
-  ProductController.detachVariantMedia,
+  validateRequest(attachAttributeValueMediaValidationSchema),
+  ProductController.attachAttributeValueMedia,
 );
 
 router.get(
@@ -110,22 +103,6 @@ router.patch(
   ProductController.updateVariant,
 );
 
-router.post(
-  '/attribute-values/:valueId/media',
-  authenticate,
-  authorize('product:update'),
-  validateRequest(attachAttributeValueMediaValidationSchema),
-  ProductController.attachAttributeValueMedia,
-);
-
-router.delete(
-  '/attribute-values/:valueId/media/:mediaId',
-  authenticate,
-  authorize('product:update'),
-  validateRequest(detachAttributeValueMediaValidationSchema),
-  ProductController.detachAttributeValueMedia,
-);
-
 router.patch(
   '/variable/:id',
   authenticate,
@@ -135,11 +112,43 @@ router.patch(
 );
 
 router.patch(
+  '/:id/media/reorder',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(reorderProductMediaValidationSchema),
+  ProductController.reorderProductMedia,
+);
+
+router.patch(
   '/:id',
   authenticate,
   authorize('product:update'),
   validateRequest(updateProductValidationSchema),
   ProductController.updateProduct,
+);
+
+router.delete(
+  '/:id/media/:mediaId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(detachProductMediaValidationSchema),
+  ProductController.detachProductMedia,
+);
+
+router.delete(
+  '/variants/:variantId/media/:mediaId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(detachVariantMediaValidationSchema),
+  ProductController.detachVariantMedia,
+);
+
+router.delete(
+  '/attribute-values/:valueId/media/:mediaId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(detachAttributeValueMediaValidationSchema),
+  ProductController.detachAttributeValueMedia,
 );
 
 router.delete(
