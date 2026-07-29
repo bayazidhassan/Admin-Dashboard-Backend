@@ -188,6 +188,25 @@ const deleteMedia = async (id: string) => {
     throw new AppError(404, 'Media not found');
   }
 
+  const mediaInUse = await prisma.productMedia.findFirst({
+    where: {
+      mediaId: id,
+    },
+    select: {
+      id: true,
+      productId: true,
+      variantId: true,
+      attributeValueId: true,
+    },
+  });
+
+  if (mediaInUse) {
+    throw new AppError(
+      409,
+      'Cannot delete media because it is attached to a product, variant, or attribute value',
+    );
+  }
+
   await prisma.media.delete({
     where: {
       id,
