@@ -244,3 +244,31 @@ export const detachAttributeValueMediaValidationSchema = z.object({
     mediaId: z.string().min(1),
   }),
 });
+
+export const updateVariableProductValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+
+  body: z.object({
+    name: z.string().trim().min(1).optional(),
+
+    slug: z.string().trim().min(1).optional(),
+
+    shortDescription: z.string().optional(),
+
+    longDescription: z.string().optional(),
+
+    weight: z.number().nonnegative().optional(),
+
+    active: z.boolean().optional(),
+
+    featured: z.boolean().optional(),
+
+    sortOrder: z.number().int().min(0).optional(),
+
+    brandId: z.string().min(1).nullable().optional(),
+
+    categoryIds: z.array(z.string().min(1)).optional(),
+  }),
+});
