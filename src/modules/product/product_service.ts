@@ -295,7 +295,9 @@ const updateProduct = async (
   },
 ) => {
   const product = await prisma.product.findUnique({
-    where: { id },
+    where: {
+      id,
+    },
   });
 
   if (!product) {
@@ -322,6 +324,20 @@ const updateProduct = async (
     if (exists) {
       throw new AppError(409, 'Slug or SKU already exists');
     }
+  }
+
+  const price = payload.price !== undefined ? payload.price : product.price;
+
+  const salePrice =
+    payload.salePrice !== undefined ? payload.salePrice : product.salePrice;
+
+  if (
+    salePrice !== null &&
+    salePrice !== undefined &&
+    price !== null &&
+    salePrice > price
+  ) {
+    throw new AppError(400, 'Sale price cannot be greater than price');
   }
 
   if (payload.brandId) {
