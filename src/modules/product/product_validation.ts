@@ -200,3 +200,10 @@ export const attachVariantMediaValidationSchema = z.object({
     sortOrder: z.number().int().optional(),
   }),
 });
+
+export const detachVariantMediaValidationSchema = z.object({
+  params: z.object({
+    variantId: z.string().min(1),
+    mediaId: z.string().min(1),
+  }),
+});
