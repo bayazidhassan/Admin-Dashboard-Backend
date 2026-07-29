@@ -177,3 +177,10 @@ export const attachProductMediaValidationSchema = z.object({
     sortOrder: z.number().int().optional(),
   }),
 });
+
+export const detachProductMediaValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1),
+    mediaId: z.string().min(1),
+  }),
+});
