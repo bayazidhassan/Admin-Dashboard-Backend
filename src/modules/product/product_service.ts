@@ -1273,6 +1273,133 @@ const detachAttributeValueMedia = async (valueId: string, mediaId: string) => {
   });
 };
 
+const updateVariableProduct = async (
+  id: string,
+  payload: {
+    name?: string;
+    slug?: string;
+    shortDescription?: string;
+    longDescription?: string;
+    weight?: number;
+    active?: boolean;
+    featured?: boolean;
+    sortOrder?: number;
+    brandId?: string | null;
+    categoryIds?: string[];
+  },
+) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!product) {
+    throw new AppError(404, 'Product not found');
+  }
+
+  if (!product.hasVariants) {
+    throw new AppError(
+      400,
+      'Use the simple product endpoint for products without variants',
+    );
+  }
+
+  if (payload.slug) {
+    const existingProduct = await prisma.product.findFirst({
+      where: {
+        id: {
+          not: id,
+        },
+        slug: payload.slug,
+      },
+    });
+
+    if (existingProduct) {
+      throw new AppError(409, 'Product slug already exists');
+    }
+  }
+
+  if (payload.brandId) {
+    const brand = await prisma.brand.findUnique({
+      where: {
+        id: payload.brandId,
+      },
+    });
+
+    if (!brand) {
+      throw new AppError(404, 'Brand not found');
+    }
+  }
+
+  if (payload.categoryIds) {
+    const categories = await prisma.category.findMany({
+      where: {
+        id: {
+          in: payload.categoryIds,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (categories.length !== payload.categoryIds.length) {
+      throw new AppError(404, 'One or more categories not found');
+    }
+  }
+
+  return await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      name: payload.name,
+      slug: payload.slug,
+      shortDescription: payload.shortDescription,
+      longDescription: payload.longDescription,
+      weight: payload.weight,
+      active: payload.active,
+      featured: payload.featured,
+      sortOrder: payload.sortOrder,
+
+      brand:
+        payload.brandId === undefined
+          ? undefined
+          : payload.brandId === null
+            ? {
+                disconnect: true,
+              }
+            : {
+                connect: {
+                  id: payload.brandId,
+                },
+              },
+
+      categories: payload.categoryIds
+        ? {
+            set: payload.categoryIds.map((id) => ({
+              id,
+            })),
+          }
+        : undefined,
+    },
+    include: {
+      brand: true,
+      categories: true,
+      variants: {
+        include: {
+          attributeValues: {
+            include: {
+              attribute: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -1290,4 +1417,5 @@ export const ProductService = {
   reorderProductMedia,
   attachAttributeValueMedia,
   detachAttributeValueMedia,
+  updateVariableProduct,
 };
