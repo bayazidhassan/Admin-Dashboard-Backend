@@ -782,6 +782,88 @@ const generateVariants = async (payload: {
   };
 };
 
+const attachProductMedia = async (
+  productId: string,
+  payload: {
+    mediaId: string;
+    isThumbnail?: boolean;
+    isGallery?: boolean;
+    sortOrder?: number;
+  },
+) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!product) {
+    throw new AppError(404, 'Product not found');
+  }
+
+  const media = await prisma.media.findUnique({
+    where: {
+      id: payload.mediaId,
+    },
+  });
+
+  if (!media) {
+    throw new AppError(404, 'Media not found');
+  }
+
+  const existingAttachment = await prisma.productMedia.findFirst({
+    where: {
+      productId,
+      mediaId: payload.mediaId,
+    },
+  });
+
+  if (existingAttachment) {
+    throw new AppError(409, 'Media is already attached to this product');
+  }
+
+  return await prisma.$transaction(async (tx) => {
+    // Ensure only one thumbnail per product
+    if (payload.isThumbnail) {
+      await tx.productMedia.updateMany({
+        where: {
+          productId,
+          isThumbnail: true,
+        },
+        data: {
+          isThumbnail: false,
+        },
+      });
+    }
+
+    await tx.productMedia.create({
+      data: {
+        productId,
+        mediaId: payload.mediaId,
+        isThumbnail: payload.isThumbnail ?? false,
+        isGallery: payload.isGallery ?? true,
+        sortOrder: payload.sortOrder ?? 0,
+      },
+    });
+
+    return await tx.product.findUnique({
+      where: {
+        id: productId,
+      },
+      include: {
+        mediaAttachments: {
+          orderBy: {
+            sortOrder: 'asc',
+          },
+          include: {
+            media: true,
+          },
+        },
+      },
+    });
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -792,4 +874,5 @@ export const ProductService = {
   updateVariant,
   deleteVariant,
   generateVariants,
+  attachProductMedia,
 };
