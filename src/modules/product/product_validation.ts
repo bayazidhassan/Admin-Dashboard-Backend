@@ -227,13 +227,20 @@ export const reorderProductMediaValidationSchema = z.object({
 
 export const attachAttributeValueMediaValidationSchema = z.object({
   params: z.object({
-    valueId: z.string().cuid(),
+    valueId: z.string().min(1),
   }),
 
   body: z.object({
-    mediaId: z.string().cuid(),
+    mediaId: z.string().min(1),
     isThumbnail: z.boolean().optional(),
     isGallery: z.boolean().optional(),
     sortOrder: z.number().int().min(0).optional(),
+  }),
+});
+
+export const detachAttributeValueMediaValidationSchema = z.object({
+  params: z.object({
+    valueId: z.string().min(1),
+    mediaId: z.string().min(1),
   }),
 });
