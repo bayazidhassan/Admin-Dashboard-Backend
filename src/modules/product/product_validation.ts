@@ -147,3 +147,17 @@ export const updateVariantValidationSchema = z.object({
     attributeValueIds: z.array(z.string()).optional(),
   }),
 });
+
+export const generateVariantsValidationSchema = z.object({
+  body: z.object({
+    attributes: z
+      .array(
+        z.object({
+          attributeId: z.string().min(1),
+
+          attributeValueIds: z.array(z.string().min(1)).min(1),
+        }),
+      )
+      .min(1),
+  }),
+});
