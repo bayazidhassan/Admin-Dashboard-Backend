@@ -108,6 +108,18 @@ const deleteVariant = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const generateVariants = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.generateVariants(req.body);
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Variant combinations generated successfully',
+    data: result,
+  });
+});
+
 const attachProductMedia = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductService.attachProductMedia(
     req.params.id as string,
@@ -132,5 +144,6 @@ export const ProductController = {
   createVariableProduct,
   updateVariant,
   deleteVariant,
+  generateVariants,
   attachProductMedia,
 };
