@@ -449,7 +449,13 @@ const createVariableProduct = async (payload: {
   }[];
 }) => {
   return await prisma.$transaction(async (tx) => {
-    // Check duplicate product slug
+    if (!payload.variants.length) {
+      throw new AppError(
+        400,
+        'A variable product must have at least one variant',
+      );
+    }
+
     const existingProduct = await tx.product.findUnique({
       where: {
         slug: payload.slug,
@@ -460,7 +466,6 @@ const createVariableProduct = async (payload: {
       throw new AppError(409, 'Product slug already exists');
     }
 
-    // Check duplicate SKUs inside request
     const skuSet = new Set<string>();
 
     for (const variant of payload.variants) {
@@ -469,13 +474,22 @@ const createVariableProduct = async (payload: {
       }
 
       skuSet.add(variant.sku);
+
+      if (
+        variant.salePrice !== undefined &&
+        variant.salePrice > variant.price
+      ) {
+        throw new AppError(
+          400,
+          `Sale price cannot be greater than price for SKU: ${variant.sku}`,
+        );
+      }
     }
 
-    // Check existing SKUs in database
     const existingSkus = await tx.productVariant.findMany({
       where: {
         sku: {
-          in: payload.variants.map((v) => v.sku),
+          in: payload.variants.map((variant) => variant.sku),
         },
       },
       select: {
@@ -487,7 +501,6 @@ const createVariableProduct = async (payload: {
       throw new AppError(409, `SKU already exists: ${existingSkus[0].sku}`);
     }
 
-    // Validate brand
     if (payload.brandId) {
       const brand = await tx.brand.findUnique({
         where: {
@@ -500,13 +513,15 @@ const createVariableProduct = async (payload: {
       }
     }
 
-    // Validate categories
     if (payload.categoryIds.length) {
       const categories = await tx.category.findMany({
         where: {
           id: {
             in: payload.categoryIds,
           },
+        },
+        select: {
+          id: true,
         },
       });
 
@@ -515,7 +530,6 @@ const createVariableProduct = async (payload: {
       }
     }
 
-    // Create product
     const product = await tx.product.create({
       data: {
         name: payload.name,
@@ -544,14 +558,15 @@ const createVariableProduct = async (payload: {
       },
     });
 
-    // Create variants
     for (const variant of payload.variants) {
-      // Validate attribute values
       const attributeValues = await tx.attributeValue.findMany({
         where: {
           id: {
             in: variant.attributeValueIds,
           },
+        },
+        select: {
+          id: true,
         },
       });
 
