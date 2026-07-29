@@ -165,14 +165,29 @@ const getProducts = async (query: Record<string, unknown>) => {
     where.stockStatus = String(query.stockStatus);
   }
 
+  const sortBy = String(query.sortBy || 'createdAt');
+  const sortOrder = query.sortOrder === 'asc' ? 'asc' : 'desc';
+
+  const allowedSortFields = [
+    'createdAt',
+    'updatedAt',
+    'name',
+    'price',
+    'salePrice',
+    'stock',
+    'sortOrder',
+  ];
+
+  const orderBy = allowedSortFields.includes(sortBy)
+    ? { [sortBy]: sortOrder as 'asc' | 'desc' }
+    : { createdAt: 'desc' as const };
+
   const [items, total] = await prisma.$transaction([
     prisma.product.findMany({
       where,
       skip,
       take: limit,
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy,
       include: {
         brand: true,
         categories: true,
