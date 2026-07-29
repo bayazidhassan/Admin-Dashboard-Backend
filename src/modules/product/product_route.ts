@@ -45,6 +45,14 @@ router.patch(
   ProductController.updateVariant,
 );
 
+router.delete(
+  '/variants/:variantId',
+  authenticate,
+  authorize('product:delete'),
+  validateRequest(updateVariantValidationSchema.pick({ params: true })),
+  ProductController.deleteVariant,
+);
+
 router.get(
   '/:id',
   authenticate,
