@@ -655,6 +655,26 @@ const updateVariant = async (
   });
 };
 
+const deleteVariant = async (variantId: string) => {
+  const variant = await prisma.productVariant.findUnique({
+    where: {
+      id: variantId,
+    },
+  });
+
+  if (!variant) {
+    throw new AppError(404, 'Variant not found');
+  }
+
+  await prisma.productVariant.delete({
+    where: {
+      id: variantId,
+    },
+  });
+
+  return null;
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -663,4 +683,5 @@ export const ProductService = {
   deleteProduct,
   createVariableProduct,
   updateVariant,
+  deleteVariant,
 };
