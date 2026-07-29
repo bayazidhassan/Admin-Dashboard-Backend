@@ -207,3 +207,20 @@ export const detachVariantMediaValidationSchema = z.object({
     mediaId: z.string().min(1),
   }),
 });
+
+export const reorderProductMediaValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+
+  body: z.object({
+    items: z
+      .array(
+        z.object({
+          mediaId: z.string().min(1),
+          sortOrder: z.number().int().min(0),
+        }),
+      )
+      .min(1),
+  }),
+});
