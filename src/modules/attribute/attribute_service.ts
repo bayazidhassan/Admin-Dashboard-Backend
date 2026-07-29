@@ -170,8 +170,28 @@ const deleteAttribute = async (id: string) => {
     throw new AppError(404, 'Attribute not found');
   }
 
-  // TODO (Module 9):
-  // Refuse deletion if this attribute is used by any product variant.
+  const attributeInUse = await prisma.attribute.findFirst({
+    where: {
+      id,
+      values: {
+        some: {
+          variants: {
+            some: {},
+          },
+        },
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (attributeInUse) {
+    throw new AppError(
+      409,
+      'Cannot delete attribute because it is used by one or more product variants',
+    );
+  }
 
   await prisma.attribute.delete({
     where: {
@@ -279,8 +299,24 @@ const deleteAttributeValue = async (valueId: string) => {
     throw new AppError(404, 'Attribute value not found');
   }
 
-  // TODO (Module 9):
-  // Refuse deletion if used by any product variant.
+  const attributeValueInUse = await prisma.attributeValue.findFirst({
+    where: {
+      id: valueId,
+      variants: {
+        some: {},
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (attributeValueInUse) {
+    throw new AppError(
+      409,
+      'Cannot delete attribute value because it is used by one or more product variants',
+    );
+  }
 
   await prisma.attributeValue.delete({
     where: {
