@@ -174,8 +174,21 @@ const deleteBrand = async (id: string) => {
     throw new AppError(404, 'Brand not found');
   }
 
-  // TODO (Module 9):
-  // Refuse deletion if any Product references this brand.
+  const productUsingBrand = await prisma.product.findFirst({
+    where: {
+      brandId: id,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (productUsingBrand) {
+    throw new AppError(
+      409,
+      'Cannot delete brand because it is assigned to one or more products',
+    );
+  }
 
   await prisma.brand.delete({
     where: {
