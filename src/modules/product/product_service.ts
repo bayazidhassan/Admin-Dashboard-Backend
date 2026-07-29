@@ -198,7 +198,7 @@ const getProducts = async (query: Record<string, unknown>) => {
     ? { [sortBy]: sortOrder as 'asc' | 'desc' }
     : { createdAt: 'desc' as const };
 
-  const [items, total] = await prisma.$transaction([
+  const [products, total] = await prisma.$transaction([
     prisma.product.findMany({
       where,
       skip,
@@ -206,7 +206,26 @@ const getProducts = async (query: Record<string, unknown>) => {
       orderBy,
       include: {
         brand: true,
+
         categories: true,
+
+        mediaAttachments: {
+          where: {
+            isThumbnail: true,
+          },
+          include: {
+            media: true,
+          },
+          take: 1,
+        },
+
+        variants: {
+          select: {
+            price: true,
+            salePrice: true,
+          },
+        },
+
         _count: {
           select: {
             variants: true,
@@ -219,6 +238,50 @@ const getProducts = async (query: Record<string, unknown>) => {
       where,
     }),
   ]);
+
+  const items = products.map((product) => {
+    let minPrice = product.price;
+    let maxPrice = product.price;
+
+    let minSalePrice = product.salePrice;
+    let maxSalePrice = product.salePrice;
+
+    if (product.hasVariants && product.variants.length > 0) {
+      const prices = product.variants.map((v) => v.price);
+
+      minPrice = Math.min(...prices);
+      maxPrice = Math.max(...prices);
+
+      const salePrices = product.variants
+        .map((v) => v.salePrice)
+        .filter(
+          (price): price is number => price !== null && price !== undefined,
+        );
+
+      if (salePrices.length) {
+        minSalePrice = Math.min(...salePrices);
+        maxSalePrice = Math.max(...salePrices);
+      } else {
+        minSalePrice = null;
+        maxSalePrice = null;
+      }
+    }
+
+    return {
+      ...product,
+
+      thumbnail:
+        product.mediaAttachments.length > 0
+          ? product.mediaAttachments[0]
+          : null,
+
+      minPrice,
+      maxPrice,
+
+      minSalePrice,
+      maxSalePrice,
+    };
+  });
 
   return {
     items,
