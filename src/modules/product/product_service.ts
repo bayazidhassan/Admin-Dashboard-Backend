@@ -1463,6 +1463,107 @@ const updateVariableProduct = async (
   });
 };
 
+const addVariant = async (
+  productId: string,
+  payload: {
+    sku: string;
+    price: number;
+    salePrice?: number;
+    stock: number;
+    lowStockThreshold?: number;
+    weight?: number;
+    active?: boolean;
+    attributeValueIds: string[];
+  },
+) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!product) {
+    throw new AppError(404, 'Product not found');
+  }
+
+  if (!product.hasVariants) {
+    throw new AppError(400, 'Cannot add variants to a simple product');
+  }
+
+  const existingVariant = await prisma.productVariant.findUnique({
+    where: {
+      sku: payload.sku,
+    },
+  });
+
+  if (existingVariant) {
+    throw new AppError(409, 'Variant SKU already exists');
+  }
+
+  if (payload.salePrice !== undefined && payload.salePrice > payload.price) {
+    throw new AppError(400, 'Sale price cannot be greater than price');
+  }
+
+  const attributeValues = await prisma.attributeValue.findMany({
+    where: {
+      id: {
+        in: payload.attributeValueIds,
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (attributeValues.length !== payload.attributeValueIds.length) {
+    throw new AppError(404, 'One or more attribute values not found');
+  }
+
+  const variant = await prisma.productVariant.create({
+    data: {
+      productId,
+
+      sku: payload.sku,
+
+      price: payload.price,
+
+      salePrice: payload.salePrice,
+
+      stock: payload.stock,
+
+      stockStatus: getStockStatus(payload.stock),
+
+      lowStockThreshold: payload.lowStockThreshold,
+
+      weight: payload.weight,
+
+      active: payload.active,
+
+      attributeValues: {
+        connect: payload.attributeValueIds.map((id) => ({
+          id,
+        })),
+      },
+    },
+
+    include: {
+      attributeValues: {
+        include: {
+          attribute: true,
+        },
+      },
+
+      mediaAttachments: {
+        include: {
+          media: true,
+        },
+      },
+    },
+  });
+
+  return variant;
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -1481,4 +1582,5 @@ export const ProductService = {
   attachAttributeValueMedia,
   detachAttributeValueMedia,
   updateVariableProduct,
+  addVariant,
 };
