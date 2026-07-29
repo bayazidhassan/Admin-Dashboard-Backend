@@ -570,6 +570,91 @@ const createVariableProduct = async (payload: {
   });
 };
 
+const updateVariant = async (
+  variantId: string,
+  payload: {
+    sku?: string;
+    price?: number;
+    salePrice?: number;
+    stock?: number;
+    lowStockThreshold?: number;
+    weight?: number;
+    active?: boolean;
+    attributeValueIds?: string[];
+  },
+) => {
+  const variant = await prisma.productVariant.findUnique({
+    where: {
+      id: variantId,
+    },
+  });
+
+  if (!variant) {
+    throw new AppError(404, 'Variant not found');
+  }
+
+  if (payload.sku) {
+    const existingSku = await prisma.productVariant.findFirst({
+      where: {
+        sku: payload.sku,
+        id: {
+          not: variantId,
+        },
+      },
+    });
+
+    if (existingSku) {
+      throw new AppError(409, 'SKU already exists');
+    }
+  }
+
+  if (payload.attributeValueIds) {
+    const values = await prisma.attributeValue.findMany({
+      where: {
+        id: {
+          in: payload.attributeValueIds,
+        },
+      },
+    });
+
+    if (values.length !== payload.attributeValueIds.length) {
+      throw new AppError(404, 'One or more attribute values not found');
+    }
+  }
+
+  return await prisma.productVariant.update({
+    where: {
+      id: variantId,
+    },
+    data: {
+      sku: payload.sku,
+      price: payload.price,
+      salePrice: payload.salePrice,
+      stock: payload.stock,
+      stockStatus:
+        payload.stock !== undefined ? getStockStatus(payload.stock) : undefined,
+      lowStockThreshold: payload.lowStockThreshold,
+      weight: payload.weight,
+      active: payload.active,
+
+      attributeValues: payload.attributeValueIds
+        ? {
+            set: payload.attributeValueIds.map((id) => ({
+              id,
+            })),
+          }
+        : undefined,
+    },
+    include: {
+      attributeValues: {
+        include: {
+          attribute: true,
+        },
+      },
+    },
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -577,4 +662,5 @@ export const ProductService = {
   updateProduct,
   deleteProduct,
   createVariableProduct,
+  updateVariant,
 };
