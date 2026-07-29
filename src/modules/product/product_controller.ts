@@ -210,6 +210,21 @@ const attachAttributeValueMedia = catchAsync(async (req, res) => {
   });
 });
 
+const detachAttributeValueMedia = catchAsync(async (req, res) => {
+  const result = await ProductService.detachAttributeValueMedia(
+    req.params.valueId as string,
+    req.params.mediaId as string,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Media detached from attribute value successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -226,4 +241,5 @@ export const ProductController = {
   detachVariantMedia,
   reorderProductMedia,
   attachAttributeValueMedia,
+  detachAttributeValueMedia,
 };
