@@ -52,12 +52,36 @@ router.post(
   ProductController.attachProductMedia,
 );
 
+router.patch(
+  '/:id/media/reorder',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(reorderProductMediaValidationSchema),
+  ProductController.reorderProductMedia,
+);
+
 router.delete(
   '/:id/media/:mediaId',
   authenticate,
   authorize('product:update'),
   validateRequest(detachProductMediaValidationSchema),
   ProductController.detachProductMedia,
+);
+
+router.post(
+  '/variants/:variantId/media',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(attachVariantMediaValidationSchema),
+  ProductController.attachVariantMedia,
+);
+
+router.delete(
+  '/variants/:variantId/media/:mediaId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(detachVariantMediaValidationSchema),
+  ProductController.detachVariantMedia,
 );
 
 router.get(
@@ -81,30 +105,6 @@ router.patch(
   authorize('product:update'),
   validateRequest(updateVariantValidationSchema),
   ProductController.updateVariant,
-);
-
-router.post(
-  '/variants/:variantId/media',
-  authenticate,
-  authorize('product:update'),
-  validateRequest(attachVariantMediaValidationSchema),
-  ProductController.attachVariantMedia,
-);
-
-router.delete(
-  '/variants/:variantId/media/:mediaId',
-  authenticate,
-  authorize('product:update'),
-  validateRequest(detachVariantMediaValidationSchema),
-  ProductController.detachVariantMedia,
-);
-
-router.patch(
-  '/:id/media/reorder',
-  authenticate,
-  authorize('product:update'),
-  validateRequest(reorderProductMediaValidationSchema),
-  ProductController.reorderProductMedia,
 );
 
 router.patch(
