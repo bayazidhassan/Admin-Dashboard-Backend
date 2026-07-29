@@ -1035,6 +1035,69 @@ const detachVariantMedia = async (variantId: string, mediaId: string) => {
   });
 };
 
+const reorderProductMedia = async (
+  productId: string,
+  payload: {
+    items: {
+      mediaId: string;
+      sortOrder: number;
+    }[];
+  },
+) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+  });
+
+  if (!product) {
+    throw new AppError(404, 'Product not found');
+  }
+
+  await prisma.$transaction(async (tx) => {
+    for (const item of payload.items) {
+      const attachment = await tx.productMedia.findFirst({
+        where: {
+          productId,
+          mediaId: item.mediaId,
+        },
+      });
+
+      if (!attachment) {
+        throw new AppError(
+          404,
+          `Media ${item.mediaId} is not attached to this product`,
+        );
+      }
+
+      await tx.productMedia.update({
+        where: {
+          id: attachment.id,
+        },
+        data: {
+          sortOrder: item.sortOrder,
+        },
+      });
+    }
+  });
+
+  return await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+    include: {
+      mediaAttachments: {
+        orderBy: {
+          sortOrder: 'asc',
+        },
+        include: {
+          media: true,
+        },
+      },
+    },
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -1049,4 +1112,5 @@ export const ProductService = {
   detachProductMedia,
   attachVariantMedia,
   detachVariantMedia,
+  reorderProductMedia,
 };
