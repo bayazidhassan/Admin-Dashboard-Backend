@@ -180,6 +180,21 @@ const detachVariantMedia = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const reorderProductMedia = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.reorderProductMedia(
+    req.params.id as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Product media reordered successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -194,4 +209,5 @@ export const ProductController = {
   detachProductMedia,
   attachVariantMedia,
   detachVariantMedia,
+  reorderProductMedia,
 };
