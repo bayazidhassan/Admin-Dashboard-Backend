@@ -5,6 +5,7 @@ import authorize from '../../middlewares/authorize';
 import validateRequest from '../../middlewares/validateRequest';
 import { ProductController } from './product_controller';
 import {
+  attachProductMediaValidationSchema,
   createProductValidationSchema,
   createVariableProductValidationSchema,
   getProductByIdValidationSchema,
@@ -51,6 +52,14 @@ router.delete(
   authorize('product:delete'),
   validateRequest(updateVariantValidationSchema.pick({ params: true })),
   ProductController.deleteVariant,
+);
+
+router.post(
+  '/:id/media',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(attachProductMediaValidationSchema),
+  ProductController.attachProductMedia,
 );
 
 router.get(
