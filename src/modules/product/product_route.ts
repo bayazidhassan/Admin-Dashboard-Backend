@@ -6,6 +6,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { ProductController } from './product_controller';
 import {
   createProductValidationSchema,
+  createVariableProductValidationSchema,
   getProductByIdValidationSchema,
   updateProductValidationSchema,
 } from './product_validation';
@@ -25,6 +26,14 @@ router.get(
   authenticate,
   authorize('product:read'),
   ProductController.getProducts,
+);
+
+router.post(
+  '/variable',
+  authenticate,
+  authorize('product:create'),
+  validateRequest(createVariableProductValidationSchema),
+  ProductController.createVariableProduct,
 );
 
 router.get(
