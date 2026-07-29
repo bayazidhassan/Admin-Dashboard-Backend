@@ -161,3 +161,19 @@ export const generateVariantsValidationSchema = z.object({
       .min(1),
   }),
 });
+
+export const attachProductMediaValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+
+  body: z.object({
+    mediaId: z.string().min(1),
+
+    isThumbnail: z.boolean().optional(),
+
+    isGallery: z.boolean().optional(),
+
+    sortOrder: z.number().int().optional(),
+  }),
+});
