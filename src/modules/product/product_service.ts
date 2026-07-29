@@ -909,6 +909,87 @@ const detachProductMedia = async (productId: string, mediaId: string) => {
   });
 };
 
+const attachVariantMedia = async (
+  variantId: string,
+  payload: {
+    mediaId: string;
+    isThumbnail?: boolean;
+    isGallery?: boolean;
+    sortOrder?: number;
+  },
+) => {
+  const variant = await prisma.productVariant.findUnique({
+    where: {
+      id: variantId,
+    },
+  });
+
+  if (!variant) {
+    throw new AppError(404, 'Variant not found');
+  }
+
+  const media = await prisma.media.findUnique({
+    where: {
+      id: payload.mediaId,
+    },
+  });
+
+  if (!media) {
+    throw new AppError(404, 'Media not found');
+  }
+
+  const existingAttachment = await prisma.productMedia.findFirst({
+    where: {
+      variantId,
+      mediaId: payload.mediaId,
+    },
+  });
+
+  if (existingAttachment) {
+    throw new AppError(409, 'Media is already attached to this variant');
+  }
+
+  return await prisma.$transaction(async (tx) => {
+    if (payload.isThumbnail) {
+      await tx.productMedia.updateMany({
+        where: {
+          variantId,
+          isThumbnail: true,
+        },
+        data: {
+          isThumbnail: false,
+        },
+      });
+    }
+
+    await tx.productMedia.create({
+      data: {
+        variantId,
+        mediaId: payload.mediaId,
+        isThumbnail: payload.isThumbnail ?? false,
+        isGallery: payload.isGallery ?? true,
+        sortOrder: payload.sortOrder ?? 0,
+      },
+    });
+
+    return await tx.productVariant.findUnique({
+      where: {
+        id: variantId,
+      },
+      include: {
+        mediaAttachments: {
+          orderBy: {
+            sortOrder: 'asc',
+          },
+          include: {
+            media: true,
+          },
+        },
+      },
+    });
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -921,4 +1002,5 @@ export const ProductService = {
   generateVariants,
   attachProductMedia,
   detachProductMedia,
+  attachVariantMedia,
 };
