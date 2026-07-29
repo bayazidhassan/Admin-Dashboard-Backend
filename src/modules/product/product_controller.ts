@@ -225,6 +225,21 @@ const detachAttributeValueMedia = catchAsync(async (req, res) => {
   });
 });
 
+const updateVariableProduct = catchAsync(async (req, res) => {
+  const result = await ProductService.updateVariableProduct(
+    req.params.id as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Variable product updated successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -242,4 +257,5 @@ export const ProductController = {
   reorderProductMedia,
   attachAttributeValueMedia,
   detachAttributeValueMedia,
+  updateVariableProduct,
 };
