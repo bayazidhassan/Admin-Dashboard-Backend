@@ -195,6 +195,21 @@ const reorderProductMedia = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const attachAttributeValueMedia = catchAsync(async (req, res) => {
+  const result = await ProductService.attachAttributeValueMedia(
+    req.params.valueId as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Media attached to attribute value successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -210,4 +225,5 @@ export const ProductController = {
   attachVariantMedia,
   detachVariantMedia,
   reorderProductMedia,
+  attachAttributeValueMedia,
 };
