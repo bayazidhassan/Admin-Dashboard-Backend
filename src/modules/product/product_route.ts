@@ -13,6 +13,7 @@ import {
   detachVariantMediaValidationSchema,
   generateVariantsValidationSchema,
   getProductByIdValidationSchema,
+  reorderProductMediaValidationSchema,
   updateProductValidationSchema,
   updateVariantValidationSchema,
 } from './product_validation';
@@ -96,6 +97,14 @@ router.delete(
   authorize('product:update'),
   validateRequest(detachVariantMediaValidationSchema),
   ProductController.detachVariantMedia,
+);
+
+router.patch(
+  '/:id/media/reorder',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(reorderProductMediaValidationSchema),
+  ProductController.reorderProductMedia,
 );
 
 router.patch(
