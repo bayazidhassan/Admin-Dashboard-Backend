@@ -394,10 +394,187 @@ const deleteProduct = async (id: string) => {
   return null;
 };
 
+const createVariableProduct = async (payload: {
+  name: string;
+  slug: string;
+  hasVariants: true;
+  shortDescription?: string;
+  longDescription?: string;
+  weight?: number;
+  active?: boolean;
+  featured?: boolean;
+  sortOrder?: number;
+  brandId?: string;
+  categoryIds: string[];
+  variants: {
+    sku: string;
+    price: number;
+    salePrice?: number;
+    stock: number;
+    lowStockThreshold?: number;
+    weight?: number;
+    active?: boolean;
+    attributeValueIds: string[];
+  }[];
+}) => {
+  return await prisma.$transaction(async (tx) => {
+    // Check duplicate product slug
+    const existingProduct = await tx.product.findUnique({
+      where: {
+        slug: payload.slug,
+      },
+    });
+
+    if (existingProduct) {
+      throw new AppError(409, 'Product slug already exists');
+    }
+
+    // Check duplicate SKUs inside request
+    const skuSet = new Set<string>();
+
+    for (const variant of payload.variants) {
+      if (skuSet.has(variant.sku)) {
+        throw new AppError(409, `Duplicate SKU: ${variant.sku}`);
+      }
+
+      skuSet.add(variant.sku);
+    }
+
+    // Check existing SKUs in database
+    const existingSkus = await tx.productVariant.findMany({
+      where: {
+        sku: {
+          in: payload.variants.map((v) => v.sku),
+        },
+      },
+      select: {
+        sku: true,
+      },
+    });
+
+    if (existingSkus.length) {
+      throw new AppError(409, `SKU already exists: ${existingSkus[0].sku}`);
+    }
+
+    // Validate brand
+    if (payload.brandId) {
+      const brand = await tx.brand.findUnique({
+        where: {
+          id: payload.brandId,
+        },
+      });
+
+      if (!brand) {
+        throw new AppError(404, 'Brand not found');
+      }
+    }
+
+    // Validate categories
+    if (payload.categoryIds.length) {
+      const categories = await tx.category.findMany({
+        where: {
+          id: {
+            in: payload.categoryIds,
+          },
+        },
+      });
+
+      if (categories.length !== payload.categoryIds.length) {
+        throw new AppError(404, 'One or more categories not found');
+      }
+    }
+
+    // Create product
+    const product = await tx.product.create({
+      data: {
+        name: payload.name,
+        slug: payload.slug,
+        hasVariants: true,
+        shortDescription: payload.shortDescription,
+        longDescription: payload.longDescription,
+        weight: payload.weight,
+        active: payload.active,
+        featured: payload.featured,
+        sortOrder: payload.sortOrder,
+
+        brand: payload.brandId
+          ? {
+              connect: {
+                id: payload.brandId,
+              },
+            }
+          : undefined,
+
+        categories: {
+          connect: payload.categoryIds.map((id) => ({
+            id,
+          })),
+        },
+      },
+    });
+
+    // Create variants
+    for (const variant of payload.variants) {
+      // Validate attribute values
+      const attributeValues = await tx.attributeValue.findMany({
+        where: {
+          id: {
+            in: variant.attributeValueIds,
+          },
+        },
+      });
+
+      if (attributeValues.length !== variant.attributeValueIds.length) {
+        throw new AppError(404, 'One or more attribute values not found');
+      }
+
+      await tx.productVariant.create({
+        data: {
+          productId: product.id,
+          sku: variant.sku,
+          price: variant.price,
+          salePrice: variant.salePrice,
+          stock: variant.stock,
+          stockStatus: getStockStatus(variant.stock),
+          lowStockThreshold: variant.lowStockThreshold,
+          weight: variant.weight,
+          active: variant.active,
+
+          attributeValues: {
+            connect: variant.attributeValueIds.map((id) => ({
+              id,
+            })),
+          },
+        },
+      });
+    }
+
+    return await tx.product.findUnique({
+      where: {
+        id: product.id,
+      },
+      include: {
+        brand: true,
+        categories: true,
+        variants: {
+          include: {
+            attributeValues: {
+              include: {
+                attribute: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
   getProductById,
   updateProduct,
   deleteProduct,
+  createVariableProduct,
 };
