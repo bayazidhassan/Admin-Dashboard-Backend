@@ -184,3 +184,19 @@ export const detachProductMediaValidationSchema = z.object({
     mediaId: z.string().min(1),
   }),
 });
+
+export const attachVariantMediaValidationSchema = z.object({
+  params: z.object({
+    variantId: z.string().min(1),
+  }),
+
+  body: z.object({
+    mediaId: z.string().min(1),
+
+    isThumbnail: z.boolean().optional(),
+
+    isGallery: z.boolean().optional(),
+
+    sortOrder: z.number().int().optional(),
+  }),
+});
