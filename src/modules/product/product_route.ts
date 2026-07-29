@@ -6,6 +6,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { ProductController } from './product_controller';
 import {
   attachProductMediaValidationSchema,
+  attachVariantMediaValidationSchema,
   createProductValidationSchema,
   createVariableProductValidationSchema,
   detachProductMediaValidationSchema,
@@ -78,6 +79,14 @@ router.patch(
   authorize('product:update'),
   validateRequest(updateVariantValidationSchema),
   ProductController.updateVariant,
+);
+
+router.post(
+  '/variants/:variantId/media',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(attachVariantMediaValidationSchema),
+  ProductController.attachVariantMedia,
 );
 
 router.patch(
