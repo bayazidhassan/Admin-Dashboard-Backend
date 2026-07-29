@@ -990,6 +990,51 @@ const attachVariantMedia = async (
   });
 };
 
+const detachVariantMedia = async (variantId: string, mediaId: string) => {
+  const variant = await prisma.productVariant.findUnique({
+    where: {
+      id: variantId,
+    },
+  });
+
+  if (!variant) {
+    throw new AppError(404, 'Variant not found');
+  }
+
+  const attachment = await prisma.productMedia.findFirst({
+    where: {
+      variantId,
+      mediaId,
+    },
+  });
+
+  if (!attachment) {
+    throw new AppError(404, 'Media is not attached to this variant');
+  }
+
+  await prisma.productMedia.delete({
+    where: {
+      id: attachment.id,
+    },
+  });
+
+  return await prisma.productVariant.findUnique({
+    where: {
+      id: variantId,
+    },
+    include: {
+      mediaAttachments: {
+        orderBy: {
+          sortOrder: 'asc',
+        },
+        include: {
+          media: true,
+        },
+      },
+    },
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
@@ -1003,4 +1048,5 @@ export const ProductService = {
   attachProductMedia,
   detachProductMedia,
   attachVariantMedia,
+  detachVariantMedia,
 };
