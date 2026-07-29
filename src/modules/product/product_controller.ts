@@ -150,6 +150,21 @@ const detachProductMedia = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const attachVariantMedia = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.attachVariantMedia(
+    req.params.variantId as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Media attached to variant successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -162,4 +177,5 @@ export const ProductController = {
   generateVariants,
   attachProductMedia,
   detachProductMedia,
+  attachVariantMedia,
 };
