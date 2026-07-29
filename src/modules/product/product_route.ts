@@ -16,4 +16,11 @@ router.post(
   ProductController.createProduct,
 );
 
+router.get(
+  '/',
+  authenticate,
+  authorize('product:read'),
+  ProductController.getProducts,
+);
+
 export const ProductRoutes = router;
