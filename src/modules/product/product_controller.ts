@@ -108,6 +108,21 @@ const deleteVariant = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const attachProductMedia = catchAsync(async (req: Request, res: Response) => {
+  const result = await ProductService.attachProductMedia(
+    req.params.id as string,
+    req.body,
+  );
+
+  sendResponse({
+    res,
+    statusCode: 200,
+    success: true,
+    message: 'Media attached to product successfully',
+    data: result,
+  });
+});
+
 export const ProductController = {
   createProduct,
   getProducts,
@@ -117,4 +132,5 @@ export const ProductController = {
   createVariableProduct,
   updateVariant,
   deleteVariant,
+  attachProductMedia,
 };
