@@ -244,8 +244,135 @@ const getProductById = async (id: string) => {
   return product;
 };
 
+const updateProduct = async (
+  id: string,
+  payload: {
+    name?: string;
+    slug?: string;
+    sku?: string;
+    shortDescription?: string;
+    longDescription?: string;
+    price?: number;
+    salePrice?: number;
+    stock?: number;
+    weight?: number;
+    active?: boolean;
+    featured?: boolean;
+    sortOrder?: number;
+    brandId?: string | null;
+    categoryIds?: string[];
+  },
+) => {
+  const product = await prisma.product.findUnique({
+    where: { id },
+  });
+
+  if (!product) {
+    throw new AppError(404, 'Product not found');
+  }
+
+  if (product.hasVariants) {
+    throw new AppError(400, 'Use the variant endpoints for variable products');
+  }
+
+  if (payload.slug || payload.sku) {
+    const exists = await prisma.product.findFirst({
+      where: {
+        id: {
+          not: id,
+        },
+        OR: [
+          ...(payload.slug ? [{ slug: payload.slug }] : []),
+          ...(payload.sku ? [{ sku: payload.sku }] : []),
+        ],
+      },
+    });
+
+    if (exists) {
+      throw new AppError(409, 'Slug or SKU already exists');
+    }
+  }
+
+  if (payload.brandId) {
+    const brand = await prisma.brand.findUnique({
+      where: {
+        id: payload.brandId,
+      },
+    });
+
+    if (!brand) {
+      throw new AppError(404, 'Brand not found');
+    }
+  }
+
+  if (payload.categoryIds) {
+    const categories = await prisma.category.findMany({
+      where: {
+        id: {
+          in: payload.categoryIds,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (categories.length !== payload.categoryIds.length) {
+      throw new AppError(404, 'One or more categories not found');
+    }
+  }
+
+  return await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      name: payload.name,
+      slug: payload.slug,
+      sku: payload.sku,
+      shortDescription: payload.shortDescription,
+      longDescription: payload.longDescription,
+      price: payload.price,
+      salePrice: payload.salePrice,
+      stock: payload.stock,
+      stockStatus:
+        payload.stock !== undefined ? getStockStatus(payload.stock) : undefined,
+      weight: payload.weight,
+      active: payload.active,
+      featured: payload.featured,
+      sortOrder: payload.sortOrder,
+
+      brand:
+        payload.brandId === undefined
+          ? undefined
+          : payload.brandId === null
+            ? {
+                disconnect: true,
+              }
+            : {
+                connect: {
+                  id: payload.brandId,
+                },
+              },
+
+      categories: payload.categoryIds
+        ? {
+            set: payload.categoryIds.map((id) => ({
+              id,
+            })),
+          }
+        : undefined,
+    },
+    include: {
+      brand: true,
+      categories: true,
+    },
+  });
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
   getProductById,
+  updateProduct,
 };
