@@ -8,6 +8,7 @@ import {
   attachProductMediaValidationSchema,
   createProductValidationSchema,
   createVariableProductValidationSchema,
+  generateVariantsValidationSchema,
   getProductByIdValidationSchema,
   updateProductValidationSchema,
   updateVariantValidationSchema,
@@ -23,13 +24,6 @@ router.post(
   ProductController.createProduct,
 );
 
-router.get(
-  '/',
-  authenticate,
-  authorize('product:read'),
-  ProductController.getProducts,
-);
-
 router.post(
   '/variable',
   authenticate,
@@ -38,20 +32,12 @@ router.post(
   ProductController.createVariableProduct,
 );
 
-router.patch(
-  '/variants/:variantId',
+router.post(
+  '/generate-variants',
   authenticate,
-  authorize('product:update'),
-  validateRequest(updateVariantValidationSchema),
-  ProductController.updateVariant,
-);
-
-router.delete(
-  '/variants/:variantId',
-  authenticate,
-  authorize('product:delete'),
-  validateRequest(updateVariantValidationSchema.pick({ params: true })),
-  ProductController.deleteVariant,
+  authorize('product:create'),
+  validateRequest(generateVariantsValidationSchema),
+  ProductController.generateVariants,
 );
 
 router.post(
@@ -63,6 +49,13 @@ router.post(
 );
 
 router.get(
+  '/',
+  authenticate,
+  authorize('product:read'),
+  ProductController.getProducts,
+);
+
+router.get(
   '/:id',
   authenticate,
   authorize('product:read'),
@@ -71,11 +64,27 @@ router.get(
 );
 
 router.patch(
+  '/variants/:variantId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(updateVariantValidationSchema),
+  ProductController.updateVariant,
+);
+
+router.patch(
   '/:id',
   authenticate,
   authorize('product:update'),
   validateRequest(updateProductValidationSchema),
   ProductController.updateProduct,
+);
+
+router.delete(
+  '/variants/:variantId',
+  authenticate,
+  authorize('product:delete'),
+  validateRequest(updateVariantValidationSchema.pick({ params: true })),
+  ProductController.deleteVariant,
 );
 
 router.delete(
