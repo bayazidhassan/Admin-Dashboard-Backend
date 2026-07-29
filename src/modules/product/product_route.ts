@@ -8,6 +8,7 @@ import {
   attachProductMediaValidationSchema,
   createProductValidationSchema,
   createVariableProductValidationSchema,
+  detachProductMediaValidationSchema,
   generateVariantsValidationSchema,
   getProductByIdValidationSchema,
   updateProductValidationSchema,
@@ -46,6 +47,14 @@ router.post(
   authorize('product:update'),
   validateRequest(attachProductMediaValidationSchema),
   ProductController.attachProductMedia,
+);
+
+router.delete(
+  '/:id/media/:mediaId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(detachProductMediaValidationSchema),
+  ProductController.detachProductMedia,
 );
 
 router.get(
