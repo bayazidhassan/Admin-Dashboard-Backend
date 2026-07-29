@@ -4,7 +4,10 @@ import authenticate from '../../middlewares/authenticate';
 import authorize from '../../middlewares/authorize';
 import validateRequest from '../../middlewares/validateRequest';
 import { ProductController } from './product_controller';
-import { createProductValidationSchema } from './product_validation';
+import {
+  createProductValidationSchema,
+  getProductByIdValidationSchema,
+} from './product_validation';
 
 const router = Router();
 
@@ -21,6 +24,14 @@ router.get(
   authenticate,
   authorize('product:read'),
   ProductController.getProducts,
+);
+
+router.get(
+  '/:id',
+  authenticate,
+  authorize('product:read'),
+  validateRequest(getProductByIdValidationSchema),
+  ProductController.getProductById,
 );
 
 export const ProductRoutes = router;
