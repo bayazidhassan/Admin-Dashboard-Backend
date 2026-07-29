@@ -10,6 +10,7 @@ import {
   attachVariantMediaValidationSchema,
   createProductValidationSchema,
   createVariableProductValidationSchema,
+  detachAttributeValueMediaValidationSchema,
   detachProductMediaValidationSchema,
   detachVariantMediaValidationSchema,
   generateVariantsValidationSchema,
@@ -114,6 +115,14 @@ router.post(
   authorize('product:update'),
   validateRequest(attachAttributeValueMediaValidationSchema),
   ProductController.attachAttributeValueMedia,
+);
+
+router.delete(
+  '/attribute-values/:valueId/media/:mediaId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(detachAttributeValueMediaValidationSchema),
+  ProductController.detachAttributeValueMedia,
 );
 
 router.patch(
