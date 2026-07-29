@@ -7,6 +7,7 @@ import { ProductController } from './product_controller';
 import {
   createProductValidationSchema,
   getProductByIdValidationSchema,
+  updateProductValidationSchema,
 } from './product_validation';
 
 const router = Router();
@@ -32,6 +33,14 @@ router.get(
   authorize('product:read'),
   validateRequest(getProductByIdValidationSchema),
   ProductController.getProductById,
+);
+
+router.patch(
+  '/:id',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(updateProductValidationSchema),
+  ProductController.updateProduct,
 );
 
 export const ProductRoutes = router;
