@@ -9,6 +9,7 @@ import {
   createVariableProductValidationSchema,
   getProductByIdValidationSchema,
   updateProductValidationSchema,
+  updateVariantValidationSchema,
 } from './product_validation';
 
 const router = Router();
@@ -34,6 +35,14 @@ router.post(
   authorize('product:create'),
   validateRequest(createVariableProductValidationSchema),
   ProductController.createVariableProduct,
+);
+
+router.patch(
+  '/variants/:variantId',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(updateVariantValidationSchema),
+  ProductController.updateVariant,
 );
 
 router.get(
