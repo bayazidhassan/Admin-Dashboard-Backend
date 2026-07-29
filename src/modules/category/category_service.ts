@@ -254,6 +254,26 @@ const deleteCategory = async (id: string) => {
     );
   }
 
+  const productUsingCategory = await prisma.product.findFirst({
+    where: {
+      categories: {
+        some: {
+          id,
+        },
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (productUsingCategory) {
+    throw new AppError(
+      409,
+      'Cannot delete category because it is assigned to one or more products',
+    );
+  }
+
   await prisma.category.delete({
     where: {
       id,
