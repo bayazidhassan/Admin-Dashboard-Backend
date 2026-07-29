@@ -17,6 +17,7 @@ import {
   getProductByIdValidationSchema,
   reorderProductMediaValidationSchema,
   updateProductValidationSchema,
+  updateVariableProductValidationSchema,
   updateVariantValidationSchema,
 } from './product_validation';
 
@@ -123,6 +124,14 @@ router.delete(
   authorize('product:update'),
   validateRequest(detachAttributeValueMediaValidationSchema),
   ProductController.detachAttributeValueMedia,
+);
+
+router.patch(
+  '/variable/:id',
+  authenticate,
+  authorize('product:update'),
+  validateRequest(updateVariableProductValidationSchema),
+  ProductController.updateVariableProduct,
 );
 
 router.patch(
