@@ -33,3 +33,9 @@ export const createProductValidationSchema = z.object({
     categoryIds: z.array(z.string()).default([]),
   }),
 });
+
+export const getProductByIdValidationSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'Product ID is required'),
+  }),
+});
