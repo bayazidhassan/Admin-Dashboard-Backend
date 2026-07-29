@@ -67,10 +67,25 @@ const deleteProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const createVariableProduct = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await ProductService.createVariableProduct(req.body);
+
+    sendResponse({
+      res,
+      statusCode: 201,
+      success: true,
+      message: 'Variable product created successfully',
+      data: result,
+    });
+  },
+);
+
 export const ProductController = {
   createProduct,
   getProducts,
   getProductById,
   updateProduct,
   deleteProduct,
+  createVariableProduct,
 };
