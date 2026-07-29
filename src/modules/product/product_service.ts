@@ -197,7 +197,55 @@ const getProducts = async (query: Record<string, unknown>) => {
   };
 };
 
+const getProductById = async (id: string) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      brand: true,
+
+      categories: true,
+
+      mediaAttachments: {
+        include: {
+          media: true,
+        },
+        orderBy: {
+          sortOrder: 'asc',
+        },
+      },
+
+      variants: {
+        include: {
+          attributeValues: {
+            include: {
+              attribute: true,
+            },
+          },
+
+          mediaAttachments: {
+            include: {
+              media: true,
+            },
+            orderBy: {
+              sortOrder: 'asc',
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!product) {
+    throw new AppError(404, 'Product not found');
+  }
+
+  return product;
+};
+
 export const ProductService = {
   createProduct,
   getProducts,
+  getProductById,
 };
