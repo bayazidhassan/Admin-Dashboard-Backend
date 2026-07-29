@@ -111,6 +111,93 @@ const createProduct = async (payload: {
   return product;
 };
 
+const getProducts = async (query: Record<string, unknown>) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const where: any = {};
+
+  if (query.search) {
+    where.OR = [
+      {
+        name: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+      {
+        slug: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+      {
+        sku: {
+          contains: String(query.search),
+          mode: 'insensitive',
+        },
+      },
+    ];
+  }
+
+  if (query.brandId) {
+    where.brandId = String(query.brandId);
+  }
+
+  if (query.categoryId) {
+    where.categories = {
+      some: {
+        id: String(query.categoryId),
+      },
+    };
+  }
+
+  if (query.active !== undefined) {
+    where.active = query.active === 'true';
+  }
+
+  if (query.featured !== undefined) {
+    where.featured = query.featured === 'true';
+  }
+
+  if (query.stockStatus) {
+    where.stockStatus = String(query.stockStatus);
+  }
+
+  const [items, total] = await prisma.$transaction([
+    prisma.product.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        brand: true,
+        categories: true,
+        _count: {
+          select: {
+            variants: true,
+          },
+        },
+      },
+    }),
+
+    prisma.product.count({
+      where,
+    }),
+  ]);
+
+  return {
+    items,
+    total,
+    page,
+    limit,
+  };
+};
+
 export const ProductService = {
   createProduct,
+  getProducts,
 };
