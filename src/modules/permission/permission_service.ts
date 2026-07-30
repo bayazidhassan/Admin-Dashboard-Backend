@@ -134,6 +134,25 @@ const updateGroup = async (
     }
 
     if (payload.removePermissionIds?.length) {
+      const roleCount = await tx.role.count({
+        where: {
+          permissions: {
+            some: {
+              id: {
+                in: payload.removePermissionIds,
+              },
+            },
+          },
+        },
+      });
+
+      if (roleCount > 0) {
+        throw new AppError(
+          409,
+          'Cannot remove permission because it is assigned to one or more roles',
+        );
+      }
+
       await tx.permission.deleteMany({
         where: {
           groupId: id,
@@ -169,9 +188,8 @@ const deleteGroup = async (id: string) => {
     throw new AppError(404, 'Group not found');
   }
 
-  const permissionIds = group.permissions.map((permission) => permission.id);
-
-  if (permissionIds.length > 0) {
+  if (group.permissions.length > 0) {
+    const permissionIds = group.permissions.map((permission) => permission.id);
     const roleCount = await prisma.role.count({
       where: {
         permissions: {
