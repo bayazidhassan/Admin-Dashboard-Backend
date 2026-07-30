@@ -14,7 +14,9 @@ export const createUserValidationSchema = z.object({
 
     avatar: z.string().optional(),
 
-    roleId: z.string().min(1, 'Role is required'),
+    roleId: z.cuid2({
+      error: 'Invalid role ID',
+    }),
   }),
 });
 
@@ -45,7 +47,11 @@ export const updateUserValidationSchema = z.object({
 
     active: z.boolean().optional(),
 
-    roleId: z.string().min(1).optional(),
+    roleId: z
+      .cuid2({
+        error: 'Invalid role ID',
+      })
+      .optional(),
   }),
 });
 
