@@ -38,7 +38,7 @@ router.get(
 router.patch(
   '/:id',
   authenticate,
-  authorize('media:update'),
+  authorize('media:write'),
   validateRequest(updateMediaMetadataValidationSchema),
   MediaController.updateMediaMetadata,
 );
