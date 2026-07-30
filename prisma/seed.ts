@@ -96,9 +96,21 @@ async function main() {
     },
   });
 
+  const adminRoleWithPermissions = await prisma.role.findUnique({
+    where: {
+      id: adminRole.id,
+    },
+    include: {
+      permissions: true,
+    },
+  });
+
   console.log('✅ Database seeded successfully!');
   console.log(`Groups Created: ${PERMISSION_GROUPS.length}`);
   console.log(`Permissions Created: ${allPermissions.length}`);
+  console.log(
+    `Permissions Assigned: ${adminRoleWithPermissions?.permissions.length ?? 0}`,
+  );
   console.log('Admin Role Created/Updated');
   console.log(`Admin Email: ${email}`);
   console.log(`Admin Password: ${password}`);
