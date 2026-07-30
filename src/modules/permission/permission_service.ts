@@ -181,9 +181,31 @@ const deletePermission = async (id: string) => {
   return null;
 };
 
+const getGroupById = async (id: string) => {
+  const group = await prisma.group.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      permissions: {
+        orderBy: {
+          name: 'asc',
+        },
+      },
+    },
+  });
+
+  if (!group) {
+    throw new AppError(404, 'Permission group not found');
+  }
+
+  return group;
+};
+
 export const PermissionService = {
   createGroup,
   getGroups,
   updateGroup,
   deletePermission,
+  getGroupById,
 };

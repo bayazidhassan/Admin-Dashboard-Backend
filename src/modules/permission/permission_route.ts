@@ -6,6 +6,7 @@ import { PermissionController } from './permission_controller';
 import {
   createGroupValidationSchema,
   deletePermissionValidationSchema,
+  getGroupByIdValidationSchema,
   updateGroupValidationSchema,
 } from './permission_validation';
 
@@ -23,6 +24,13 @@ router.get(
   authenticate,
   authorize('permission:read'),
   PermissionController.getGroups,
+);
+router.get(
+  '/groups/:id',
+  authenticate,
+  authorize('permission:read'),
+  validateRequest(getGroupByIdValidationSchema),
+  PermissionController.getGroupById,
 );
 router.patch(
   '/groups/:id',
