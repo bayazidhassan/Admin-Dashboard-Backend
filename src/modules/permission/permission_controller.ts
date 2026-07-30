@@ -42,10 +42,10 @@ const updateGroup = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deletePermission = catchAsync(async (req: Request, res: Response) => {
+const deleteGroup = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  await PermissionService.deletePermission(id as string);
+  await PermissionService.deleteGroup(id as string);
 
   sendResponse({
     res,
@@ -72,6 +72,6 @@ export const PermissionController = {
   createGroup,
   getGroups,
   updateGroup,
-  deletePermission,
+  deleteGroup,
   getGroupById,
 };

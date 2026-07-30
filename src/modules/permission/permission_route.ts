@@ -5,7 +5,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { PermissionController } from './permission_controller';
 import {
   createGroupValidationSchema,
-  deletePermissionValidationSchema,
+  deleteGroupValidationSchema,
   getGroupByIdValidationSchema,
   updateGroupValidationSchema,
 } from './permission_validation';
@@ -43,8 +43,8 @@ router.delete(
   '/groups/:id',
   authenticate,
   authorize('permission:delete'),
-  validateRequest(deletePermissionValidationSchema),
-  PermissionController.deletePermission,
+  validateRequest(deleteGroupValidationSchema),
+  PermissionController.deleteGroup,
 );
 
 export const PermissionRoutes = router;

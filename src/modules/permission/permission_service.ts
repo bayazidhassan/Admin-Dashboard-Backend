@@ -153,7 +153,7 @@ const updateGroup = async (
   });
 };
 
-const deletePermission = async (id: string) => {
+const deleteGroup = async (id: string) => {
   const permission = await prisma.permission.findUnique({
     where: { id },
   });
@@ -211,6 +211,6 @@ export const PermissionService = {
   createGroup,
   getGroups,
   updateGroup,
-  deletePermission,
+  deleteGroup,
   getGroupById,
 };

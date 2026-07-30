@@ -19,7 +19,7 @@ export const updateGroupValidationSchema = z.object({
   }),
 });
 
-export const deletePermissionValidationSchema = z.object({
+export const deleteGroupValidationSchema = z.object({
   params: z.object({
     id: z.string().min(1, 'ID is required'),
   }),
