@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import path from 'path';
 import globalErrorHandler from './middlewares/globalErrorHandler';
+import notFoundRoute from './middlewares/notFoundRoute';
 import router from './routes';
 
 const app = express();
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
+app.use(notFoundRoute);
 app.use(globalErrorHandler);
 
 export default app;
