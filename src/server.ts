@@ -11,11 +11,7 @@ const startServer = async () => {
     await prisma.$connect();
     console.log('✅ PostgreSQL connected');
 
-    app.listen(PORT, () =>
-      console.log(
-        `Admin Dashboard server is running on port ${process.env.PORT}`,
-      ),
-    );
+    app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));
   } catch (error) {
     console.error('❌ Failed to start server: ', error);
     process.exit(1);
