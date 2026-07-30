@@ -15,7 +15,7 @@ const router = Router();
 router.post(
   '/upload',
   authenticate,
-  authorize('media:create'),
+  authorize('media:upload'),
   upload.array('files', 10),
   MediaController.uploadMedia,
 );
