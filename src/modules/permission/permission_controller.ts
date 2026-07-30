@@ -51,7 +51,7 @@ const deleteGroup = catchAsync(async (req: Request, res: Response) => {
     res,
     statusCode: 200,
     success: true,
-    message: 'Permission deleted successfully',
+    message: 'Group deleted successfully',
     data: null,
   });
 });

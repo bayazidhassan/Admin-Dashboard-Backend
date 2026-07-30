@@ -154,33 +154,54 @@ const updateGroup = async (
 };
 
 const deleteGroup = async (id: string) => {
-  const permission = await prisma.permission.findUnique({
+  const group = await prisma.group.findUnique({
     where: { id },
-  });
-
-  if (!permission) {
-    throw new AppError(404, 'Permission not found');
-  }
-
-  const roleCount = await prisma.role.count({
-    where: {
+    include: {
       permissions: {
-        some: {
-          id,
+        select: {
+          id: true,
         },
       },
     },
   });
 
-  if (roleCount > 0) {
-    throw new AppError(
-      409,
-      'Cannot delete: permission is assigned to one or more roles',
-    );
+  if (!group) {
+    throw new AppError(404, 'Group not found');
   }
 
-  await prisma.permission.delete({
-    where: { id },
+  const permissionIds = group.permissions.map((permission) => permission.id);
+
+  if (permissionIds.length > 0) {
+    const roleCount = await prisma.role.count({
+      where: {
+        permissions: {
+          some: {
+            id: {
+              in: permissionIds,
+            },
+          },
+        },
+      },
+    });
+
+    if (roleCount > 0) {
+      throw new AppError(
+        409,
+        'Cannot delete group because one or more permissions are assigned to roles',
+      );
+    }
+
+    await prisma.permission.deleteMany({
+      where: {
+        groupId: id,
+      },
+    });
+  }
+
+  await prisma.group.delete({
+    where: {
+      id,
+    },
   });
 
   return null;
