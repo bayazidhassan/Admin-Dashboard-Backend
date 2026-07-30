@@ -1,5 +1,6 @@
 import 'dotenv/config';
 
+import { PERMISSION_GROUPS } from '../src/constants/permissions';
 import prisma from '../src/lib/prisma';
 import { hashPassword } from '../src/utils/hash';
 
@@ -11,14 +12,44 @@ async function main() {
     throw new Error('ADMIN_EMAIL and ADMIN_PASSWORD must be defined in .env');
   }
 
-  // Get all existing permissions
+  for (const group of PERMISSION_GROUPS) {
+    const createdGroup = await prisma.group.upsert({
+      where: {
+        name: group.name,
+      },
+      update: {
+        description: group.description,
+      },
+      create: {
+        name: group.name,
+        description: group.description,
+      },
+    });
+
+    for (const permission of group.permissions) {
+      await prisma.permission.upsert({
+        where: {
+          name: permission.name,
+        },
+        update: {
+          description: permission.description,
+          groupId: createdGroup.id,
+        },
+        create: {
+          name: permission.name,
+          description: permission.description,
+          groupId: createdGroup.id,
+        },
+      });
+    }
+  }
+
   const allPermissions = await prisma.permission.findMany({
     select: {
       id: true,
     },
   });
 
-  // Create or update Admin role
   const adminRole = await prisma.role.upsert({
     where: {
       name: 'admin',
@@ -46,12 +77,12 @@ async function main() {
 
   const hashedPassword = await hashPassword(password);
 
-  // Create or update Admin user
   await prisma.user.upsert({
     where: {
       email,
     },
     update: {
+      name: 'System Admin',
       password: hashedPassword,
       roleId: adminRole.id,
       active: true,
@@ -66,9 +97,11 @@ async function main() {
   });
 
   console.log('✅ Database seeded successfully!');
+  console.log(`Groups Created: ${PERMISSION_GROUPS.length}`);
+  console.log(`Permissions Created: ${allPermissions.length}`);
+  console.log('Admin Role Created/Updated');
   console.log(`Admin Email: ${email}`);
   console.log(`Admin Password: ${password}`);
-  console.log(`Permissions Assigned: ${allPermissions.length}`);
 }
 
 main()
