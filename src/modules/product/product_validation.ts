@@ -3,125 +3,77 @@ import { z } from 'zod';
 export const createProductValidationSchema = z.object({
   body: z.object({
     name: z.string().trim().min(1),
-
     slug: z.string().trim().min(1),
-
     sku: z.string().trim().min(1),
-
     shortDescription: z.string().trim().optional(),
-
     longDescription: z.string().trim().optional(),
-
     hasVariants: z.literal(false).optional(),
-
     price: z.number().positive(),
-
     salePrice: z.number().positive().optional(),
-
     stock: z.number().int().min(0),
-
     weight: z.number().positive().optional(),
-
     active: z.boolean().optional(),
-
     featured: z.boolean().optional(),
-
     sortOrder: z.number().int().optional(),
-
-    brandId: z.string().optional(),
-
-    categoryIds: z.array(z.string()).default([]),
+    brandId: z.cuid2({ error: 'Invalid brand ID' }).optional(),
+    categoryIds: z.array(z.cuid2({ error: 'Invalid category ID' })).default([]),
   }),
 });
 
 export const getProductByIdValidationSchema = z.object({
   params: z.object({
-    id: z.cuid2({
-      error: 'Invalid product ID',
-    }),
+    id: z.cuid2({ error: 'Invalid product ID' }),
   }),
 });
 
 export const updateProductValidationSchema = z.object({
   params: z.object({
-    id: z.cuid2({
-      error: 'Invalid product ID',
-    }),
+    id: z.cuid2({ error: 'Invalid product ID' }),
   }),
-
   body: z.object({
     name: z.string().trim().min(1).optional(),
-
     slug: z.string().trim().min(1).optional(),
-
     sku: z.string().trim().min(1).optional(),
-
     shortDescription: z.string().trim().optional(),
-
     longDescription: z.string().trim().optional(),
-
     price: z.number().positive().optional(),
-
     salePrice: z.number().positive().optional(),
-
     stock: z.number().int().min(0).optional(),
-
     weight: z.number().positive().optional(),
-
     active: z.boolean().optional(),
-
     featured: z.boolean().optional(),
-
     sortOrder: z.number().int().optional(),
-
-    brandId: z.string().nullable().optional(),
-
-    categoryIds: z.array(z.string()).optional(),
+    brandId: z.cuid2({ error: 'Invalid brand ID' }).nullable().optional(),
+    categoryIds: z.array(z.cuid2({ error: 'Invalid category ID' })).optional(),
   }),
 });
 
 export const createVariableProductValidationSchema = z.object({
   body: z.object({
     name: z.string().trim().min(1),
-
     slug: z.string().trim().min(1),
-
     hasVariants: z.literal(true),
-
     shortDescription: z.string().trim().optional(),
-
     longDescription: z.string().trim().optional(),
-
     weight: z.number().positive().optional(),
-
     active: z.boolean().optional(),
-
     featured: z.boolean().optional(),
-
     sortOrder: z.number().int().optional(),
-
-    brandId: z.string().optional(),
-
-    categoryIds: z.array(z.string()).default([]),
-
+    brandId: z.cuid2({ error: 'Invalid brand ID' }).optional(),
+    categoryIds: z.array(z.cuid2({ error: 'Invalid category ID' })).default([]),
     variants: z
       .array(
         z.object({
           sku: z.string().trim().min(1),
-
           price: z.number().positive(),
-
           salePrice: z.number().positive().optional(),
-
           stock: z.number().int().min(0),
-
           lowStockThreshold: z.number().int().min(0).optional(),
-
           weight: z.number().positive().optional(),
-
           active: z.boolean().optional(),
-
-          attributeValueIds: z.array(z.string()).min(1),
+          attributeValueIds: z
+            .array(z.cuid2({ error: 'Invalid attribute value ID' }))
+            .min(1),
         }),
       )
       .min(1),
@@ -130,27 +82,19 @@ export const createVariableProductValidationSchema = z.object({
 
 export const updateVariantValidationSchema = z.object({
   params: z.object({
-    variantId: z.cuid2({
-      error: 'Invalid variant ID',
-    }),
+    variantId: z.cuid2({ error: 'Invalid variant ID' }),
   }),
-
   body: z.object({
     sku: z.string().trim().min(1).optional(),
-
     price: z.number().positive().optional(),
-
     salePrice: z.number().positive().optional(),
-
     stock: z.number().int().min(0).optional(),
-
     lowStockThreshold: z.number().int().min(0).optional(),
-
     weight: z.number().positive().optional(),
-
     active: z.boolean().optional(),
-
-    attributeValueIds: z.array(z.string()).optional(),
+    attributeValueIds: z
+      .array(z.cuid2({ error: 'Invalid attribute value ID' }))
+      .optional(),
   }),
 });
 
@@ -159,9 +103,10 @@ export const generateVariantsValidationSchema = z.object({
     attributes: z
       .array(
         z.object({
-          attributeId: z.string().min(1),
-
-          attributeValueIds: z.array(z.string().min(1)).min(1),
+          attributeId: z.cuid2({ error: 'Invalid attribute ID' }),
+          attributeValueIds: z
+            .array(z.cuid2({ error: 'Invalid attribute value ID' }))
+            .min(1),
         }),
       )
       .min(1),
@@ -170,74 +115,51 @@ export const generateVariantsValidationSchema = z.object({
 
 export const attachProductMediaValidationSchema = z.object({
   params: z.object({
-    id: z.cuid2({
-      error: 'Invalid product ID',
-    }),
+    id: z.cuid2({ error: 'Invalid product ID' }),
   }),
-
   body: z.object({
-    mediaId: z.string().min(1),
-
+    mediaId: z.cuid2({ error: 'Invalid media ID' }),
     isThumbnail: z.boolean().optional(),
-
     isGallery: z.boolean().optional(),
-
     sortOrder: z.number().int().optional(),
   }),
 });
 
 export const detachProductMediaValidationSchema = z.object({
   params: z.object({
-    id: z.cuid2({
-      error: 'Invalid product ID',
-    }),
-    mediaId: z.cuid2({
-      error: 'Invalid media ID',
-    }),
+    id: z.cuid2({ error: 'Invalid product ID' }),
+    mediaId: z.cuid2({ error: 'Invalid media ID' }),
   }),
 });
 
 export const attachVariantMediaValidationSchema = z.object({
   params: z.object({
-    variantId: z.cuid2({
-      error: 'Invalid variant ID',
-    }),
+    variantId: z.cuid2({ error: 'Invalid variant ID' }),
   }),
-
   body: z.object({
-    mediaId: z.string().min(1),
-
+    mediaId: z.cuid2({ error: 'Invalid media ID' }),
     isThumbnail: z.boolean().optional(),
-
     isGallery: z.boolean().optional(),
-
     sortOrder: z.number().int().optional(),
   }),
 });
 
 export const detachVariantMediaValidationSchema = z.object({
   params: z.object({
-    variantId: z.cuid2({
-      error: 'Invalid variant ID',
-    }),
-    mediaId: z.cuid2({
-      error: 'Invalid media ID',
-    }),
+    variantId: z.cuid2({ error: 'Invalid variant ID' }),
+    mediaId: z.cuid2({ error: 'Invalid media ID' }),
   }),
 });
 
 export const reorderProductMediaValidationSchema = z.object({
   params: z.object({
-    id: z.cuid2({
-      error: 'Invalid product ID',
-    }),
+    id: z.cuid2({ error: 'Invalid product ID' }),
   }),
-
   body: z.object({
     items: z
       .array(
         z.object({
-          mediaId: z.string().min(1),
+          mediaId: z.cuid2({ error: 'Invalid media ID' }),
           sortOrder: z.number().int().min(0),
         }),
       )
@@ -247,13 +169,10 @@ export const reorderProductMediaValidationSchema = z.object({
 
 export const attachAttributeValueMediaValidationSchema = z.object({
   params: z.object({
-    valueId: z.cuid2({
-      error: 'Invalid valueId ID',
-    }),
+    valueId: z.cuid2({ error: 'Invalid attribute value ID' }),
   }),
-
   body: z.object({
-    mediaId: z.string().min(1),
+    mediaId: z.cuid2({ error: 'Invalid media ID' }),
     isThumbnail: z.boolean().optional(),
     isGallery: z.boolean().optional(),
     sortOrder: z.number().int().min(0).optional(),
@@ -262,67 +181,43 @@ export const attachAttributeValueMediaValidationSchema = z.object({
 
 export const detachAttributeValueMediaValidationSchema = z.object({
   params: z.object({
-    valueId: z.cuid2({
-      error: 'Invalid valueId ID',
-    }),
-    mediaId: z.cuid2({
-      error: 'Invalid media ID',
-    }),
+    valueId: z.cuid2({ error: 'Invalid attribute value ID' }),
+    mediaId: z.cuid2({ error: 'Invalid media ID' }),
   }),
 });
 
 export const updateVariableProductValidationSchema = z.object({
   params: z.object({
-    id: z.cuid2({
-      error: 'Invalid product ID',
-    }),
+    id: z.cuid2({ error: 'Invalid product ID' }),
   }),
-
   body: z.object({
     name: z.string().trim().min(1).optional(),
-
     slug: z.string().trim().min(1).optional(),
-
     shortDescription: z.string().optional(),
-
     longDescription: z.string().optional(),
-
     weight: z.number().nonnegative().optional(),
-
     active: z.boolean().optional(),
-
     featured: z.boolean().optional(),
-
     sortOrder: z.number().int().min(0).optional(),
-
-    brandId: z.string().min(1).nullable().optional(),
-
-    categoryIds: z.array(z.string().min(1)).optional(),
+    brandId: z.cuid2({ error: 'Invalid brand ID' }).nullable().optional(),
+    categoryIds: z.array(z.cuid2({ error: 'Invalid category ID' })).optional(),
   }),
 });
 
 export const addVariantValidationSchema = z.object({
   params: z.object({
-    id: z.cuid2({
-      error: 'Invalid product ID',
-    }),
+    id: z.cuid2({ error: 'Invalid product ID' }),
   }),
-
   body: z.object({
     sku: z.string().trim().min(1),
-
     price: z.number().nonnegative(),
-
     salePrice: z.number().nonnegative().optional(),
-
     stock: z.number().int().nonnegative(),
-
     lowStockThreshold: z.number().int().nonnegative().optional(),
-
     weight: z.number().nonnegative().optional(),
-
     active: z.boolean().optional(),
-
-    attributeValueIds: z.array(z.string().min(1)).min(1),
+    attributeValueIds: z
+      .array(z.cuid2({ error: 'Invalid attribute value ID' }))
+      .min(1),
   }),
 });
