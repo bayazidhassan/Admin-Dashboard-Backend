@@ -718,6 +718,13 @@ const updateVariant = async (
     throw new AppError(404, 'Variant not found');
   }
 
+  const price = payload.price !== undefined ? payload.price : variant.price;
+  const salePrice =
+    payload.salePrice !== undefined ? payload.salePrice : variant.salePrice;
+  if (salePrice !== null && salePrice !== undefined && salePrice > price) {
+    throw new AppError(400, 'Sale price cannot be greater than price');
+  }
+
   if (payload.sku) {
     const existingSku = await prisma.productVariant.findFirst({
       where: {
