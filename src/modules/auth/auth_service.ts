@@ -44,7 +44,20 @@ const loginUser = async (email: string, password: string) => {
 
 const getSession = async (userId: string) => {
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: {
+      id: userId,
+    },
+    include: {
+      role: {
+        include: {
+          permissions: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   if (!user) {
@@ -55,8 +68,8 @@ const getSession = async (userId: string) => {
     id: user.id,
     email: user.email,
     active: user.active,
-    role: null,
-    permissions: [],
+    role: user.role.name,
+    permissions: user.role.permissions.map((permission) => permission.name),
   };
 };
 
