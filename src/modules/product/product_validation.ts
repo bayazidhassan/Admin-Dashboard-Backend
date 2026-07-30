@@ -210,7 +210,7 @@ export const addVariantValidationSchema = z.object({
   }),
   body: z.object({
     sku: z.string().trim().min(1),
-    price: z.number().nonnegative(),
+    price: z.number().positive(),
     salePrice: z.number().nonnegative().optional(),
     stock: z.number().int().nonnegative(),
     lowStockThreshold: z.number().int().nonnegative().optional(),
