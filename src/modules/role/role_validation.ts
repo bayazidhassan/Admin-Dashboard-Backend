@@ -11,13 +11,17 @@ export const createRoleValidationSchema = z.object({
 
 export const getRoleByIdValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Role ID is required'),
+    id: z.cuid2({
+      error: 'Invalid role ID',
+    }),
   }),
 });
 
 export const updateRoleValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Role ID is required'),
+    id: z.cuid2({
+      error: 'Invalid role ID',
+    }),
   }),
   body: z.object({
     description: z.string().optional(),

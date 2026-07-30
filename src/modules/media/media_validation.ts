@@ -2,13 +2,17 @@ import { z } from 'zod';
 
 export const getMediaByIdValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Media ID is required'),
+    id: z.cuid2({
+      error: 'Invalid media ID',
+    }),
   }),
 });
 
 export const updateMediaMetadataValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Media ID is required'),
+    id: z.cuid2({
+      error: 'Invalid media ID',
+    }),
   }),
 
   body: z.object({

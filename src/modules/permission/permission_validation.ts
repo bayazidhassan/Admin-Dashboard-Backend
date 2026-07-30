@@ -10,7 +10,9 @@ export const createGroupValidationSchema = z.object({
 
 export const updateGroupValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'ID is required'),
+    id: z.cuid2({
+      error: 'Invalid permission ID',
+    }),
   }),
   body: z.object({
     description: z.string().optional(),
@@ -21,12 +23,24 @@ export const updateGroupValidationSchema = z.object({
 
 export const deleteGroupValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'ID is required'),
+    id: z.cuid2({
+      error: 'Invalid permission ID',
+    }),
+  }),
+});
+
+export const deletePermissionValidationSchema = z.object({
+  params: z.object({
+    id: z.cuid2({
+      error: 'Invalid permission ID',
+    }),
   }),
 });
 
 export const getGroupByIdValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Group id is required'),
+    id: z.cuid2({
+      error: 'Invalid permission ID',
+    }),
   }),
 });

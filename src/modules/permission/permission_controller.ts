@@ -68,10 +68,23 @@ const getGroupById = catchAsync(async (req, res) => {
   });
 });
 
+const deletePermission = catchAsync(async (req, res) => {
+  await PermissionService.deletePermission(req.params.id as string);
+
+  sendResponse({
+    res,
+    success: true,
+    statusCode: 200,
+    message: 'Permission deleted successfully',
+    data: null,
+  });
+});
+
 export const PermissionController = {
   createGroup,
   getGroups,
   updateGroup,
   deleteGroup,
   getGroupById,
+  deletePermission,
 };

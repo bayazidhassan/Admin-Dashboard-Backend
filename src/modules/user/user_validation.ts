@@ -20,13 +20,17 @@ export const createUserValidationSchema = z.object({
 
 export const getUserByIdValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'User ID is required'),
+    id: z.cuid2({
+      error: 'Invalid user ID',
+    }),
   }),
 });
 
 export const updateUserValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'User ID is required'),
+    id: z.cuid2({
+      error: 'Invalid user ID',
+    }),
   }),
   body: z.object({
     name: z.string().trim().min(1).optional(),
@@ -47,7 +51,9 @@ export const updateUserValidationSchema = z.object({
 
 export const updateUserStatusValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'User ID is required'),
+    id: z.cuid2({
+      error: 'Invalid user ID',
+    }),
   }),
   body: z.object({
     active: z.boolean({

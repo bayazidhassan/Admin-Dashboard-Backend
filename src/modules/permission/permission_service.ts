@@ -246,10 +246,44 @@ const getGroupById = async (id: string) => {
   return group;
 };
 
+const deletePermission = async (id: string) => {
+  const permission = await prisma.permission.findUnique({
+    where: { id },
+  });
+
+  if (!permission) {
+    throw new AppError(404, 'Permission not found');
+  }
+
+  const roleCount = await prisma.role.count({
+    where: {
+      permissions: {
+        some: {
+          id,
+        },
+      },
+    },
+  });
+
+  if (roleCount > 0) {
+    throw new AppError(
+      409,
+      'Cannot delete permission because it is assigned to one or more roles',
+    );
+  }
+
+  await prisma.permission.delete({
+    where: { id },
+  });
+
+  return null;
+};
+
 export const PermissionService = {
   createGroup,
   getGroups,
   updateGroup,
   deleteGroup,
   getGroupById,
+  deletePermission,
 };

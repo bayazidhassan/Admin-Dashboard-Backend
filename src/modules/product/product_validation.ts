@@ -36,13 +36,17 @@ export const createProductValidationSchema = z.object({
 
 export const getProductByIdValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Product ID is required'),
+    id: z.cuid2({
+      error: 'Invalid product ID',
+    }),
   }),
 });
 
 export const updateProductValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Product ID is required'),
+    id: z.cuid2({
+      error: 'Invalid product ID',
+    }),
   }),
 
   body: z.object({
@@ -126,7 +130,9 @@ export const createVariableProductValidationSchema = z.object({
 
 export const updateVariantValidationSchema = z.object({
   params: z.object({
-    variantId: z.string().min(1, 'Variant ID is required'),
+    variantId: z.cuid2({
+      error: 'Invalid variant ID',
+    }),
   }),
 
   body: z.object({
@@ -164,7 +170,9 @@ export const generateVariantsValidationSchema = z.object({
 
 export const attachProductMediaValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1),
+    id: z.cuid2({
+      error: 'Invalid product ID',
+    }),
   }),
 
   body: z.object({
@@ -180,14 +188,20 @@ export const attachProductMediaValidationSchema = z.object({
 
 export const detachProductMediaValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1),
-    mediaId: z.string().min(1),
+    id: z.cuid2({
+      error: 'Invalid product ID',
+    }),
+    mediaId: z.cuid2({
+      error: 'Invalid media ID',
+    }),
   }),
 });
 
 export const attachVariantMediaValidationSchema = z.object({
   params: z.object({
-    variantId: z.string().min(1),
+    variantId: z.cuid2({
+      error: 'Invalid variant ID',
+    }),
   }),
 
   body: z.object({
@@ -203,14 +217,20 @@ export const attachVariantMediaValidationSchema = z.object({
 
 export const detachVariantMediaValidationSchema = z.object({
   params: z.object({
-    variantId: z.string().min(1),
-    mediaId: z.string().min(1),
+    variantId: z.cuid2({
+      error: 'Invalid variant ID',
+    }),
+    mediaId: z.cuid2({
+      error: 'Invalid media ID',
+    }),
   }),
 });
 
 export const reorderProductMediaValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1),
+    id: z.cuid2({
+      error: 'Invalid product ID',
+    }),
   }),
 
   body: z.object({
@@ -227,7 +247,9 @@ export const reorderProductMediaValidationSchema = z.object({
 
 export const attachAttributeValueMediaValidationSchema = z.object({
   params: z.object({
-    valueId: z.string().min(1),
+    valueId: z.cuid2({
+      error: 'Invalid valueId ID',
+    }),
   }),
 
   body: z.object({
@@ -240,14 +262,20 @@ export const attachAttributeValueMediaValidationSchema = z.object({
 
 export const detachAttributeValueMediaValidationSchema = z.object({
   params: z.object({
-    valueId: z.string().min(1),
-    mediaId: z.string().min(1),
+    valueId: z.cuid2({
+      error: 'Invalid valueId ID',
+    }),
+    mediaId: z.cuid2({
+      error: 'Invalid media ID',
+    }),
   }),
 });
 
 export const updateVariableProductValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1),
+    id: z.cuid2({
+      error: 'Invalid product ID',
+    }),
   }),
 
   body: z.object({
@@ -275,7 +303,9 @@ export const updateVariableProductValidationSchema = z.object({
 
 export const addVariantValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1),
+    id: z.cuid2({
+      error: 'Invalid product ID',
+    }),
   }),
 
   body: z.object({

@@ -16,13 +16,17 @@ export const createBrandValidationSchema = z.object({
 
 export const getBrandByIdValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Brand ID is required'),
+    id: z.cuid2({
+      error: 'Invalid brand ID',
+    }),
   }),
 });
 
 export const updateBrandValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Brand ID is required'),
+    id: z.cuid2({
+      error: 'Invalid brand ID',
+    }),
   }),
 
   body: z.object({

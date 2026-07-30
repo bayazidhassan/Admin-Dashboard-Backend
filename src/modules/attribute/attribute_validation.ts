@@ -18,13 +18,17 @@ export const createAttributeValidationSchema = z.object({
 
 export const getAttributeByIdValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Attribute ID is required'),
+    id: z.cuid2({
+      error: 'Invalid attribute ID',
+    }),
   }),
 });
 
 export const updateAttributeValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Attribute ID is required'),
+    id: z.cuid2({
+      error: 'Invalid attribute ID',
+    }),
   }),
 
   body: z.object({
@@ -40,7 +44,9 @@ export const updateAttributeValidationSchema = z.object({
 
 export const addAttributeValueValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Attribute ID is required'),
+    id: z.cuid2({
+      error: 'Invalid attribute ID',
+    }),
   }),
 
   body: z.object({
@@ -54,7 +60,9 @@ export const addAttributeValueValidationSchema = z.object({
 
 export const updateAttributeValueValidationSchema = z.object({
   params: z.object({
-    valueId: z.string().min(1),
+    valueId: z.cuid2({
+      error: 'Invalid value ID',
+    }),
   }),
 
   body: z.object({

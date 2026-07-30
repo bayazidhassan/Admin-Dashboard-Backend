@@ -20,13 +20,17 @@ export const createCategoryValidationSchema = z.object({
 
 export const getCategoryByIdValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Category ID is required'),
+    id: z.cuid2({
+      error: 'Invalid category ID',
+    }),
   }),
 });
 
 export const updateCategoryValidationSchema = z.object({
   params: z.object({
-    id: z.string().min(1, 'Category ID is required'),
+    id: z.cuid2({
+      error: 'Invalid category ID',
+    }),
   }),
 
   body: z.object({
