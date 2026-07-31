@@ -1,0 +1,2172 @@
+{
+  "info": {
+    "_postman_id": "064eb15b-4358-47df-997e-b5baf06091a7",
+    "name": "Admin Dashboard",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45978538"
+  },
+  "item": [
+    {
+      "name": "Permission",
+      "item": [
+        {
+          "name": "postGroups",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Category\",\r\n    \"description\": \"Category Management\",\r\n    \"actions\": [\r\n        \"watch\",\r\n        \"create\",\r\n        \"read\",\r\n        \"update\",\r\n        \"delete\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/permissions/groups",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "permissions",
+                "groups"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getGroups",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/permissions/groups",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "permissions",
+                "groups"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateGroup",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"description\": \"Attribute management\",\r\n  //\"addActions\": [\"bayazid\"],\r\n  \"removePermissionIds\": [\"cms7vba1x00042a7ry90bfxx1\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/permissions/groups/cms7rj5ln0012qcfjpfr9oa6i",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "permissions",
+                "groups",
+                "cms7rj5ln0012qcfjpfr9oa6i"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteGroup",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/permissions/groups/cms2nwwh50001jgfj5ac5mal9",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "permissions",
+                "groups",
+                "cms2nwwh50001jgfj5ac5mal9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getGroupById",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/permissions/groups/cms7rj5ln0012qcfjpfr9oa6i",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "permissions",
+                "groups",
+                "cms7rj5ln0012qcfjpfr9oa6i"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deletePermission",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/permissions/cms2nwwh50001jgfj5ac5mal9",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "permissions",
+                "cms2nwwh50001jgfj5ac5mal9"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Role",
+      "item": [
+        {
+          "name": "create role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Manager\",\r\n    \"description\": \"Manager role\",\r\n    \"status\": true,\r\n    \"permissionIds\": [\r\n        \"dxq4x7np2ui2nw6fb48ihsf9\",\r\n        \"nbbvlpt660912qiz752pkvfk\",\r\n        \"tnoa83utqucitua7l7pceu0q\",\r\n        \"vst2l1uonro35mnt0g186hbp\",\r\n        \"ain9x1opp7kptdk8dm9memdu\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/roles",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getRoleById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/roles/w0uqeh5r66jetbz0rhgghcmg",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "roles",
+                "w0uqeh5r66jetbz0rhgghcmg"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getRoles",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/roles",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "grantAll",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/roles/w0uqeh5r66jetbz0rhgghcmg/grant-all",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "roles",
+                "w0uqeh5r66jetbz0rhgghcmg",
+                "grant-all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateRole",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"description\": \"Manager role\",\r\n    \"addPermissionIds\": [\r\n        \"da25kprp38c5l1fs32ssk9a2\"\r\n    ],\r\n    \"removePermissionIds\": [\r\n        //\"da25kprp38c5l1fs32ssk9a2\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/roles/w0uqeh5r66jetbz0rhgghcmg",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "roles",
+                "w0uqeh5r66jetbz0rhgghcmg"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteRole",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"description\": \"Manager role\",\r\n    \"addPermissionIds\": [\r\n        \"da25kprp38c5l1fs32ssk9a2\"\r\n    ],\r\n    \"removePermissionIds\": [\r\n        //\"da25kprp38c5l1fs32ssk9a2\"\r\n    ]\r\n}"
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/roles/w0uqeh5r66jetbz0rhgghcmg",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "roles",
+                "w0uqeh5r66jetbz0rhgghcmg"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "createUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Bayazid\",\r\n  \"email\": \"bayazid@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"roleId\": \"bjgpexz6gwms2y1ovvgvpefb\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/users",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getUsers",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/users",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getUserById",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/users/lhdhiwyj5zm22ndg94r9wojv",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "users",
+                "lhdhiwyj5zm22ndg94r9wojv"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"active\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/users/lhdhiwyj5zm22ndg94r9wojv",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "users",
+                "lhdhiwyj5zm22ndg94r9wojv"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateUserStatus",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"active\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/users/lhdhiwyj5zm22ndg94r9wojv/status",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "users",
+                "lhdhiwyj5zm22ndg94r9wojv",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/users/lhdhiwyj5zm22ndg94r9wojv",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "users",
+                "lhdhiwyj5zm22ndg94r9wojv"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "uploadMedia",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "uuid": "1a5a15af-c606-414e-901f-a980f4a3db3b",
+                  "src": "/C:/Users/Asus/Downloads/zzPhotos/20260416_194445.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/media/upload",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "media",
+                "upload"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getMediaList",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/media",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "media"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getMediaById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/media/nm4amavmvbqpj69boux3v3qa",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "media",
+                "nm4amavmvbqpj69boux3v3qa"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateMediaMetadata",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"altText\": \"Bayazid image\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/media/nm4amavmvbqpj69boux3v3qa",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "media",
+                "nm4amavmvbqpj69boux3v3qa"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteMedia",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/media/nm4amavmvbqpj69boux3v3qa",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "media",
+                "nm4amavmvbqpj69boux3v3qa"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Login Success\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.environment.set(\"accessToken\", json.data.accessToken);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"bayazidhassan776@gmail.com\",\r\n    //\"email\": \"bayazid@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/auth/login",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "session",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/auth/session",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "auth",
+                "session"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Refresh Success\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.environment.set(\"accessToken\", json.data.accessToken);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/auth/refresh",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Logout Success\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.environment.unset(\"accessToken\");"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/auth/logout",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "Create category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Electronics\",\r\n    \"slug\": \"electronics\",\r\n    \"description\": \"Electronic products category\",\r\n    \"image\": \"https://example.com/electronics.jpg\",\r\n    \"active\": true,\r\n    \"sortOrder\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/categories",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCategories",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/categories",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCategoryById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/categories/jlo9w1rh32g0gmkrx3b6hv7v",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "categories",
+                "jlo9w1rh32g0gmkrx3b6hv7v"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update Category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Electronics\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/categories/jlo9w1rh32g0gmkrx3b6hv7v",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "categories",
+                "jlo9w1rh32g0gmkrx3b6hv7v"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteCategory",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/categories/jlo9w1rh32g0gmkrx3b6hv7v",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "categories",
+                "jlo9w1rh32g0gmkrx3b6hv7v"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCategoryTree",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/categories/tree",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "categories",
+                "tree"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Brand",
+      "item": [
+        {
+          "name": "createBrand",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Apple\",\r\n    \"slug\": \"apple\",\r\n    \"logo\": \"https://example.com/apple-logo.png\",\r\n    \"status\": true,\r\n    \"description\": \"Apple products brand\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/brands",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "brands"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getBrands",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/brands",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "brands"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getBrandById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/brands/z19mgl7byn6jo3won7p7hsn0",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "brands",
+                "z19mgl7byn6jo3won7p7hsn0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateBrand",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Apple Bayazid\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/brands/z19mgl7byn6jo3won7p7hsn0",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "brands",
+                "z19mgl7byn6jo3won7p7hsn0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteBrand",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/brands/z19mgl7byn6jo3won7p7hsn0",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "brands",
+                "z19mgl7byn6jo3won7p7hsn0"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Attribute",
+      "item": [
+        {
+          "name": "Create attribute",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Color\",\r\n    \"slug\": \"color\",\r\n    \"type\": \"color_swatch\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/attributes",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "attributes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAttributes",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/attributes",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "attributes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get attribute by id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/attributes/vwwh02qsnky5bx9187eodsc0",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "attributes",
+                "vwwh02qsnky5bx9187eodsc0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update attribute",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Color Bayazid\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/attributes/vwwh02qsnky5bx9187eodsc0",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "attributes",
+                "vwwh02qsnky5bx9187eodsc0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete attribute",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/attributes/vwwh02qsnky5bx9187eodsc0",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "attributes",
+                "vwwh02qsnky5bx9187eodsc0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add attribute value",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "// {\r\n//     \"value\": \"Red\",\r\n//     \"slug\": \"red\",\r\n//     \"referenceValue\": \"#FF0000\"\r\n// }\r\n// {\r\n//     \"value\": \"Blue\",\r\n//     \"slug\": \"blue\",\r\n//     \"referenceValue\": \"#0000FF\"\r\n// }\r\n{\r\n    \"value\": \"Black\",\r\n    \"slug\": \"black\",\r\n    \"referenceValue\": \"#000000\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/attributes/er9hlkotk68ohhf2x8hg0182/values",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "attributes",
+                "er9hlkotk68ohhf2x8hg0182",
+                "values"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update attribute value",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"value\": \"Dark Red\",\r\n    \"slug\": \"dark-red\",\r\n    \"referenceValue\": \"#CC0000\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/attributes/values/c9710trkqt0f2kyp0hpjfeb8",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "attributes",
+                "values",
+                "c9710trkqt0f2kyp0hpjfeb8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete attribute value",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/attributes/values/c9710trkqt0f2kyp0hpjfeb8",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "attributes",
+                "values",
+                "c9710trkqt0f2kyp0hpjfeb8"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Create simple product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"iPhone 17\",\r\n    \"slug\": \"iphone-17\",\r\n    \"sku\": \"IP17-001\",\r\n    \"shortDescription\": \"Latest iPhone\",\r\n    \"longDescription\": \"Apple iPhone 17 with advanced features\",\r\n    \"hasVariants\": false,\r\n    \"price\": 999,\r\n    \"salePrice\": 949,\r\n    \"stock\": 100,\r\n    \"weight\": 0.45,\r\n    \"active\": true,\r\n    \"featured\": true,\r\n    \"sortOrder\": 1,\r\n    \"brandId\": \"ycdvqqilhpxqmajmpezoeswe\",\r\n    \"categoryIds\": [\r\n        \"r99ad74aotu90rrzsbpntt3f\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create variable product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"iPhone 17 Pro\",\r\n    \"slug\": \"iphone-17-pro\",\r\n    \"hasVariants\": true,\r\n    \"shortDescription\": \"Apple iPhone 17 Pro\",\r\n    \"longDescription\": \"Apple iPhone 17 Pro available in multiple colors.\",\r\n    \"weight\": 0.45,\r\n    \"active\": true,\r\n    \"featured\": true,\r\n    \"sortOrder\": 1,\r\n    \"brandId\": \"ycdvqqilhpxqmajmpezoeswe\",\r\n    \"categoryIds\": [\r\n        \"r99ad74aotu90rrzsbpntt3f\"\r\n    ],\r\n    \"variants\": [\r\n        {\r\n            \"sku\": \"IP17PRO-RED\",\r\n            \"price\": 1199,\r\n            \"salePrice\": 1149,\r\n            \"stock\": 20,\r\n            \"lowStockThreshold\": 5,\r\n            \"weight\": 0.45,\r\n            \"active\": true,\r\n            \"attributeValueIds\": [\r\n                \"xwt84upwwyxnk00mj43h3ngh\"\r\n            ]\r\n        },\r\n        {\r\n            \"sku\": \"IP17PRO-BLUE\",\r\n            \"price\": 1199,\r\n            \"salePrice\": 1149,\r\n            \"stock\": 25,\r\n            \"lowStockThreshold\": 5,\r\n            \"weight\": 0.45,\r\n            \"active\": true,\r\n            \"attributeValueIds\": [\r\n                \"nnjr6ppq20hze4uuwnasbjfw\"\r\n            ]\r\n        },\r\n        {\r\n            \"sku\": \"IP17PRO-BLACK\",\r\n            \"price\": 1199,\r\n            \"salePrice\": 1149,\r\n            \"stock\": 30,\r\n            \"lowStockThreshold\": 5,\r\n            \"weight\": 0.45,\r\n            \"active\": true,\r\n            \"attributeValueIds\": [\r\n                \"c9710trkqt0f2kyp0hpjfeb8\"\r\n            ]\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/variable",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "variable"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate variants",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"attributes\": [\r\n        {\r\n            \"attributeId\": \"er9hlkotk68ohhf2x8hg0182\",\r\n            \"attributeValueIds\": [\r\n                \"xwt84upwwyxnk00mj43h3ngh\",\r\n                \"nnjr6ppq20hze4uuwnasbjfw\",\r\n                \"c9710trkqt0f2kyp0hpjfeb8\"\r\n            ]\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/generate-variants",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "generate-variants"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add variant",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"sku\": \"IP17PRO-GREEN\",\r\n    \"price\": 1199,\r\n    \"salePrice\": 1149,\r\n    \"stock\": 15,\r\n    \"lowStockThreshold\": 5,\r\n    \"weight\": 0.45,\r\n    \"active\": true,\r\n    \"attributeValueIds\": [\r\n        \"xwt84upwwyxnk00mj43h3ngh\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/ixays2r3hhvryausknyt415w/variants",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "ixays2r3hhvryausknyt415w",
+                "variants"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Attach product media",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"mediaId\": \"z4n6nwtgnfpfycyoqn6bqgpg\",\r\n    \"isThumbnail\": true,\r\n    \"isGallery\": true,\r\n    \"sortOrder\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/ixays2r3hhvryausknyt415w/media",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "ixays2r3hhvryausknyt415w",
+                "media"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Attach variant media",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"mediaId\": \"z4n6nwtgnfpfycyoqn6bqgpg\",\r\n    \"isThumbnail\": true,\r\n    \"isGallery\": true,\r\n    \"sortOrder\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/variants/hvlcoujq5sgx7i3rqkfrx9cr/media",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "variants",
+                "hvlcoujq5sgx7i3rqkfrx9cr",
+                "media"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Attach attribute value media",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"mediaId\": \"z4n6nwtgnfpfycyoqn6bqgpg\",\r\n    \"isThumbnail\": true,\r\n    \"isGallery\": false,\r\n    \"sortOrder\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/attribute-values/xwt84upwwyxnk00mj43h3ngh/media",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "attribute-values",
+                "xwt84upwwyxnk00mj43h3ngh",
+                "media"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get products",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/products",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get product by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/products/ixays2r3hhvryausknyt415w",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "ixays2r3hhvryausknyt415w"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update variant",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"price\": 1299,\r\n    \"salePrice\": 1199,\r\n    \"stock\": 50,\r\n    \"lowStockThreshold\": 10,\r\n    \"weight\": 0.5,\r\n    \"active\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/variants/hvlcoujq5sgx7i3rqkfrx9cr",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "variants",
+                "hvlcoujq5sgx7i3rqkfrx9cr"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update variable product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"iPhone 17 Pro Max\",\r\n    \"slug\": \"iphone-17-pro-max\",\r\n    \"shortDescription\": \"Updated iPhone\",\r\n    \"longDescription\": \"Updated Apple iPhone 17 Pro Max.\",\r\n    \"weight\": 0.48,\r\n    \"active\": true,\r\n    \"featured\": true,\r\n    \"sortOrder\": 2,\r\n    \"brandId\": \"ycdvqqilhpxqmajmpezoeswe\",\r\n    \"categoryIds\": [\r\n        \"r99ad74aotu90rrzsbpntt3f\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/variable/ixays2r3hhvryausknyt415w",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "variable",
+                "ixays2r3hhvryausknyt415w"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reorder product media",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"items\": [\r\n        {\r\n            \"mediaId\": \"z4n6nwtgnfpfycyoqn6bqgpg\",\r\n            \"sortOrder\": 1\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{admin_dashboard}}/products/ixays2r3hhvryausknyt415w/media/reorder",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "ixays2r3hhvryausknyt415w",
+                "media",
+                "reorder"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detach product media",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/products/ixays2r3hhvryausknyt415w/media/z4n6nwtgnfpfycyoqn6bqgpg",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "ixays2r3hhvryausknyt415w",
+                "media",
+                "z4n6nwtgnfpfycyoqn6bqgpg"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detach variant media",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/products/variants/hvlcoujq5sgx7i3rqkfrx9cr/media/z4n6nwtgnfpfycyoqn6bqgpg",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "variants",
+                "hvlcoujq5sgx7i3rqkfrx9cr",
+                "media",
+                "z4n6nwtgnfpfycyoqn6bqgpg"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detach attribute value media",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/products/attribute-values/xwt84upwwyxnk00mj43h3ngh/media/z4n6nwtgnfpfycyoqn6bqgpg",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "attribute-values",
+                "xwt84upwwyxnk00mj43h3ngh",
+                "media",
+                "z4n6nwtgnfpfycyoqn6bqgpg"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete variant",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/products/variants/hvlcoujq5sgx7i3rqkfrx9cr",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "variants",
+                "hvlcoujq5sgx7i3rqkfrx9cr"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{admin_dashboard}}/products/ixays2r3hhvryausknyt415w",
+              "host": [
+                "{{admin_dashboard}}"
+              ],
+              "path": [
+                "products",
+                "ixays2r3hhvryausknyt415w"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
