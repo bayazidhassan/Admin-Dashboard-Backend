@@ -73,6 +73,11 @@ const getAttributes = async (query: Record<string, unknown>) => {
         createdAt: 'desc',
       },
       include: {
+        values: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
         _count: {
           select: {
             values: true,
