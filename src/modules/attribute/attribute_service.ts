@@ -77,6 +77,16 @@ const getAttributes = async (query: Record<string, unknown>) => {
           orderBy: {
             createdAt: 'asc',
           },
+          include: {
+            mediaAttachments: {
+              include: {
+                media: true,
+              },
+              orderBy: {
+                sortOrder: 'asc',
+              },
+            },
+          },
         },
         _count: {
           select: {
@@ -108,6 +118,16 @@ const getAttributeById = async (id: string) => {
       values: {
         orderBy: {
           createdAt: 'asc',
+        },
+        include: {
+          mediaAttachments: {
+            include: {
+              media: true,
+            },
+            orderBy: {
+              sortOrder: 'asc',
+            },
+          },
         },
       },
     },
