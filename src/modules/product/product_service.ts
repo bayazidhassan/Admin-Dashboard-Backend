@@ -221,6 +221,7 @@ const getProducts = async (query: Record<string, unknown>) => {
 
         variants: {
           select: {
+            id: true,
             sku: true,
             price: true,
             salePrice: true,
@@ -228,6 +229,12 @@ const getProducts = async (query: Record<string, unknown>) => {
             stockStatus: true,
             weight: true,
             active: true,
+
+            attributeValues: {
+              select: {
+                id: true,
+              },
+            },
           },
         },
 
