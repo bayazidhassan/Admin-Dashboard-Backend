@@ -12,6 +12,13 @@ A scalable REST API built with **Node.js**, **Express.js**, **TypeScript**, **Pr
 https://admin-dashboard-backend-q1bs.onrender.com/api/v1
 ```
 
+**Frontend**
+
+```text
+Live: https://admindashboardbd.netlify.app
+Repo: https://github.com/bayazidhassan/Admin-Dashboard-Frontend
+```
+
 **Seeded Accounts** — use these to log in and test the API directly.
 
 | Role | Email | Password | Access |
@@ -157,7 +164,7 @@ A request without the required permission returns `403 Forbidden`. A request wit
 | Attribute | Complete |
 | Product | Complete |
 
-> This repository covers the backend only. The frontend is maintained in a separate repository: `<FILL IN — frontend repo URL>`
+> This repository covers the backend only. The frontend is maintained in a separate repository: [Admin-Dashboard-Frontend](https://github.com/bayazidhassan/Admin-Dashboard-Frontend) — live at [admindashboardbd.netlify.app](https://admindashboardbd.netlify.app)
 
 ---
 
@@ -165,6 +172,7 @@ A request without the required permission returns `403 Forbidden`. A request wit
 
 * Uploaded media is stored locally in the `uploads/` directory.
 * When deploying to platforms with ephemeral file systems (such as Render), uploaded files may not persist across restarts or redeployments. For production deployments, object storage such as Amazon S3 or Cloudinary is recommended.
+* Sorting the product list by price sorts simple products correctly. For variable products, price is derived from the min/max of their variants after the database query runs, so DB-level price sorting does not accurately interleave variable products by their computed price range.
 
 ---
 
