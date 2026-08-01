@@ -558,8 +558,18 @@ const createVariableProduct = async (payload: {
     }
 
     const skuSet = new Set<string>();
+    const combinationSet = new Set<string>();
 
     for (const variant of payload.variants) {
+      const comboKey = [...variant.attributeValueIds].sort().join(',');
+      if (combinationSet.has(comboKey)) {
+        throw new AppError(
+          409,
+          `Duplicate attribute combination for SKU: ${variant.sku}`,
+        );
+      }
+      combinationSet.add(comboKey);
+
       if (skuSet.has(variant.sku)) {
         throw new AppError(409, `Duplicate SKU: ${variant.sku}`);
       }
@@ -763,6 +773,28 @@ const updateVariant = async (
 
     if (values.length !== payload.attributeValueIds.length) {
       throw new AppError(404, 'One or more attribute values not found');
+    }
+
+    const newCombo = [...payload.attributeValueIds].sort().join(',');
+
+    const siblingVariants = await prisma.productVariant.findMany({
+      where: { productId: variant.productId, id: { not: variantId } },
+      include: { attributeValues: { select: { id: true } } },
+    });
+
+    const duplicate = siblingVariants.some((v) => {
+      const combo = v.attributeValues
+        .map((av) => av.id)
+        .sort()
+        .join(',');
+      return combo === newCombo;
+    });
+
+    if (duplicate) {
+      throw new AppError(
+        409,
+        'A variant with this exact attribute combination already exists',
+      );
     }
   }
 
@@ -1536,6 +1568,28 @@ const addVariant = async (
 
   if (attributeValues.length !== payload.attributeValueIds.length) {
     throw new AppError(404, 'One or more attribute values not found');
+  }
+
+  const newCombo = [...payload.attributeValueIds].sort().join(',');
+
+  const existingVariants = await prisma.productVariant.findMany({
+    where: { productId },
+    include: { attributeValues: { select: { id: true } } },
+  });
+
+  const duplicate = existingVariants.some((v) => {
+    const combo = v.attributeValues
+      .map((av) => av.id)
+      .sort()
+      .join(',');
+    return combo === newCombo;
+  });
+
+  if (duplicate) {
+    throw new AppError(
+      409,
+      'A variant with this exact attribute combination already exists',
+    );
   }
 
   const variant = await prisma.productVariant.create({
