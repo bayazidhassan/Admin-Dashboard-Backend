@@ -15,7 +15,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:5173',
-      'https://your-frontend-domain.vercel.app',
+      'https://admin-dashboard-frontend-mu-lovat.vercel.app',
+      'https://admindashboardbd.netlify.app',
     ],
     credentials: true,
   }),
